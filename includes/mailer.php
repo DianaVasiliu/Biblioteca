@@ -6,18 +6,6 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'C:/xampp/Composer/vendor/autoload.php';
 
-
-// $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-// include ($IPATH."register.php"); 
-
-
-// $isok = $_POST['error'];
-
-// $user_email = $_POST['email'];
-// $user_name = $_POST['lastname'] . ' ' . $_POST['firstname'];
-// $user_username = $_POST['username'];
-// $user_password = $_POST['password'];
-
 if ($anyerror == 0)
 {
 
@@ -92,7 +80,7 @@ if (!$mail->send()) {
 }
 else {
     print '<p style="margin-left: 50px;">A fost un trimis un email de confirmare.</p><br>';
-    print '<p style="margin-left: 50px;"><a href="../paginaprincipala.php">Inapoi la pagina principala</a></p><br>';
+    print '<p style="margin-left: 50px;"><a href="./paginaprincipala.php">Inapoi la pagina principala</a></p><br>';
 }
 
 }

@@ -280,7 +280,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "Something went wrong. Please try again later.";
             }
 
-            mysqli_stmt_close($stmt);
+            //mysqli_stmt_close($stmt);
         }
     }
     

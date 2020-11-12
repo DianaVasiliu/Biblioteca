@@ -26,4 +26,21 @@ body
 	padding-bottom: 5pc;
 }
 
+#div_activat {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+#activat {
+	width: 30%;
+	border: solid green;
+	border-radius: 1pc;
+	font-size: 130%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #a5ffa3;
+}
+
 

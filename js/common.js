@@ -1,5 +1,3 @@
-
-
 var menu_div = document.getElementsByClassName("mobile_menu")[0];
 var hamburger = document.getElementById("hamburger");
 

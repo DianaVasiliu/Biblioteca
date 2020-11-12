@@ -1,11 +1,28 @@
 .div_contact {
     display: flex;
-    align-items: center;   
+    align-items: flex-start;   
     justify-content: space-between;
+}
+
+.contact_2 {
+    width: 50%;
+}
+
+iframe {
+    width: 50%;
+    height: 40pc;
 }
 
 a {
     color: rgb(51, 0, 0);
+}
+
+.btn {
+    height: 3pc;
+    width: 5pc;
+    background-color: whitesmoke;
+    border: inset;
+    font-size: 90%;
 }
 
 @media only screen and (max-width: 1000px) {

@@ -2,14 +2,15 @@
 
 session_start();
 
-$_SESSION["loggedin"] = false;
+
+// DE TEST - sa nu raman autentificat fara buton de logout
+//$_SESSION["loggedin"] = false;
  
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: paginaprincipala.php");
     exit;
 }
- 
 
 require_once "./includes/dbconnect.php";
 
@@ -72,7 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             
                             header("location: paginaprincipala.php");
                             
-                             $_SESSION["loggedin"] = false;
+                            //$_SESSION["loggedin"] = false;
                         } else{
                             
                             $password_err = "Date de conectare invalide.";
@@ -126,6 +127,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
             <p>Nu ai un cont? <a href="register.php">Inregistreaza-te</a>.</p>
+            
         </form>
     </div>    
 </body>

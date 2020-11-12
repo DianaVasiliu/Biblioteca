@@ -8,11 +8,31 @@
     </div>   
 
     <div id="login">
-        <p>
-            <a href="./login.php">Autentificare</a>
-            |
-            <a href="./register.php">Inregistrare</a>
-        </p>
+        <?php
+            session_start();
+            //echo 'sesiune: '. ($_SESSION["loggedin"] ? 'true' : 'false');
+            if ($_SESSION["loggedin"] == true)
+                print 'Salut, ' . $_SESSION["username"] . "!";
+        ?>
+        <?php
+
+            if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == false) {
+                print '
+                <p>
+                    <a href="./login.php">Autentificare</a>
+                    |
+                    <a href="./register.php">Inregistrare</a>
+                </p>';
+             }
+            else if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
+                print '
+                <p>
+                    <a href="./contulmeu.php">Contul tau</a>
+                    |
+                    <a href="./includes/logout.php">Deconectare</a>
+                </p>';
+            }
+        ?>
     </div>
 
 
