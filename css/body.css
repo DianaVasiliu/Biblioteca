@@ -1,0 +1,29 @@
+body 
+{
+	margin: 0;
+}
+
+#corp 
+{
+	background-color: white;
+	min-height: 40pc;
+	height: auto;
+	width: 100%;
+	margin: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	word-wrap: break-word;
+	border-bottom: solid black 10px;
+	padding-top: 5%;
+	font-size: 120%;
+}
+
+
+#continut { 
+	height: auto;
+	padding-right: 5pc;
+	padding-left: 5pc;
+	padding-bottom: 5pc;
+}
+
+

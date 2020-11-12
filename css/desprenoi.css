@@ -1,0 +1,21 @@
+.div_contact {
+    display: flex;
+    align-items: center;   
+    justify-content: space-between;
+}
+
+a {
+    color: rgb(51, 0, 0);
+}
+
+@media only screen and (max-width: 1000px) {
+    iframe {
+        width: 0;
+        height: 0;
+        border: none;
+    }
+
+    #continut{
+        font-size: small;
+    }
+}

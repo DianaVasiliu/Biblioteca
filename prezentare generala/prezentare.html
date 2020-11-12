@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="utf-8">
+    <title>Prezentare</title>
+    <link rel="stylesheet" href="prezentare.css">
+</head>
+
+<body>
+    <div>
+        <h1>Informatii generale</h1>
+        <p>
+            Aplicatia are ca scop principal facilitarea procesului de imprumut de carti in cadrul unei biblioteci.
+            Aplicatia planuieste sa se ocupe atat de partea de interactiune cu clientii, cat si de partea de evidenta a
+            cartilor si de administrare a bazei de date.
+        </p>
+        <p>
+            Aplicatia isi propuna sa aiba un sistem de logare/autentificare, intrucat aproape nicio functie nu poate fi
+            realizata in mod anonim.
+            De asemenea, este necesara existenta mai multor tipuri de utilizatori, mai exact utilizatori de tip client,
+            de tip administrator (pentru baza de date) si de tip bibliotecar.
+            Motivatia existentei mai multor tipuri de utilizatori este dorinta de a usura cat mai mult munca staff-ului,
+            prin a imparti sarcinile diferite la administratorii de baze de date si la bibliotecar.
+        </p>
+        <p>
+            In cazul in care utilizatorul nu este autentificat, el poate alege intre doua variante: autentificare sau
+            inregistrare. In cazul autentificarii, ii va aparea un formular in care i se va cere e-mailul si parola. In
+            cazul inregistrarii, va avea un formular de inscriere, care va contine cateva date personale, dintre care
+            unele obligatorii si altele nu. Vor fi cerute informatii despre tipul de utilizator dorit, iar, pentru
+            fiecare caz, vor fi cerute diferite informatii. In cazul administratorului sau a bibliotecarului, vor fi
+            cerute informatii care sa verifice adevarul functiei cerute.
+        </p>
+        <p>
+            Facilitatile fiecarui tip de utilizator, respectiv limitarea utilizatorului neautentificat:
+
+        <ul>
+            <li class="utilizator">
+                Utilizatorul de tip client:
+                <ul>
+                    <li>
+                        poate realiza imprumuturi, respectiv restituiri, la cartile disponibile din biblioteca
+                    </li>
+                    <li>
+                        poate oferi review-uri la carti
+                    </li>
+                    <li>
+                        are acces la descrierile cartilor
+                    </li>
+                    <li>
+                        primeste notificari cu privire la restituirea cartilor (in cadrul aplicatiei si pe e-mail)
+                    </li>
+                    <li>
+                        are, in cadrul contului, o lista cu toate cartile imprumutate
+                    </li>
+                </ul>
+            </li> <!-- sf facilitati client -->
+            <li class="utilizator">
+                Utilizatorul de tip bibliotecar:
+                <ul>
+                    <li>
+                        poate trimite notificare tuturor clientilor aflati in situatia apropierii datei de restituire a
+                        cartilor aflate in imprumut (tot ce este in urmatoarele 7 zile)
+                    </li>
+                    <li>
+                        poate trimite notificare tuturor clientilor aflati in situatia intarzierii restituirii uneia sau
+                        mai multor carti aflate in imprumut, specificand o taxa aplicata in functie de numarul cartilor
+                        si numarul zilelor intarziate
+                    </li>
+                    <li>
+                        poate accepta cererile de imprumut efectuate de clienti, in functie de valabilitatea cartii
+                        cerute (si, implicit, sa trimita notificare de accept)
+                    </li>
+                    <li>
+                        poate accepta rezervarea unor carti
+                    </li>
+                </ul>
+            </li> <!-- sf facilitati bibliotecar -->
+            <li class="utilizator">
+                Utilizatorul de tip administrator de baza de date:
+                <ul>
+                    <li>
+                        poate actualiza starea unui titlu din cadrul bibliotecii
+                    </li>
+                    <li>
+                        poate adauga sau sterge titluri din baza de date
+                    </li>
+                </ul>
+            </li> <!-- sf facilitati administrator -->
+            <li class="utilizator">
+                Utilizatorul neautentificat:
+                <ul>
+                    <li>
+                        poate vizualiza doar informatiile din paginile "Pagina principala", "Despre noi", "Informatii
+                        publice", "Contact" care nu necesita logare
+                    </li>
+                    <li>
+                        nu poate imprumuta carti
+                    </li>
+                    <li>
+                        nu poate vizualiza descrierile cartilor
+                    </li>
+                </ul>
+            </li> <!-- sf limitari neautentificat -->
+        </ul> <!-- sf lista tipuri -->
+        </p>
+        <p>
+            Asa cum este normal, aplicatia va fi bazata pe o baza de date, care contine informatii despre carti (titlu,
+            autor, editura, anul editiei, url fotografie de coperta, descriere, numarul de exemplare disponibile pentru
+            imprumut etc), despre clientii bibliotecii (identificati unic printr-un id) si altele. O diagrama UML care
+            sa prezinte structura bazei de date este prezenta mai jos:
+        </p>
+        <img src="./UML4.png" alt="Diagrama UML" id="uml">
+
+        <p>
+            Aceasta baza de date modeleaza relatiile dintre clienti si functiile bibliotecii, mai exact imprumutul si
+            rezervarea de carti. Baza de date contine, astfel, toate cartile puse la dispozitie de biblioteca si
+            informatii despre acestea, precum si informatii despre rezervarile si despre imprumuturile realizate de
+            clienti, in functie de care se calculeaza taxele de intarziere de retur, necesitatea notificarii clientului
+            de a returna o carte imprumutata. De asemenea, in baza de date sunt retinute si review-urile utilizatorilor,
+            pentru a putea calcula media generala a unei carti si pentru a putea afisa, in cadrul aplicatiei, lista de
+            review-uri publica tuturor utilizatorilor.
+        </p>
+
+        <p>
+            O alta functie a aplicatiei va fi selectarea unor carti din baza de date in functie de niste filtre aplicate
+            de client (de exemplu, afisarea cartilor scrise de un anumit autor, publicate de o anumita editura, cu o
+            anumita categorie etc.) sau ordonarea lor in functie de diverse filtre (de exemplu, in functie de
+            disponibilitate, in functie de numarul de imprumuturi, de review-uri etc.).
+        </p>
+        <p>
+
+        </p>
+
+    </div>
+
+
+
+</body>
+
+
+
+</html>

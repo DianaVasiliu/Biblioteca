@@ -1,0 +1,56 @@
+table judete {
+  id_judet number [primary key]
+  judet varchar
+}
+
+table carte {
+  id_carte number [primary key]
+  titlu varchar [not null]
+  id_autor number [ref: > autor.id_autor]
+  categorie varchar
+  tip varchar
+  nr_imprumuturi number [default: 0]
+  nota float [default: null]
+  stoc number [default: 1]
+  descriere varchar
+  url_imagine varchar
+}
+
+table autor {
+  id_autor number [primary key]
+  nume varchar
+  prenume varchar
+}
+
+table client {
+  id_client number [primary key]
+  nume varchar
+  prenume varchar
+  telefon varchar [not null]
+  email email [not null]
+  adresa varchar
+  data_inregistrare date
+  taxa_retur number [default: 0.00]
+  username varchar [not null]
+  parola varchar [not null]
+  activ integer [default: 0]
+  token varchar
+  
+}
+
+table imprumut {
+  id_imprumut number [primary key]
+  id_client number [ref: > client.id_client, primary key]
+  id_carte number [ref: > carte.id_carte, primary key]
+  data_cerere date [primary key]
+  data_ridicare date
+  data_retur date
+}
+
+table review {
+  id_review number [primary key]
+  email_client varchar [ref: > client.email]
+  id_carte number [ref: > carte.id_carte]
+  nota number [not null]
+  descriere varchar
+}

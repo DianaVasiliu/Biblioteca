@@ -1,0 +1,87 @@
+#corp {
+    font-size: large;
+    box-sizing: border-box;
+}
+
+#bottom>h2 {
+    padding-right: 40%;
+    align-self: flex-end;
+}
+
+section {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 60vw;
+    margin: 0 auto;
+    padding: 0 5rem;
+}
+
+.accordion-item {
+    background-color: rgb(83, 14, 0);
+    border-radius: .7pc;
+    margin-bottom: 1pc;
+    padding: 1rem;
+    box-shadow: .5rem 2px .5rem rgba(0,0,0,.1);
+}
+
+.accordion-link {
+    font-size: 1.6rem;
+    color: white;
+    text-decoration: none;
+    /* background-color: cyan; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.accordion-link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.accordion-link span {
+    padding: .5rem;
+}
+
+.accordion-link .minus {
+    display: none;
+}
+
+.answer {
+    overflow: hidden;
+    max-height: 0;
+    /* position: relative;  */
+    color: white;
+    background-color:  rgb(51, 0, 0);
+    border-left: solid white .6pc;
+    z-index: 0;
+    transition: max-height 0.5s;
+}
+
+.answer p {
+    padding: 1rem;
+}
+
+.bold {
+    font-weight: 900;    
+    text-decoration: underline;
+}
+
+a {
+    color: white;
+    text-decoration: underline;
+}
+
+@media only screen and (max-width: 1000px) {
+    section {
+        font-size: small;
+    }
+
+}
