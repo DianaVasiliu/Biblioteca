@@ -10,7 +10,8 @@
     <div id="login">
         <?php
             session_start();
-            //echo 'sesiune: '. ($_SESSION["loggedin"] ? 'true' : 'false');
+            // echo 'sesiune: '. ($_SESSION["loggedin"] ? 'true' : 'false');
+           // echo $_SESSION["loggedin"];
             if ($_SESSION["loggedin"] == true)
                 print 'Salut, ' . $_SESSION["username"] . "!";
         ?>
@@ -19,7 +20,7 @@
             if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
                 print '
                 <p>
-                    <a href="./contulmeu.php">Contul tau</a>
+                    <a href="./contulmeu.php">Contul meu</a>
                     |
                     <a href="./requirements/logout.php">Deconectare</a>
                 </p>';

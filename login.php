@@ -39,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     if(empty($username_err) && empty($password_err)){
         
-        $sql = "SELECT id_client, username, parola, email, activ FROM client WHERE username = ?";
+        $sql = "SELECT id_client, username, parola, email, activ, nume, prenume, adresa FROM client WHERE username = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
 
@@ -53,7 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 
                 if(mysqli_stmt_num_rows($stmt) == 1){   
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password,$email, $activ);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password,$email, $activ, $nume, $prenume, $adresa);
 
                     if(mysqli_stmt_fetch($stmt)){
                         if ($activ == 0) {
@@ -69,7 +69,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;
                             $_SESSION["email"] = $email;
-                            
+                            $_SESSION["lastname"] = $nume;
+                            $_SESSION["firstname"] = $prenume;
+                            $_SESSION["address"] = $adresa;                            
                             
                             header("location: paginaprincipala.php");
                             

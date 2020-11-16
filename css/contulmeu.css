@@ -1,0 +1,148 @@
+.div_contulmeu {
+    display: flex;
+    min-height: 30pc;
+    height: auto;
+    justify-content: space-between;
+
+    /* border: solid pink; */
+}
+
+.stanga {
+    width: 30pc;
+
+    /* border: solid red; */
+}
+
+.dreapta {
+    width: 75pc;
+    background-color: whitesmoke;
+    padding: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    display: none;
+    overflow-x: auto;
+
+    /* border: solid green; */
+}
+
+.setare {
+    width: 100%;
+    height: 5pc;
+    margin-bottom: 1pc;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border: none; */
+    padding-left: 3pc;
+    padding-right: 3pc;
+}
+
+.setare>img {
+    width: 20px;
+    height: auto;
+}
+
+.submit {
+    width: auto;
+    font-size: 80%;
+    background-color: white;
+    border: inset gray;
+}
+
+#stergere {
+    color: red;
+    font-weight: bolder;
+}
+
+.info h3 {
+    margin-left: 1pc;
+}
+
+input {
+    border: none;
+    margin-left: 2pc;
+    height: 3pc;
+    padding-left: 5px;
+}
+
+.updatedinfo {
+    min-width: 10pc;
+    width: auto;
+    font-size: 80%;
+
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+input[name="address"] {
+    min-width: 20pc;
+}
+
+input[name="email"] {
+    min-width: 15pc;
+}
+
+#judete {
+    height: 3pc;
+    font-size: 80%;
+    margin-left: 1pc;
+    margin-right: 0;
+}
+
+#imprumuturi {
+    width: 100%;
+    height: 100%;
+
+    /* border: solid blue; */
+}
+
+.info {
+    width: 100%;
+}
+
+.cartiimprumutate {
+    width: 10pc;
+}
+
+#imprumuturi {
+    display: flex;
+
+}
+
+td {
+    text-align: center;
+    padding-left: 1pc;
+    padding-right: 1pc;
+    padding-bottom: 1pc;
+
+    /* border: solid; */
+}
+
+
+
+@media only screen and (max-width: 1000px) {
+    .div_contulmeu {
+        flex-direction: column;
+    }
+    .stanga {
+        width: 100%;
+    }
+    
+    .dreapta {
+        width: 100%;
+        background-color: whitesmoke;
+    }
+
+    #imprumuturi {
+        display: flex;
+        flex-direction: row;
+    }
+
+}

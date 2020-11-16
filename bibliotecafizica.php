@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/mobile_menu.css">
 
 
-    <title>Informatii publice</title>
+    <title>Biblioteca fizica</title>
 </head>
 
 <script src="paginaprincipala.js"></script>

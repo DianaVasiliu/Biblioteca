@@ -225,41 +225,73 @@ INSERT INTO judete (judet) VALUES
 ('VRANCEA');
 
 
--- SELECT DISTINCT id_categorie
--- FROM carte JOIN categorie USING (id_categorie)
--- WHERE tip='digitala'
--- ORDER BY categorie;
+SELECT DISTINCT id_categorie
+FROM carte JOIN categorie USING (id_categorie)
+WHERE tip='digitala'
+ORDER BY categorie;
 
--- SELECT titlu, nume, prenume, url_fisier
--- FROM carte JOIN carte_autor USING (id_carte)
--- JOIN autor USING (id_autor)
--- WHERE tip='digitala'
--- AND 7 = id_categorie;
-
-
--- SELECT DISTINCT titlu -- , prenume, nume, url_fisier
--- FROM carte JOIN carte_autor USING (id_carte)
--- JOIN autor USING (id_autor)
--- WHERE tip='digitala'
--- AND id_categorie = 6;
-
--- SELECT prenume, nume, url_fisier
--- FROM carte JOIN carte_autor USING (id_carte)
--- JOIN autor USING (id_autor)
--- WHERE tip='digitala'
--- AND id_categorie = 6
--- AND titlu = (SELECT DISTINCT titlu -- , prenume, nume, url_fisier
--- 				FROM carte JOIN carte_autor USING (id_carte)
--- 				JOIN autor USING (id_autor)
--- 				WHERE tip='digitala'
--- 				AND id_categorie = 6);
+SELECT titlu, nume, prenume, url_fisier
+FROM carte JOIN carte_autor USING (id_carte)
+JOIN autor USING (id_autor)
+WHERE tip='digitala'
+AND 7 = id_categorie;
 
 
+SELECT DISTINCT titlu -- , prenume, nume, url_fisier
+FROM carte JOIN carte_autor USING (id_carte)
+JOIN autor USING (id_autor)
+WHERE tip='digitala'
+AND id_categorie = 7;
+
+SELECT prenume, nume, url_fisier
+FROM carte JOIN carte_autor USING (id_carte)
+JOIN autor USING (id_autor)
+WHERE tip='digitala'
+AND id_categorie = 7
+AND titlu = (SELECT DISTINCT titlu -- , prenume, nume, url_fisier
+				FROM carte JOIN carte_autor USING (id_carte)
+				JOIN autor USING (id_autor)
+				WHERE tip='digitala'
+				AND id_categorie = 7);
 
 
+update client
+set nume='', prenume=''
+where id_client = 1;
 
+SELECT titlu, prenume, nume, categorie, url_fisier, COUNT(id_imprumut)
+FROM carte c JOIN carte_autor ca USING (id_carte)
+JOIN autor a USING (id_autor)
+JOIN categorie cat USING (id_categorie)
+JOIN imprumut i USING (id_carte)
+WHERE id_client = 5
+GROUP BY titlu;  -- $_SESSION['id']
 
+INSERT INTO imprumut VALUES
+(1,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
 
+INSERT INTO imprumut VALUES
+(2,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
 
+INSERT INTO imprumut VALUES
+(3,5,2,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(4,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(5,5,2,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+select * from user_favourites;
+
+INSERT INTO user_favourites VALUES
+(5,1), (5,2);
+
+SELECT titlu, nume, prenume, categorie, url_fisier
+FROM carte JOIN carte_autor USING (id_carte)
+JOIN autor USING (id_autor)
+JOIN categorie USING (id_categorie)
+JOIN user_favourites USING (id_carte)
+WHERE id_client = 5;
 
 
