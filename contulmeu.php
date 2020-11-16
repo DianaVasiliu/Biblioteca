@@ -193,11 +193,12 @@
             <table>
             <?php
                 for ($i = 0; $i < count($titlu); $i++) {
-                    if ($i % 3 == 0) {
-            ?>
+                    if ($i % 4 == 0) {
+            ?>  
+                    </tr>
                     <tr>
             <?php
-                    }
+                    }    
             ?>
                     <td>
                         <img src="./pics/<?php echo $url[$i]; ?>" class="cartiimprumutate">
@@ -218,14 +219,10 @@
 
             ?>
                     </td>
-            <?php
-                if ($i % 3 == 0 && $i != 0) {
-            ?>
-                </tr>
-            <?php
-                }
+            <?php                
                 }
             ?>
+
             </table>
         </div>
 
@@ -272,10 +269,11 @@
             <?php
                 for ($i = 0; $i < count($titlu); $i++) {
                     if ($i % 4 == 0) {
-            ?>
+            ?>  
+                    </tr>
                     <tr>
             <?php
-                    }
+                    }    
             ?>
                     <td>
                         <img src="./pics/<?php echo $url[$i]; ?>" class="cartiimprumutate">
@@ -292,14 +290,10 @@
 
             ?>
                     </td>
-            <?php
-                if ($i % 3 == 0 && $i != 0) {
-            ?>
-                </tr>
-            <?php
-                }
+            <?php                
                 }
             ?>
+            
             </table>
         </div>
 

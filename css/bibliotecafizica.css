@@ -1,0 +1,72 @@
+#continut {
+    display: flex;
+    justify-content: space-between;
+    height: 40pc;
+
+    /* border: solid black; */
+}
+
+#div_filtre {
+    width: 20%;
+    height: 100%;
+
+    /* border: solid red; */
+}
+
+#div_carti {
+    width: 75%;
+    height: 100%;
+
+    /* border: solid green; */
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1pc;
+}
+
+.cauta {
+    height: 2pc;
+    width: 5pc;
+    background-color: whitesmoke;
+    border: inset;
+}
+
+.options {
+    max-height: 10pc;
+    overflow-y: auto;
+}
+
+.carti {
+    width: 10pc;
+}
+
+td {
+    padding-left: 1pc;
+    padding-right: 1pc;
+    padding-bottom: 4pc;
+    width: 25%;
+    vertical-align: top;
+
+    /* border: solid black; */
+}
+
+table {
+    /* border: solid pink; */
+    width: 100%;
+    overflow-x: auto;
+}
+
+#div_imagine {
+    display: flex;
+}
+
+.favs {
+    border: inset;
+    background-color: whitesmoke;
+    height: 3pc;
+    font-size: 1pc;
+}

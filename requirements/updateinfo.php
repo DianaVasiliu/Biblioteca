@@ -134,8 +134,7 @@
     }
 
     if ($_SESSION['loggedin'] == true) {
-        
-    header("Location: ../contulmeu.php");      
+        header("Location: ../contulmeu.php");      
     }
     else {
         header("Location: ../paginaprincipala.php");

@@ -121,8 +121,15 @@ td {
     padding-left: 1pc;
     padding-right: 1pc;
     padding-bottom: 1pc;
+    width: 25%;
+    vertical-align: top;
 
-    /* border: solid; */
+    /* border: solid black; */
+}
+
+table {
+    /* border: solid pink; */
+    width: 100%;
 }
 
 
