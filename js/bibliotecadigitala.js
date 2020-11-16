@@ -34,15 +34,10 @@ for (let i = 0; i < resetInputs.length; i++) {
 ///////////////////////////
 
 var upload = document.getElementById("uploadfile");    // butonul de add files
-var fileInput = document.getElementById("browse");      //butonul de browse files
 var selectCat = document.getElementById("selectcat");   //categoria selectata
-var uploadedFiles = new Array();  //
-var category = "FICTIUNE";      //numele categoriei alese
-var categoryIndex = 0;      //indexul categoriei alese
 
-fileInput.onchange = function () {
-    uploadedFiles = fileInput.files;        //vectorul de fisiere (imi va trebui name de aici)
-}
+var category = "--Alege--";      //numele categoriei alese
+var categoryIndex = 0;      //indexul categoriei alese
 
 selectCat.onchange = function () {
     categoryIndex = selectCat.selectedIndex;
@@ -53,15 +48,11 @@ var autor = document.getElementById("autor");
 var titlu = document.getElementById("titlu_carte");
 
 upload.onclick = function (e) {
-    if (uploadedFiles.length == 0) {
-        alert("Nu ai ales niciun fisier!");
-        e.preventDefault();
-    }
-    else if (categoryIndex == 0) {
+    if (categoryIndex == 0) {
         alert("Nu ai ales o categorie!");
         e.preventDefault();
     }
-    else if (autor.value == "" || titlu.value == "") {
+    else if (titlu.value == "") {
         alert("Nu ai setat o informatie despre carte!");
         e.preventDefault();
     }
@@ -79,19 +70,18 @@ upload.onclick = function (e) {
         }
 
         if (ok) {
-            for (let i = 0; i < uploadedFiles.length; i++) {
-                var newBookList = document.createElement("li");
-                catList[categoryIndex - 1].appendChild(newBookList);
-                var newBook = document.createElement("a");
-                newBook.href = "./pdf_files/" + uploadedFiles[i].name;
-                newBook.download = uploadedFiles[i].name;
-                newBookList.appendChild(newBook);
-                newBook.innerHTML = uploadedFiles[i].name;
-            }
+            // for (let i = 0; i < uploadedFiles.length; i++) {
+            //     var newBookList = document.createElement("li");
+            //     catList[categoryIndex - 1].appendChild(newBookList);
+            //     var newBook = document.createElement("a");
+            //     newBook.href = "./pdf_files/" + uploadedFiles[i].name;
+            //     newBook.download = uploadedFiles[i].name;
+            //     newBookList.appendChild(newBook);
+            //     newBook.innerHTML = uploadedFiles[i].name;
+            // }
         }
         else {
             alert("Fisier deja existent!");
         }
     }
 }
-

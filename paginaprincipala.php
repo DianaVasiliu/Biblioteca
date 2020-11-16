@@ -21,12 +21,12 @@
 	<header id="header">
 		<?php 
 		$IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-		include ($IPATH."includes/header.php"); 
+		include ($IPATH."requirements/header.php"); 
 		?>
 	</header>
     <?php
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-        include ($IPATH."includes/mobile_menu.php"); 
+        include ($IPATH."requirements/mobile_menu.php"); 
     ?>
 
 	<div id="corp">
@@ -114,7 +114,7 @@
 
     <?php 
     $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-    include ($IPATH."includes/footer.php"); 
+    include ($IPATH."requirements/footer.php"); 
 	?>
 
 <script src="./js/paginaprincipala.js"> </script>

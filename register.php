@@ -4,7 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require_once "includes/dbconnect.php";
+require_once "requirements/dbconnect.php";
 require 'C:/xampp/Composer/vendor/autoload.php';
 
 function valid_email($str) {
@@ -272,9 +272,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             
             if(mysqli_stmt_execute($stmt)){
-                //header("location: ./includes/mailer.php");
+                //header("location: ./requirements/mailer.php");
                 $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-                include ($IPATH."includes/mailer.php");
+                include ($IPATH."requirements/mailer.php");
             } 
             else {
                 echo "Something went wrong. Please try again later.";

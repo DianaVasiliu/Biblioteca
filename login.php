@@ -12,7 +12,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     exit;
 }
 
-require_once "./includes/dbconnect.php";
+require_once "./requirements/dbconnect.php";
 
 $link = connectdb();
 

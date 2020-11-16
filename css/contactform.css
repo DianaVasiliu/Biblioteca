@@ -17,3 +17,10 @@ textarea {
 textarea {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
+
+@media only screen and (max-width: 1000px) {
+    textarea {
+        width: 15pc;
+        min-height: 10pc;
+    }
+}

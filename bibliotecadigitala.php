@@ -10,22 +10,30 @@
     <link rel="stylesheet" href="./css/searchbook.css">
     <link rel="stylesheet" href="./css/mobile_menu.css">
 
-
-
     <title>Biblioteca digitala</title>
+
+    <style>
+        @media only screen and (max-width: 1000px) {
+            #corp {
+                padding-top: 10pc;
+            }
+        }
+
+    </style>
+
 </head>
 
 <body>
 	<header id="header">
         <?php 
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-        include ($IPATH."includes/header.php"); 
+        include ($IPATH."requirements/header.php"); 
         ?>
             
     </header>
     <?php
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-        include ($IPATH."includes/mobile_menu.php"); 
+        include ($IPATH."requirements/mobile_menu.php"); 
     ?>
 
     <div id="corp">
@@ -33,7 +41,7 @@
             <input type="text" id="search" placeholder="Cauta o carte">
             <?php
                 $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-                include ($IPATH."includes/showbooks.php"); 
+                include ($IPATH."requirements/showbooks.php"); 
             ?>
             
             <br><br>
@@ -41,7 +49,7 @@
 
             <?php 
                 $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-                include ($IPATH."includes/admin_digital_add.php"); 
+                include ($IPATH."requirements/admin_digital_add.php"); 
             ?>
 
         </div>
@@ -50,7 +58,7 @@
 
     <?php 
     $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-    include ($IPATH."includes/footer.php"); 
+    include ($IPATH."requirements/footer.php"); 
     ?>
 
     <script src="./js/bibliotecadigitala.js"></script>
