@@ -32,8 +32,12 @@
             break;
         }
     }
-
-    header("Location: ../bibliotecafizica.php#favs".$_SESSION['books'][$i]);
+    if($_SESSION['favslocation'] == "contulmeu") {
+        header("Location: ../contulmeu.php");
+    }
+    else {
+        header("Location: ../bibliotecafizica.php#favs" . $_SESSION['books'][$i]);
+    }
 
 
 ?>

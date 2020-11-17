@@ -9,7 +9,7 @@
 
     <div id="login">
         <?php
-            session_start();
+            // session_start();
             // echo 'sesiune: '. ($_SESSION["loggedin"] ? 'true' : 'false');
            // echo $_SESSION["loggedin"];
             if ($_SESSION["loggedin"] == true)

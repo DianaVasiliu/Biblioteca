@@ -1,6 +1,8 @@
 <?php
     require_once './requirements/dbconnect.php';
 
+    session_start();
+    
 // if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
 //     header("location: paginaprincipala.php");
 // }
@@ -166,7 +168,7 @@
                     <div class="dreapta">
                         <div class="info">
  <?php
-    $query = "SELECT titlu, prenume, nume, categorie, url_fisier, COUNT(id_imprumut)
+    $query = "SELECT titlu, categorie, url_fisier, COUNT(id_imprumut)
                 FROM carte c JOIN carte_autor ca USING (id_carte)
                 JOIN autor a USING (id_autor)
                 JOIN categorie cat USING (id_categorie)
@@ -187,6 +189,7 @@
             array_push($url, $row[4]);
             array_push($imprumuturi, $row[5]);
         }
+
 ?>
 
         <div id="imprumuturi" style="overflow:auto;"> 
@@ -242,32 +245,53 @@
                     <div class="dreapta">
                     <div class="info">
  <?php
-    $query = "SELECT titlu, prenume, nume, categorie, url_fisier
+    $query = "SELECT titlu, categorie, url_fisier, id_carte
                 FROM carte JOIN carte_autor USING (id_carte)
                 JOIN autor USING (id_autor)
                 JOIN categorie USING (id_categorie)
                 JOIN user_favourites USING (id_carte)
-                WHERE id_client = " . $_SESSION['id'] . " ORDER BY titlu;";
+                WHERE id_client = " . $_SESSION['id'] . " GROUP BY titlu ORDER BY titlu;";
 
     if($res = mysqli_query($link, $query)) {
         $titlu = array();
-        $autor = array();
         $categorie = array();
         $url = array();
         $imprumuturi = array();
+        $ids = array();
+        $favs = array();
 
         while ($row = mysqli_fetch_array($res)) {
             array_push($titlu, $row[0]);
-            array_push($autor, $row[1] . ' ' . $row[2]);
-            array_push($categorie, $row[3]);
-            array_push($url, $row[4]);
+            array_push($categorie, $row[1]);
+            array_push($url, $row[2]);
+            array_push($ids, $row[3]);
         }
+        
+        $query = "SELECT id_carte FROM user_favourites WHERE id_client=" . $_SESSION['id'];
+
+        $res = mysqli_query($link, $query);
+
+        while($row = mysqli_fetch_array($res)) {
+            array_push($favs, $row[0]);
+        }
+        
 ?>
 
         <div id="favorite" style="overflow:auto;"> 
             <table>
             <?php
                 for ($i = 0; $i < count($titlu); $i++) {
+                    
+                    $autor = array();
+                    
+                    $query2 = "SELECT prenume, nume FROM autor JOIN carte_autor USING (id_autor) JOIN carte USING (id_carte) WHERE id_carte=" . $ids[$i];
+
+                    $res = mysqli_query($link, $query2);
+
+                    while($row = mysqli_fetch_array($res)) {
+                        array_push($autor, $row[0] . ' ' . $row[1]);
+                    }
+
                     if ($i % 4 == 0) {
             ?>  
                     </tr>
@@ -279,7 +303,13 @@
                         <img src="./pics/<?php echo $url[$i]; ?>" class="cartiimprumutate">
                     <br>
             <?php
-                    echo '"'.$titlu[$i] . '" - ' . $autor[$i];
+                    echo '"'.$titlu[$i] . '" - ';
+                    for ($j = 0; $j < count($autor); $j++) {
+                        echo $autor[$j];
+                        if ($j < count($autor) - 1) {
+                            echo ', ';
+                        }
+                    }
             ?>
                     <br>
             <?php
@@ -289,8 +319,24 @@
             <?php
 
             ?>
+                    
+                    <form method="post" action="./requirements/add_to_favs.php">
+                        <input type="submit" name="favs<?php echo $ids[$i];?>" value="<?php
+                            if (in_array($ids[$i], $favs)) {
+                                echo 'Elimina de la favorite';
+                                $_SESSION['infavs'][$ids[$i]] = 1;    // este in favorite
+                                $_SESSION['favslocation'] = "contulmeu";
+                            }
+                            else {
+                                echo 'Adauga la favorite';
+                                $_SESSION['infavs'][$ids[$i]] = 0;    // nu este in favorite
+                                $_SESSION['favslocation'] = "contulmeu";
+                            }
+                        ?>" class="accountfavs" id="accfavs<?php echo $ids[$i]; ?>">
+                    </form>
                     </td>
-            <?php                
+            <?php             
+                       
                 }
             ?>
             

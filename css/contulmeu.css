@@ -132,6 +132,11 @@ table {
     width: 100%;
 }
 
+.accountfavs {
+    border: inset;
+    margin: auto;
+    margin-top: 1pc;
+}
 
 
 @media only screen and (max-width: 1000px) {

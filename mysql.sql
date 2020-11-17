@@ -10,7 +10,7 @@ CREATE TABLE carte (
   stoc             INTEGER DEFAULT 1,
   descriere        VARCHAR(2000),
   url_fisier       VARCHAR(1000),
-    CONSTRAINT pk_id_carte PRIMARY KEY (id_carte)
+    CONSTRAINT PRIMARY KEY (id_carte)
 );
 
 
@@ -18,7 +18,7 @@ CREATE TABLE autor (
   id_autor   INTEGER AUTO_INCREMENT,
   nume       VARCHAR(30),
   prenume    VARCHAR(30),
-    CONSTRAINT pk_id_autor PRIMARY KEY (id_autor)
+    CONSTRAINT PRIMARY KEY (id_autor)
 );
 
 CREATE TABLE carte_autor (
@@ -27,8 +27,11 @@ CREATE TABLE carte_autor (
      CONSTRAINT fk_carte_autor_carte FOREIGN KEY (id_carte)
 		REFERENCES carte (id_carte),
 	 CONSTRAINT fk_carte_autor_autor FOREIGN KEY (id_autor)
-		REFERENCES autor (id_autor)
+		REFERENCES autor (id_autor),
+	CONSTRAINT PRIMARY KEY (id_carte, id_autor)
 );
+
+DROP TABLE carte_autor;
 
 CREATE TABLE client (
   id_client           INTEGER AUTO_INCREMENT,
@@ -44,7 +47,7 @@ CREATE TABLE client (
   parola              VARCHAR(255) NOT NULL,
   activ               INTEGER DEFAULT 0,
   token               VARCHAR(35),
-    CONSTRAINT pk_id_client PRIMARY KEY (id_client)
+    CONSTRAINT PRIMARY KEY (id_client)
 );
 
 CREATE TABLE imprumut (
@@ -54,22 +57,21 @@ CREATE TABLE imprumut (
   data_cerere     DATETIME DEFAULT CURRENT_TIMESTAMP,
   data_ridicare   DATE,
   data_retur      DATE,
-    CONSTRAINT pk_id_imprumut PRIMARY KEY (id_imprumut, id_client, id_carte, data_cerere)
+    CONSTRAINT PRIMARY KEY (id_imprumut, id_client, id_carte, data_cerere)
 );
 
-CREATE TABLE review (
-  id_review      INTEGER AUTO_INCREMENT,
-  email_client   VARCHAR(25),
-  id_carte       INTEGER,
-  nota           DECIMAL(3, 2) NOT NULL,
-  descriere      VARCHAR(200),
-    CONSTRAINT pk_id_review PRIMARY KEY (id_review)
+CREATE TABLE carte_imprumut (
+	id_imprumut		INTEGER,
+    id_carte		INTEGER,
+		CONSTRAINT PRIMARY KEY (id_imprumut, id_carte),
+        CONSTRAINT fk_carte_imprumut_carte FOREIGN KEY (id_carte) REFERENCES carte(id_carte),
+        CONSTRAINT fk_carte_imprumut_imprumut FOREIGN KEY (id_imprumut) REFERENCES imprumut(id_imprumut)
 );
 
 CREATE TABLE categorie (
 	id_categorie		INTEGER AUTO_INCREMENT,
     categorie			VARCHAR(100),
-		CONSTRAINT pk_id_categorie PRIMARY KEY (id_categorie)
+		CONSTRAINT PRIMARY KEY (id_categorie)
 );
 
 CREATE TABLE judete (
@@ -309,25 +311,74 @@ INSERT INTO user_favourites VALUES
 -- WHERE id_client = 5;
 
 
-SELECT titlu, categorie, prenume, nume, descriere, stoc
+-- SELECT titlu, categorie, prenume, nume, descriere, stoc
+-- FROM carte JOIN categorie USING (id_categorie) 
+-- JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+-- WHERE tip='fizica';
+
+
+INSERT INTO carte (titlu, id_categorie, an, editura, tip, url_fisier) VALUES
+('Dictionar medical-veterinar roman-latin-englez englez-latin-roman',6,2013,'Unknown','digitala','https://drive.google.com/file/d/1SeK45xjbCICkMzvSh_UkSZZmXLzbk8Dq/view?usp=sharing');
+
+INSERT INTO carte_autor VALUES 
+(17,15),(17,16),(17,17),(17,18),(17,19);
+
+INSERT INTO carte (titlu, id_categorie, an, editura, tip, descriere, url_fisier) VALUES
+('Arta negocierii',4,2018,'Globo','fizica','Viata e un sir de negocieri: fie incerci sa primesti o marire de salariu, sa cumperi o masina sau o casa, renegociezi o chirie sau ai o discutie cu partenerul de viata, aceasta carte iti ofera un avantaj competitiv in orice situatie.<br>Arta negocierii prezinta detaliat strategiile de negociere care l-au ajutat pe Chris Voss, negociatorul sef FBI, sa salveze vieti in situatii extreme. De la confruntari intre cele mai temute clanuri din Haiti, pana la jafuri armate petrecute in inima NY toate incheiate cu succes datorita tehnicilor aplicate de acesta. Negociatorul de talie mondiala Voss, iti arata cum sa aplici aceste metode in viata de zi cu zi, la locul de munca, in relatia cu partenerul si in orice alt domeniu important pentru tine.<br>"O lectura captivanta, plina de sfaturi aplicabile imediat, si nu numai pentru negocierile cu mize mari, ci si pentru optima gestionare a conflictelor din viata de zi cu zi, la serviciu si acasa." - Business Insider<br>"Fostul negociator FBI in luarea de ostatici Chris Voss are putini egali cand in joc sunt negocierile cu mize mari. Tehnicile lui functioneaza impecabil, atat in domeniul afacerilor, cat si in viata personala." - Joe Navarro, agent special FBI autor al bestsellerului international What Every Body Is Saying<br>"O carte eminamente practica. In aceste pagini vei gasi exact tehnicile de care ai nevoie ca sa inchei orice afacere doresti." - Daniel H. Pink, autorul bestsellerelor To Sell Is Human si Drive','artanegocierii.jpeg');
+
+INSERT INTO autor (nume, prenume) VALUES
+('Voss', 'Chris'),
+('Raz','Tahl');
+
+INSERT INTO carte_autor VALUES
+(18,34),(18,35);
+
+ALTER TABLE carte
+ADD CONSTRAINT fk_categorie_carte FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie);
+
+select * from carte_autor;
+select * from categorie;
+select * from autor;
+select * from carte;
+
+SELECT titlu, categorie,descriere, stoc, url_fisier, an, editura, id_carte
 FROM carte JOIN categorie USING (id_categorie) 
 JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
-WHERE tip='fizica';
+WHERE tip='fizica'
+GROUP BY titlu
+ORDER BY id_carte;
+
+SELECT nume, prenume
+FROM autor JOIN carte_autor USING (id_autor)
+JOIN carte USING (id_carte)
+WHERE id_carte = 18;
+
+SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+FROM carte JOIN categorie USING (id_categorie) 
+JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+WHERE tip='fizica' 
+-- AND categorie IN ('Fictiune')
+-- AND an IN (2005)
+-- AND editura IN ('RAO')
+AND CONCAT(prenume, ' ', nume) IN ('Markus Zusak')
+GROUP BY titlu
+ORDER BY id_carte;
 
 
-DELETE FROM user_favourites 
-WHERE id_client=5
-AND id_carte=2;
+SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+FROM carte JOIN categorie USING (id_categorie) 
+JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+WHERE tip='fizica' 
+GROUP BY titlu
+ORDER BY id_carte;
+
+SELECT prenume, nume FROM autor JOIN carte_autor USING (id_autor) JOIN carte USING (id_carte) WHERE id_carte=18;
 
 
-
-
-
-
-
-
-
-
+SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+FROM carte JOIN categorie USING (id_categorie) 
+JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+WHERE tip='fizica' GROUP BY titlu ORDER BY id_carte
 
 
 

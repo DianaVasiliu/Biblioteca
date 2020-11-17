@@ -5,6 +5,8 @@
 
     require 'C:/xampp/Composer/vendor/autoload.php';
 
+    session_start();
+
     $trimis = '';
     if (isset($_POST['submit'])) {
         $from = $_POST['email'];
