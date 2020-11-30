@@ -1,5 +1,10 @@
 <?php
 
+require_once "./requirements/dbconnect.php";
+
+$link = connectdb();
+mysqli_set_charset($link , "utf8");
+
 session_start();
 
 
@@ -12,34 +17,32 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     exit;
 }
 
-require_once "./requirements/dbconnect.php";
-
-$link = connectdb();
 
 $username = $password = "";
+$tip = 0;
 $username_err = $password_err = $active_err = "";
  
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
     
-    if(empty(trim($_POST["username"]))){
+    if(empty(mysqli_real_escape_string($link, mysqli_real_escape_string($link, trim($_POST["username"]))))){
         $username_err = "Te rugam introdu username sau email.";
-    } else{
-        $username = trim($_POST["username"]);
+    } else {
+        $username = mysqli_real_escape_string($link, trim($_POST["username"]));
     }
     
 
-    if(empty(trim($_POST["password"]))){
+    if(empty(mysqli_real_escape_string($link, trim($_POST["password"])))){
         $password_err = "Te rugam introdu parola";
     } else{
-        $password = trim($_POST["password"]);
+        $password = mysqli_real_escape_string($link, trim($_POST["password"]));
     }
     
     
     if(empty($username_err) && empty($password_err)){
         
-        $sql = "SELECT id_client, username, parola, email, activ, nume, prenume, adresa FROM client WHERE username = ?";
+        $sql = "SELECT id_client, username, parola, email, activ, nume, prenume, adresa, tip FROM client WHERE username = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
 
@@ -53,7 +56,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 
                 if(mysqli_stmt_num_rows($stmt) == 1){   
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password,$email, $activ, $nume, $prenume, $adresa);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password,$email, $activ, $nume, $prenume, $adresa, $tip);
 
                     if(mysqli_stmt_fetch($stmt)){
                         if ($activ == 0) {
@@ -71,7 +74,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["email"] = $email;
                             $_SESSION["lastname"] = $nume;
                             $_SESSION["firstname"] = $prenume;
-                            $_SESSION["address"] = $adresa;                            
+                            $_SESSION["address"] = $adresa;
+                            $_SESSION["tip"] = $tip;                 
                             
                             header("location: paginaprincipala.php");
                             

@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $_SESSION['changed_page'] = '';
 ?>
 
 <!DOCTYPE html>
@@ -52,8 +53,10 @@
             <br><br>
 
             <?php 
-                $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-                include ($IPATH."requirements/admin_digital_add.php"); 
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['tip'] == 3) {
+                    $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
+                    include ($IPATH."requirements/admin_digital_add.php"); 
+                }
             ?>
 
         </div>

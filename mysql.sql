@@ -13,7 +13,6 @@ CREATE TABLE carte (
     CONSTRAINT PRIMARY KEY (id_carte)
 );
 
-
 CREATE TABLE autor (
   id_autor   INTEGER AUTO_INCREMENT,
   nume       VARCHAR(30),
@@ -31,17 +30,15 @@ CREATE TABLE carte_autor (
 	CONSTRAINT PRIMARY KEY (id_carte, id_autor)
 );
 
-DROP TABLE carte_autor;
-
 CREATE TABLE client (
   id_client           INTEGER AUTO_INCREMENT,
   nume                VARCHAR(20) NOT NULL,
   prenume             VARCHAR(20) NOT NULL,
   telefon             VARCHAR(20) UNIQUE,
-  email               VARCHAR(25) UNIQUE,
+  email               VARCHAR(40) UNIQUE,
   adresa              VARCHAR(100),
   data_inregistrare   DATETIME NOT NULL DEFAULT current_timestamp,
-  tip				  INTEGER NOT NULL,
+  tip				          INTEGER NOT NULL,
   taxa_retur          DECIMAL(6, 2) DEFAULT 0.00,
   username            VARCHAR(40) NOT NULL,
   parola              VARCHAR(255) NOT NULL,
@@ -74,6 +71,13 @@ CREATE TABLE categorie (
 		CONSTRAINT PRIMARY KEY (id_categorie)
 );
 
+CREATE TABLE coduri_utilizatori (
+  cod             VARCHAR(100),
+  tip             INTEGER,
+  utilizat        INTEGER DEFAULT 0,
+    CONSTRAINT PRIMARY KEY (cod)
+);
+
 CREATE TABLE judete (
   id_judet INTEGER AUTO_INCREMENT,
   judet VARCHAR(20),
@@ -87,7 +91,12 @@ ALTER TABLE imprumut
 ALTER TABLE imprumut
   ADD CONSTRAINT fk_imprumut_carte FOREIGN KEY ( id_carte )
     REFERENCES carte ( id_carte );
-    
+
+INSERT INTO coduri_utilizatori VALUES
+('12Abq\]p-09.~?', 2, 0),
+('0D;p~\\#%LqFr=', 2, 0),
+('kL-),16XX]cS!@', 3, 0);
+
 INSERT INTO categorie (categorie) VALUES
 ('Arta, arhitectura, fotografie'),
 ('Atlase si enciclopedii'),
@@ -102,7 +111,6 @@ INSERT INTO categorie (categorie) VALUES
 ('Limbi straine'),
 ('Psihologie'),
 ('Stiinte');
-
 
 INSERT INTO autor VALUES
 (1,'Yalom','Irvin'),
@@ -228,6 +236,60 @@ INSERT INTO judete (judet) VALUES
 ('VALCEA'),
 ('VRANCEA');
 
+INSERT INTO imprumut VALUES
+(1,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(2,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(3,5,2,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(4,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(5,5,2,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(6,5,3,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+INSERT INTO imprumut VALUES
+(7,5,4,current_timestamp(), current_timestamp(), current_timestamp() + 15);
+
+CREATE TABLE user_favourites (
+	id_client		INTEGER,
+    id_carte		INTEGER,
+    PRIMARY KEY (id_client, id_carte)
+);
+
+ALTER TABLE user_favourites
+ADD CONSTRAINT fk_favs_client foreign key (id_client) REFERENCES client(id_client);
+
+ALTER TABLE user_favourites
+ADD CONSTRAINT fk_favs_carte foreign key (id_carte) REFERENCES carte(id_carte);
+
+INSERT INTO user_favourites VALUES
+(5,1), (5,2);
+
+INSERT INTO carte (titlu, id_categorie, an, editura, tip, url_fisier) VALUES
+('Dictionar medical-veterinar roman-latin-englez englez-latin-roman',6,2013,'Unknown','digitala','https://drive.google.com/file/d/1SeK45xjbCICkMzvSh_UkSZZmXLzbk8Dq/view?usp=sharing');
+
+INSERT INTO carte_autor VALUES 
+(17,15),(17,16),(17,17),(17,18),(17,19);
+
+INSERT INTO carte (titlu, id_categorie, an, editura, tip, descriere, url_fisier) VALUES
+('Arta negocierii',4,2018,'Globo','fizica','Viata e un sir de negocieri: fie incerci sa primesti o marire de salariu, sa cumperi o masina sau o casa, renegociezi o chirie sau ai o discutie cu partenerul de viata, aceasta carte iti ofera un avantaj competitiv in orice situatie.<br>Arta negocierii prezinta detaliat strategiile de negociere care l-au ajutat pe Chris Voss, negociatorul sef FBI, sa salveze vieti in situatii extreme. De la confruntari intre cele mai temute clanuri din Haiti, pana la jafuri armate petrecute in inima NY toate incheiate cu succes datorita tehnicilor aplicate de acesta. Negociatorul de talie mondiala Voss, iti arata cum sa aplici aceste metode in viata de zi cu zi, la locul de munca, in relatia cu partenerul si in orice alt domeniu important pentru tine.<br>"O lectura captivanta, plina de sfaturi aplicabile imediat, si nu numai pentru negocierile cu mize mari, ci si pentru optima gestionare a conflictelor din viata de zi cu zi, la serviciu si acasa." - Business Insider<br>"Fostul negociator FBI in luarea de ostatici Chris Voss are putini egali cand in joc sunt negocierile cu mize mari. Tehnicile lui functioneaza impecabil, atat in domeniul afacerilor, cat si in viata personala." - Joe Navarro, agent special FBI autor al bestsellerului international What Every Body Is Saying<br>"O carte eminamente practica. In aceste pagini vei gasi exact tehnicile de care ai nevoie ca sa inchei orice afacere doresti." - Daniel H. Pink, autorul bestsellerelor To Sell Is Human si Drive','artanegocierii.jpeg');
+
+INSERT INTO autor (nume, prenume) VALUES
+('Voss', 'Chris'),
+('Raz','Tahl');
+
+INSERT INTO carte_autor VALUES
+(18,34),(18,35);
+
+ALTER TABLE carte
+ADD CONSTRAINT fk_categorie_carte FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie);
 
 -- SELECT DISTINCT id_categorie
 -- FROM carte JOIN categorie USING (id_categorie)
@@ -267,41 +329,7 @@ INSERT INTO judete (judet) VALUES
 -- WHERE id_client = 5
 -- GROUP BY titlu;  -- $_SESSION['id']
 
-INSERT INTO imprumut VALUES
-(1,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
 
-INSERT INTO imprumut VALUES
-(2,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
-
-INSERT INTO imprumut VALUES
-(3,5,2,current_timestamp(), current_timestamp(), current_timestamp() + 15);
-
-INSERT INTO imprumut VALUES
-(4,5,1,current_timestamp(), current_timestamp(), current_timestamp() + 15);
-
-INSERT INTO imprumut VALUES
-(5,5,2,current_timestamp(), current_timestamp(), current_timestamp() + 15);
-
-INSERT INTO imprumut VALUES
-(6,5,3,current_timestamp(), current_timestamp(), current_timestamp() + 15);
-
-INSERT INTO imprumut VALUES
-(7,5,4,current_timestamp(), current_timestamp(), current_timestamp() + 15);
-
-CREATE TABLE user_favourites (
-	id_client		INTEGER,
-    id_carte		INTEGER,
-    PRIMARY KEY (id_client, id_carte)
-);
-
-ALTER TABLE user_favourites
-ADD CONSTRAINT fk_favs_client foreign key (id_client) REFERENCES client(id_client);
-
-ALTER TABLE user_favourites
-ADD CONSTRAINT fk_favs_carte foreign key (id_carte) REFERENCES carte(id_carte);
-
-INSERT INTO user_favourites VALUES
-(5,1), (5,2);
 
 -- SELECT titlu, nume, prenume, categorie, url_fisier
 -- FROM carte JOIN carte_autor USING (id_carte)
@@ -317,68 +345,57 @@ INSERT INTO user_favourites VALUES
 -- WHERE tip='fizica';
 
 
-INSERT INTO carte (titlu, id_categorie, an, editura, tip, url_fisier) VALUES
-('Dictionar medical-veterinar roman-latin-englez englez-latin-roman',6,2013,'Unknown','digitala','https://drive.google.com/file/d/1SeK45xjbCICkMzvSh_UkSZZmXLzbk8Dq/view?usp=sharing');
 
-INSERT INTO carte_autor VALUES 
-(17,15),(17,16),(17,17),(17,18),(17,19);
 
-INSERT INTO carte (titlu, id_categorie, an, editura, tip, descriere, url_fisier) VALUES
-('Arta negocierii',4,2018,'Globo','fizica','Viata e un sir de negocieri: fie incerci sa primesti o marire de salariu, sa cumperi o masina sau o casa, renegociezi o chirie sau ai o discutie cu partenerul de viata, aceasta carte iti ofera un avantaj competitiv in orice situatie.<br>Arta negocierii prezinta detaliat strategiile de negociere care l-au ajutat pe Chris Voss, negociatorul sef FBI, sa salveze vieti in situatii extreme. De la confruntari intre cele mai temute clanuri din Haiti, pana la jafuri armate petrecute in inima NY toate incheiate cu succes datorita tehnicilor aplicate de acesta. Negociatorul de talie mondiala Voss, iti arata cum sa aplici aceste metode in viata de zi cu zi, la locul de munca, in relatia cu partenerul si in orice alt domeniu important pentru tine.<br>"O lectura captivanta, plina de sfaturi aplicabile imediat, si nu numai pentru negocierile cu mize mari, ci si pentru optima gestionare a conflictelor din viata de zi cu zi, la serviciu si acasa." - Business Insider<br>"Fostul negociator FBI in luarea de ostatici Chris Voss are putini egali cand in joc sunt negocierile cu mize mari. Tehnicile lui functioneaza impecabil, atat in domeniul afacerilor, cat si in viata personala." - Joe Navarro, agent special FBI autor al bestsellerului international What Every Body Is Saying<br>"O carte eminamente practica. In aceste pagini vei gasi exact tehnicile de care ai nevoie ca sa inchei orice afacere doresti." - Daniel H. Pink, autorul bestsellerelor To Sell Is Human si Drive','artanegocierii.jpeg');
 
-INSERT INTO autor (nume, prenume) VALUES
-('Voss', 'Chris'),
-('Raz','Tahl');
+-- select * from carte_autor;
+-- select * from categorie;
+-- select * from autor;
+-- select * from carte;
 
-INSERT INTO carte_autor VALUES
-(18,34),(18,35);
+-- SELECT titlu, categorie,descriere, stoc, url_fisier, an, editura, id_carte
+-- FROM carte JOIN categorie USING (id_categorie) 
+-- JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+-- WHERE tip='fizica'
+-- GROUP BY titlu
+-- ORDER BY id_carte;
 
-ALTER TABLE carte
-ADD CONSTRAINT fk_categorie_carte FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie);
+-- SELECT nume, prenume
+-- FROM autor JOIN carte_autor USING (id_autor)
+-- JOIN carte USING (id_carte)
+-- WHERE id_carte = 18;
 
-select * from carte_autor;
-select * from categorie;
-select * from autor;
-select * from carte;
-
-SELECT titlu, categorie,descriere, stoc, url_fisier, an, editura, id_carte
-FROM carte JOIN categorie USING (id_categorie) 
-JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
-WHERE tip='fizica'
-GROUP BY titlu
-ORDER BY id_carte;
-
-SELECT nume, prenume
-FROM autor JOIN carte_autor USING (id_autor)
-JOIN carte USING (id_carte)
-WHERE id_carte = 18;
-
-SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
-FROM carte JOIN categorie USING (id_categorie) 
-JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
-WHERE tip='fizica' 
--- AND categorie IN ('Fictiune')
+-- SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+-- FROM carte JOIN categorie USING (id_categorie) 
+-- JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+-- WHERE tip='fizica' 
+-- AND categorie IN ('Fictiu-- ne')
 -- AND an IN (2005)
 -- AND editura IN ('RAO')
-AND CONCAT(prenume, ' ', nume) IN ('Markus Zusak')
-GROUP BY titlu
-ORDER BY id_carte;
+-- AND CONCAT(prenume, ' ', nume) IN ('Markus Zusak')
+-- GROUP BY titlu
+-- ORDER BY id_carte;
 
+
+-- SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+-- FROM carte JOIN categorie USING (id_categorie) 
+-- JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+-- WHERE tip='fizica' 
+-- GROUP BY titlu
+-- ORDER BY id_carte;
+
+-- SELECT prenume, nume FROM autor JOIN carte_autor USING (id_autor) JOIN carte USING (id_carte) WHERE id_carte=18;
+
+
+-- SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+-- FROM carte JOIN categorie USING (id_categorie) 
+-- JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
+-- WHERE tip='fizica' GROUP BY titlu ORDER BY id_carte
 
 SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
 FROM carte JOIN categorie USING (id_categorie) 
 JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
-WHERE tip='fizica' 
-GROUP BY titlu
-ORDER BY id_carte;
-
-SELECT prenume, nume FROM autor JOIN carte_autor USING (id_autor) JOIN carte USING (id_carte) WHERE id_carte=18;
-
-
-SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
-FROM carte JOIN categorie USING (id_categorie) 
-JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
-WHERE tip='fizica' GROUP BY titlu ORDER BY id_carte
+WHERE tip='fizica' GROUP BY titlu ORDER BY titlu;
 
 
 

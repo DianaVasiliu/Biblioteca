@@ -1,14 +1,17 @@
 <?php
     require_once './requirements/dbconnect.php';
+    $link = connectdb();
+    mysqli_set_charset($link , "utf8");
 
     session_start();
+    $_SESSION['changed_page'] = '';
     
-// if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
-//     header("location: paginaprincipala.php");
-// }
-// else if ($_SESSION['loggedin'] == true) {
-//     header("location: contulmeu.php");
-// }
+    // if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
+    //     header("location: paginaprincipala.php");
+    // }
+    // else if ($_SESSION['loggedin'] == true) {
+    //     header("location: contulmeu.php");
+    // }
 ?>
 
 
@@ -49,7 +52,7 @@
             <?php
                 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
             ?>
-                <h3>Trebuie sa fii logat ca sa accesezi aceasta pagina!</h3>
+                <h3 align="center">Trebuie sa fii logat ca sa accesezi aceasta pagina!</h3>
             <?php
                 }
                 else if ($_SESSION['loggedin'] == true){
@@ -87,7 +90,7 @@
 
                     </div>
                     <div class="dreapta">
-                        <div class="info">
+                        <div class="info first">
 <form method="post" action="./requirements/updateinfo.php">
     <h3>Email:</h3>
     <input type="email" value="<?php echo $_SESSION['email']; ?>" id="email" name="email" class="updatedinfo">
@@ -130,7 +133,6 @@
     <input type="text" value="<?php echo $_SESSION['city']; ?>" class="address" name="city" class="updatedaddress" required>
 
     <?php 
-       $link = connectdb();
 
        $sql = "SELECT judet FROM judete ORDER BY judet";
        $res = mysqli_query($link, $sql);
@@ -147,7 +149,7 @@
     </select>
     <input type="submit" value="Modifica" class="submit" name="upaddress">
 </form>
-<p>
+<p style="color: red; margin-top: 3pc; font-weight: bolder; font-size: 120%;">
 <?php 
     echo $_SESSION['erroremail']; $_SESSION['erroremail']='';
     echo $_SESSION['errorname']; $_SESSION['errorname']='';
@@ -173,7 +175,7 @@
                 JOIN autor a USING (id_autor)
                 JOIN categorie cat USING (id_categorie)
                 JOIN imprumut i USING (id_carte)
-                WHERE id_client =" . $_SESSION['id'] . " GROUP BY titlu;";
+                WHERE id_client = " . $_SESSION['id'] . " GROUP BY titlu;";
 
     if($res = mysqli_query($link, $query)) {
         $titlu = array();

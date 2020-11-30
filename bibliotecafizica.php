@@ -2,32 +2,62 @@
     require_once './requirements/dbconnect.php';
     require './requirements/functions.php';
     $link = connectdb();
+    mysqli_set_charset($link , "utf8");
 
     session_start();
     $_SESSION['filters'] = array();
+
+    // if (isset($_SESSION['changed_page']) && $_SESSION['changed_page'] == '') {
+    //     unset($_POST);
+    // }
+
+    // $_SESSION['changed_page'] = 'dummy';
+
+    if (!isset($_POST['sort'])) {
+        $_SESSION['order_by'] = 8;
+    }
+    else {
+        switch($_POST['sortselect']) {
+            case 'titlu':
+                $_SESSION['order_by'] = 1;
+                break;
+            case 'categorie':
+                $_SESSION['order_by'] = 2;
+                break;
+            case 'an':
+                $_SESSION['order_by'] = 6;
+                break;
+            case 'editura':
+                $_SESSION['order_by'] = 7;
+                break;
+            case 'autor':
+                $_SESSION['order_by'] = 9;
+                break;
+            default:
+                $_SESSION['order_by'] = 8;
+        }
+    }
+
+    if (!isset($_SESSION['order_by'])) {
+        $_SESSION['order_by'] = 8;
+    }
+    // else {
+    //     $_SESSION['order_by'] = $_SESSION['sortselect'];
+    // }
     
-    if (isset($_POST['resetfitlers'])) {
+    if (isset($_POST['resetfilters'])) {
         $_SESSION['filters'] = array();
+
     }
 
     if (isset($_POST['cauta'])) {
-        // echo $_SESSION['nrautorfiltru'] . '<br>';
-        // echo $_SESSION['nrcategoriefiltru'] . '<br>';
-        // echo $_SESSION['nranfiltru'] . '<br>';
-        // echo $_SESSION['nrediturafiltru'] . '<br>';
-        
 
         $autorfilter = verify_filter("autor");
         $catfilter = verify_filter("categorie");
         $anfilter = verify_filter("an");
         $editurafilter = verify_filter("editura");
 
-        // echo $autorfilter . "<br>";
-        // echo $catfilter . "<br>";
-        // echo $anfilter . "<br>";
-        // echo $editurafilter . "<br>";
-
-        $query1 = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+        $query1 = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, nume
                     FROM carte JOIN categorie USING (id_categorie) 
                     JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
                     WHERE tip='fizica'";
@@ -44,12 +74,9 @@
             $query1 = $query1 . " AND editura IN " . $editurafilter;
         }
         
-        $query1 = $query1 . " GROUP BY titlu ORDER BY id_carte";
+        $query1 = $query1 . " GROUP BY titlu ORDER BY titlu"; // . $_SESSION['order_by'];
 
-        // echo $query1;
         $_SESSION['query'] = $query1;
-
-        // echo "<br><br>" . $_SESSION['query'];
     }
 ?>
 
@@ -85,7 +112,26 @@
 
 
 <div id="corp">
+    <div id="search">
+        
+        <input type="text" id="searchbooks" placeholder="Cauta o carte">
+
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        Sorteaza rezultatele dupa:
+        <select name="sortselect" id="sortselect" class="favs">
+            <option value="original">Original</option>
+            <option value="titlu">Titlu</option>
+            <option value="autor">Autor</option>
+            <option value="categorie">Categorie</option>
+            <option value="an">Anul publicarii</option>
+            <option value="editura">Editura</option>
+        </select>
+        <input type="submit" name="sort" value="Sorteaza" class="favs" id="sort">
+        </form>
+    </div>
+
 <div id="continut">
+
     <div id="div_filtre">
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <input type="submit" name="resetfilters" value="Sterge filtrele" class="cauta" style="width: auto;">
@@ -104,8 +150,6 @@
                 while ($row = mysqli_fetch_array($res)) {
                     array_push($checkbox, $row[0] . ' ' . $row[1]);
                 }
-
-                //$_SESSION['nrautorfiltru'] = count($checkbox);
 
                 for ($i = 0; $i < count($checkbox); $i++) {
             ?>
@@ -138,8 +182,6 @@
     while($row = mysqli_fetch_array($res)) {
         array_push($checkbox, $row[0]);
     }
-
-    //$_SESSION['nrcategoriefiltru'] = count($checkbox);
 
     for ($i = 0; $i < count($checkbox); $i++) {
         ?>
@@ -235,10 +277,10 @@
 <?php
 
         if (!isset($_POST['cauta'])) {
-            $query = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+            $query = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, prenume
                     FROM carte JOIN categorie USING (id_categorie) 
                     JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
-                    WHERE tip='fizica' GROUP BY titlu ORDER BY id_carte";
+                    WHERE tip='fizica' GROUP BY titlu ORDER BY " . $_SESSION['order_by'];
         }
         else {
             $query = $_SESSION['query'];
@@ -287,12 +329,8 @@
             while($row = mysqli_fetch_array($res)) {
                 array_push($favs, $row[0]);
             }
-        }
-
-        
+        }      
 ?>
-        
-        <table>
         <div id="carti" style="overflow-x:auto;"> 
             <table>
             <?php
@@ -304,7 +342,7 @@
                     $query2 = "SELECT nume, prenume
                                 FROM autor JOIN carte_autor USING (id_autor)
                                 JOIN carte USING (id_carte)
-                                WHERE id_carte =" . $ids[$i];
+                                WHERE id_carte = " . $ids[$i];
                     
                     if ($res = mysqli_query($link, $query2)) {
                         while ($row = mysqli_fetch_array($res)) {
@@ -336,7 +374,7 @@
                         }
                     }
             ?>
-                    <td>
+                    <td class="tabledata">
                     <div class="div_imagine">
                         <img src="./pics/<?php echo $url[$i]; ?>" class="carti">
                     <?php
@@ -358,7 +396,7 @@
                         </form>
                     <?php } ?>
                     </div>
-                    <br><br>
+                    <br><br><p class="paragraphs">
             <?php
                     echo '"'.$titlu[$i] . '" - ';
                     for ($j = 0; $j < count($autor); $j++) {
@@ -368,33 +406,41 @@
                         }
                     }
             ?>
-                    <br><br>
+                    </p><br><br>
+                    <p class="paragraphs">
             <?php
                     echo 'Categorie: ' . $categorie[$i];
             ?>
-                    <br><br>
+                    </p><br><br><p class="paragraphs">
             <?php
                     echo 'Anul publicarii: ' . $an[$i];
             ?>
-                    <br><br>
+                    </p><br><br><p class="paragraphs">
             <?php
                     echo 'Editura: ' . $editura[$i];
             ?>
-                    <br><br>
+                    </p><br><br>
             <?php
-                    if (isset($_SESSION['id'])) { 
+                    if (isset($_SESSION['id'])) {
+            ?>
+                    <p class="paragraphs">
+            <?php
                         echo $descriere[$i];
             ?>
-                    <br><br>
+                    </p><br><br><p class="paragraphs">
             <?php
                     
-                echo 'Stoc: ' . $stoc[$i];}
+                        echo 'Stoc: ' . $stoc[$i];
             ?>
-                    </td>
+                    </p>
+            <?php
+            }
+            ?>
+                    
+            </td>
             <?php                
                 }
             ?>
-            
             </table>
 
     <?php 
@@ -411,6 +457,7 @@
     include ($IPATH."requirements/footer.php"); 
     ?>
 
+<script src="./js/bibliotecafizica.js"> </script>
 <script src="./js/common.js"> </script>
 </body>
 

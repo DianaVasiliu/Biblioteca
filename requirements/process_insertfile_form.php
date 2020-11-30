@@ -1,13 +1,13 @@
 <?php
 require_once './dbconnect.php';
 
-$mysqlconn = connectdb();
+$link = connectdb();
 
 if (isset($_POST['uploadfile'])) {
     // $firstname = trim($_POST['authorfirstname']);
     // $lastname = trim($_POST['authorlastname']);
-    $authors = explode(",", trim($_POST['authornames']));
-    $filename = trim($_POST['filename']);
+    $authors = explode(",", mysqli_real_escape_string($link, trim($_POST['authornames'])));
+    $filename = mysqli_real_escape_string($link, trim($_POST['filename']));
     $id = array();
     $id2 = array();       // id-ul autorului curent
 
@@ -15,7 +15,7 @@ if (isset($_POST['uploadfile'])) {
     $lastname = array();
 
     $query = "SELECT id_carte FROM carte ORDER BY id_carte DESC";
-    $res = mysqli_query($mysqlconn, $query);
+    $res = mysqli_query($link, $query);
     $row = mysqli_fetch_array($res);
     $id_carte = $row[0] + 1;
 
@@ -36,7 +36,7 @@ if (isset($_POST['uploadfile'])) {
                 . strtolower($firstname[$i])
                 . "'";
 
-        $res = mysqli_query($mysqlconn, $query);
+        $res = mysqli_query($link, $query);
         while($row = mysqli_fetch_array($res)) {
             array_push($id, $row[0]);
         }
@@ -48,10 +48,10 @@ if (isset($_POST['uploadfile'])) {
                     . ucwords($firstname[$i])
                     . "')";
             
-            $res = mysqli_query($mysqlconn, $query);
+            $res = mysqli_query($link, $query);
     
             $query = "SELECT id_autor FROM autor ORDER BY id_autor DESC";
-            $res = mysqli_query($mysqlconn, $query);
+            $res = mysqli_query($link, $query);
     
             $row = mysqli_fetch_array($res);
             array_push($id2, $row[0]);   
@@ -61,27 +61,27 @@ if (isset($_POST['uploadfile'])) {
         }
     }
     
-    $query = "SELECT id_categorie FROM categorie WHERE categorie = '" . $_POST["categorie"] . "'";
+    $query = "SELECT id_categorie FROM categorie WHERE categorie = '" . mysqli_real_escape_string($link, $_POST["categorie"]) . "'";
 
-    $res = mysqli_query($mysqlconn, $query);
+    $res = mysqli_query($link, $query);
     $row = mysqli_fetch_array($res);
     $index_cat = $row[0];
 
     $query = "INSERT INTO carte (titlu, id_categorie, tip, descriere, url_fisier) VALUES ('"
-    . trim($_POST["booktitle"])
+    . mysqli_real_escape_string($link, trim($_POST["booktitle"]))
     . "', "
-    . $index_cat
+    . mysqli_real_escape_string($link, $index_cat)
     . ", 'digitala', '"
-    . trim($_POST['description'])
+    . mysqli_real_escape_string($link, trim($_POST['description']))
     . "', '"
-    . $filename
+    . mysqli_real_escape_string($link, $filename)
     . "')";
 
-    $res = mysqli_query($mysqlconn, $query);
+    $res = mysqli_query($link, $query);
 
     for ($i = 0; $i < count($id2); $i++) {
-        $query = "INSERT INTO carte_autor VALUES (" . $id_carte . ", " . $id2[$i] . ")";
-        if ($res = mysqli_query($mysqlconn, $query)){
+        $query = "INSERT INTO carte_autor VALUES (" . mysqli_real_escape_string($link, $id_carte) . ", " . mysqli_real_escape_string($link, $id2[$i]) . ")";
+        if ($res = mysqli_query($link, $query)){
             $error = "OK";
         }
         else{
@@ -89,7 +89,7 @@ if (isset($_POST['uploadfile'])) {
         }
     }
     
-    mysqli_close($mysqlconn);
+    mysqli_close($link);
     header("Location: ../bibliotecadigitala.php");
 }
 

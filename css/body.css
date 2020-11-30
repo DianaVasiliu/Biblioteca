@@ -13,7 +13,7 @@ body
 	margin-top: 0;
 	margin-bottom: 0;
 	word-wrap: break-word;
-	border-bottom: solid black 10px;
+	/* border-bottom: solid black 10px; */
 	padding-top: 5%;
 	font-size: 120%;
 }

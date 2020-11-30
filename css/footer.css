@@ -5,6 +5,7 @@ footer {
     width: 100%;
     color: whitesmoke;
     position: relative;
+    border-top: solid black 10px;
 }
 
 .footer_content {

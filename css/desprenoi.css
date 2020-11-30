@@ -25,6 +25,11 @@ a {
     font-size: 90%;
 }
 
+.refresh-captcha:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 @media only screen and (max-width: 1000px) {
     iframe {
         width: 50%;

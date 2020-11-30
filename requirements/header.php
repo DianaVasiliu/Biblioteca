@@ -12,7 +12,7 @@
             // session_start();
             // echo 'sesiune: '. ($_SESSION["loggedin"] ? 'true' : 'false');
            // echo $_SESSION["loggedin"];
-            if ($_SESSION["loggedin"] == true)
+            if (isset($_SESSION['loggedin']) && $_SESSION["loggedin"] == true)
                 print 'Salut, ' . $_SESSION["username"] . "!";
         ?>
         <?php

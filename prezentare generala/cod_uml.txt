@@ -1,3 +1,5 @@
+https://dbdiagram.io/d/5f9b335d3a78976d7b79c0b9
+
 table judete {
   id_judet number [primary key]
   judet varchar
@@ -6,20 +8,31 @@ table judete {
 table carte {
   id_carte number [primary key]
   titlu varchar [not null]
-  id_autor number [ref: > autor.id_autor]
-  categorie varchar
+  id_categorie number [ref: - categorie.id_categorie]
+  an year
+  editura varchar
   tip varchar
   nr_imprumuturi number [default: 0]
   nota float [default: null]
   stoc number [default: 1]
   descriere varchar
-  url_imagine varchar
+  url_fisier varchar
 }
 
 table autor {
   id_autor number [primary key]
   nume varchar
   prenume varchar
+}
+
+table carte_autor {
+  id_carte number [primary key, ref: - carte.id_carte]
+  id_autor number [primary key, ref: - autor.id_autor]
+}
+
+table categorie {
+  id_categorie number [primary key]
+  categorie varchar
 }
 
 table client {
@@ -30,27 +43,37 @@ table client {
   email email [not null]
   adresa varchar
   data_inregistrare date
+  tip number
   taxa_retur number [default: 0.00]
   username varchar [not null]
   parola varchar [not null]
   activ integer [default: 0]
   token varchar
-  
 }
 
 table imprumut {
   id_imprumut number [primary key]
   id_client number [ref: > client.id_client, primary key]
-  id_carte number [ref: > carte.id_carte, primary key]
+  id_carte number [primary key]
   data_cerere date [primary key]
   data_ridicare date
   data_retur date
 }
 
+table carte_imprumut {
+  id_imprumut number [primary key, ref: > imprumut.id_imprumut]
+  id_carte number [primary key, ref: > carte.id_carte]
+}
+
 table review {
   id_review number [primary key]
-  email_client varchar [ref: > client.email]
+  id_client varchar [ref: > client.email]
   id_carte number [ref: > carte.id_carte]
   nota number [not null]
   descriere varchar
+}
+
+table user_favourites {
+  id_client number [primary key, ref: > client.id_client]
+  id_carte number [primary key, ref: > carte.id_carte]
 }

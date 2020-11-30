@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $_SESSION['changed_page'] = '';
 ?>
 
 <!DOCTYPE html>

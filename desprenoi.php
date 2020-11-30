@@ -3,56 +3,75 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
+    // require '../Composer/vendor/autoload.php';
     require 'C:/xampp/Composer/vendor/autoload.php';
+    require_once './requirements/dbconnect.php';
 
     session_start();
+    
+    $link = connectdb();
+    mysqli_set_charset($link , "utf8");
 
+    $captcha_err = '';
     $trimis = '';
+    if (!isset($_POST['submit'])) {
+        $message = $subject = '';
+    }
+    
     if (isset($_POST['submit'])) {
-        $from = $_POST['email'];
-        $message = $_POST['mesaj'];
-        $name = $_POST['nume'];
-        $subject = $_POST['subject'];
-    
-        $mail = new PHPMailer(true);
+        $captcha = mysqli_real_escape_string($link, trim($_POST['captcha_challenge']));
+        $message = mysqli_real_escape_string($link, trim($_POST['mesaj']));
+        $subject = mysqli_real_escape_string($link, trim($_POST['subject']));
 
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            )
-        );
+        if ($captcha == $_SESSION['captcha_text']) {
+            $from = mysqli_real_escape_string($link, trim($_POST['email']));
+            $name = mysqli_real_escape_string($link, trim($_POST['nume']));
+        
+            $mail = new PHPMailer(true);
     
-        //$mail->SMTPDebug = 2;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-    
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-    
-        $mail->Host = 'smtp.gmail.com';
-    
-        $mail->setFrom('diana.vasiliu10@gmail.com', 'Biblioteca');
-        $mail->addAddress('diana.vasiliu10@gmail.com', 'Biblioteca');
-    
-        $mail->isHTML(true);
-        $mail->Subject = 'E-mail nou de la utilizator';
-        $mail->Body = '
-            Email nou de la utilizatorul: <br>
-            Nume: ' . $name . '<br>
-            Email: ' . $from . '<br><br>
-            Subiect: ' . $subject . '<br>
-            Mesajul transmis:<br>
-            "' . $message . '"<br>';
-    
-        if (!$mail->send()) {
-            $trimis = 'Mailul nu a putut fi trimis.';
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+        
+            //$mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->SMTPAuth = true;
+        
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+        
+            $mail->Host = 'smtp.gmail.com';
+        
+            $mail->setFrom('diana.vasiliu10@gmail.com', 'Biblioteca');
+            $mail->addAddress('diana.vasiliu10@gmail.com', 'Biblioteca');
+        
+            $mail->isHTML(true);
+            $mail->Subject = 'E-mail nou de la utilizator';
+            $mail->Body = '
+                Email nou de la utilizatorul: <br>
+                Nume: ' . $name . '<br>
+                Email: ' . $from . '<br><br>
+                Subiect: ' . $subject . '<br>
+                Mesajul transmis:<br>
+                "' . $message . '"<br>';
+        
+            if (!$mail->send()) {
+                $trimis = 'fail';
+            }
+            else {
+                $trimis = 'succes';
+            }
+            header("Location: ./desprenoi.php?status=".$trimis);
         }
         else {
-            $trimis = 'Email trimis cu succes!';
+            $captcha_err = "Captcha incorect!";
         }
-        header("Location: ./desprenoi.php?status=".$trimis);
+
+        
     }
     
 ?>
@@ -69,9 +88,9 @@
     <link rel="stylesheet" href="./css/mobile_menu.css">
     <link rel="stylesheet" href="./css/contactform.css">
 
-
-
     <title>Despre noi</title>
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body>
@@ -158,23 +177,40 @@
                                     </tr>
                                     <tr>
                                         <td class="item">Subiect *</td>
-                                        <td class="values"><input type="text" name="subject" class="form-input" required></td>
+                                        <td class="values"><input type="text" name="subject" class="form-input" required value="<?php echo $subject; ?>"></td>
                                     </tr>
                                     <tr>
                                         <td class="item">Mesaj *</td>
-                                        <td><textarea name="mesaj" class="form-textarea" required></textarea></td>
+                                        <td><textarea name="mesaj" class="form-textarea" required><?php echo $message; ?></textarea></td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                     </tr>
 
                                 </table>
+
+<div class="elem-group">
+    <label for="captcha">Te rugam introdu textul Captcha</label> <br>
+    <img src="./requirements/captcha.php" alt="CAPTCHA" class="captcha-image">
+    <span class="fas fa-redo refresh-captcha">Genereaza cod nou</span> <br>
+    <input type="text" class="form-input" id="captcha" name="captcha_challenge"> <br> <br>
+</div>
+
                                 <div class="form-group">
+
                                     <input type="submit" class="btn" value="Trimite" name='submit'>
                                     <br>
                                     <?php 
-                                    if (isset($_GET['status']))
-                                        echo $_GET['status']; 
+                                    if (isset($_GET['status'])) {
+                                        if ($_GET['status'] == 'fail') {
+                                            echo 'Mailul nu a putut fi trimis.';
+                                        }
+                                        else {
+                                            echo 'Email-ul a fost trimis cu succes!'; 
+                                        }
+                                    }
+                                    
+                                    echo $captcha_err;
                                     ?>
                                 </div>
                             </form>
@@ -192,8 +228,9 @@
     include ($IPATH."requirements/footer.php"); 
     ?>
     
-<script src="./js/header.js"> </script>
+
     <script src="./js/common.js"></script>
+    <script src="./js/desprenoi.js"></script>
 </body>
 
 </html>

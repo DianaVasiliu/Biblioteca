@@ -5,14 +5,20 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require_once "requirements/dbconnect.php";
+$link = connectdb();
+mysqli_set_charset($link , "utf8");
+
+// require '../Composer/vendor/autoload.php';
 require 'C:/xampp/Composer/vendor/autoload.php';
+
+session_start();
+$_SESSION['changed_page'] = '';
 
 function valid_email($str) {
 
     return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
 }
 
-$link = connectdb();
 
 $query = "SELECT judet FROM judete ORDER BY id_judet";
 
@@ -37,12 +43,85 @@ $street_err = "";
 $streetno_err = "";
 $city_err = "";
 $county_err = "";
+$user_type_err = "";
 $anyerror = 0;
 
+$usertype = 0;
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (isset($_POST['usertype'])) {
+        $value = $_POST['usertype'];
+
+        if ($value == "client") {
+            echo "1";
+            $usertype = 1;
+        }
+        elseif ($value == "bibliotecar") {
+            echo "2";
+            $usertype = 2;
+        }
+        elseif ($value == "admin") {
+            echo "3";
+            $usertype = 3;
+        }
+    }
+
+    if ($usertype == 2) {
+        $code = mysqli_real_escape_string($link, trim($_POST['bibliotecar']));
+
+        $querytype = "SELECT cod FROM coduri_utilizatori WHERE tip = 2 AND utilizat = 0";
+
+        $ucodes = array();
+
+        if ($res = mysqli_query($querytype)) {
+            while ($row = mysqli_fetch_array($res)) {
+                array_push($ucodes, $row[0]);
+            }
+
+            $oku = 0;
+            for ($i = 0; $i < count($ucodes); $i++) {
+                if ($code == $ucodes[$i]) {
+                    $oku = 1;
+                    break;
+                }
+            }
+
+            if ($oku == 0) {
+                $anyerror = 1;
+                $user_type_err = "Cod invalid";
+            }
+        }
+    }
+
+    if ($usertype == 3) {
+        $code = mysqli_real_escape_string($link, trim($_POST['admin']));
+
+        $querytype = "SELECT cod FROM coduri_utilizatori WHERE tip = 3 AND utilizat = 0";
+
+        $ucodes = array();
+
+        if ($res = mysqli_query($link, $querytype)) {
+            while ($row = mysqli_fetch_array($res)) {
+                array_push($ucodes, $row[0]);
+            }
+
+            $oku = 0;
+            for ($i = 0; $i < count($ucodes); $i++) {
+                if ($code == $ucodes[$i]) {
+                    $oku = 1;
+                    break;
+                }
+            }
+
+            if ($oku == 0) {
+                $anyerror = 1;
+                $user_type_err = "Cod invalid";
+            }
+        }
+    }
  
     // Validare username
-    if(empty(trim($_POST["username"]))){
+    if(empty(mysqli_real_escape_string($link, trim($_POST["username"])))){
         $username_err = "Te rugam introdu un username.";
         $anyerror = 1;
     } 
@@ -55,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "s", $param_username);
             
             // Setez parametrul dorit
-            $param_username = trim($_POST["username"]);
+            $param_username = mysqli_real_escape_string($link, trim($_POST["username"]));
             
             // Execut cererea
             if(mysqli_stmt_execute($stmt)){
@@ -66,7 +145,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $username_err = "Username deja folosit.";
                     $anyerror = 1;
                 } else{
-                    $username = trim($_POST["username"]);
+                    $username = mysqli_real_escape_string($link, trim($_POST["username"]));
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -78,25 +157,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Validare parola
-    if(empty(trim($_POST["password"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["password"])))) {
         $password_err = "Te rugam introdu o parola.";   
         $anyerror = 1;  
     } 
-    elseif(strlen(trim($_POST["password"])) < 6) {
+    elseif(strlen(mysqli_real_escape_string($link, trim($_POST["password"]))) < 6) {
         $password_err = "Parola trebuie sa aiba cel putin 6 caractere.";
         $anyerror = 1;
     }
     else {
-        $password = trim($_POST["password"]);
+        $password = mysqli_real_escape_string($link, trim($_POST["password"]));
     }
     
     // Validare confirmare parola
-    if(empty(trim($_POST["confirm_password"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["confirm_password"])))) {
         $confirm_password_err = "Te rugam confirma parola.";   
         $anyerror = 1;  
     }
     else {
-        $confirm_password = trim($_POST["confirm_password"]);
+        $confirm_password = mysqli_real_escape_string($link, trim($_POST["confirm_password"]));
 
         if(empty($password_err) && ($password != $confirm_password)){
             $confirm_password_err = "Parolele nu coincid.";
@@ -105,29 +184,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validare prenume
-    if(empty(trim($_POST["firstname"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["firstname"])))) {
         $firstname_err = "Te rugam introdu un prenume.";     
         $anyerror = 1;
     } 
     else {
-        $firstname = ucfirst(trim($_POST["firstname"]));
+        $firstname = ucfirst(mysqli_real_escape_string($link, trim($_POST["firstname"])));
     }
 
     // Validare nume
-    if(empty(trim($_POST["lastname"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["lastname"])))) {
         $lastname_err = "Te rugam introdu un nume.";    
         $anyerror = 1; 
     } 
     else {
-        $lastname = ucfirst(trim($_POST["lastname"]));
+        $lastname = ucfirst(mysqli_real_escape_string($link, trim($_POST["lastname"])));
     }
 
     // Validare telefon
-    if(empty(trim($_POST["phone"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["phone"])))) {
         $phone_err = "Te rugam introdu un numar de telefon.";  
         $anyerror = 1;   
     } 
-    elseif (strlen(trim($_POST["phone"])) != 10 || trim($_POST["phone"])[0] != "0") {
+    elseif (strlen(mysqli_real_escape_string($link, trim($_POST["phone"]))) != 10 || mysqli_real_escape_string($link, trim($_POST["phone"]))[0] != "0") {
         $phone_err = "Te rugam introdu un numar de telefon valid.";
         $anyerror = 1;
     }
@@ -135,12 +214,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Pregatesc cererea sql
         $sql = "SELECT id_client FROM client WHERE telefon = ?";
         
-        if($stmt = mysqli_prepare($link, $sql)){
+        if($stmt = mysqli_prepare($link, $sql)) {
             // Inlocuiesc valorile ? din cerere cu valorile parametrilor
             mysqli_stmt_bind_param($stmt, "s", $param_phone);
             
             // Setez parametrul dorit
-            $param_phone = trim($_POST["phone"]);
+            $param_phone = mysqli_real_escape_string($link, trim($_POST["phone"]));
             
             // Execut cererea
             if(mysqli_stmt_execute($stmt)){
@@ -151,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $phone_err = "Telefon deja folosit.";
                     $anyerror = 1;
                 } else{
-                    $phone = trim($_POST["phone"]);
+                    $phone = mysqli_real_escape_string($link, trim($_POST["phone"]));
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -163,12 +242,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validare email
-    if(empty(trim($_POST["email"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["email"])))) {
         $email_err = "Te rugam introdu un email.";     
         $anyerror = 1;
     } 
     //elseif (!filter_var(trim($_POST["email"]), FILTER_VALIDATE_EMAIL)) {
-    elseif (!valid_email(trim($_POST["email"]))){
+    elseif (!valid_email(mysqli_real_escape_string($link, trim($_POST["email"])))){
         $email_err = "Te rugam introdu un email valid.";
         $anyerror = 1;
     }
@@ -180,7 +259,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "s", $param_email);
             
             // Setez parametrul dorit
-            $param_email = trim($_POST["email"]);
+            $param_email = mysqli_real_escape_string($link, trim($_POST["email"]));
             
             // Execut cererea
             if(mysqli_stmt_execute($stmt)){
@@ -191,7 +270,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $email_err = "Email deja folosit.";
                     $anyerror = 1;
                 } else{
-                    $email = trim($_POST["email"]);
+                    $email = mysqli_real_escape_string($link, trim($_POST["email"]));
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -203,38 +282,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Validare strada
-    if(empty(trim($_POST["street"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["street"])))) {
         $street_err = "Te rugam introdu o strada."; 
         $anyerror = 1;    
     }
     else {
-        $street = trim($_POST["street"]);
+        $street = mysqli_real_escape_string($link, trim($_POST["street"]));
     }
 
     // Validare nr. strada
-    if(empty(trim($_POST["streetno"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["streetno"])))) {
         $streetno_err = "Te rugam introdu un numar.";     
         $anyerror = 1;
     }
-    elseif (!ctype_alnum(trim($_POST["streetno"]))) {
+    elseif (!ctype_alnum(mysqli_real_escape_string($link, trim($_POST["streetno"])))) {
         $streetno_err = "Te rugam introdu un numar valid.";  
         $anyerror = 1;
     }
     else {
-        $streetno = trim($_POST["streetno"]);
+        $streetno = mysqli_real_escape_string($link, trim($_POST["streetno"]));
     }
 
     // Validare oras
-    if(empty(trim($_POST["city"]))) {
+    if(empty(mysqli_real_escape_string($link, trim($_POST["city"])))) {
         $city_err = "Te rugam introdu un oras.";     
         $anyerror = 1;
     } 
-    elseif (!ctype_alnum(trim($_POST["city"]))) {
+    elseif (!ctype_alnum(mysqli_real_escape_string($link, trim($_POST["city"])))) {
         $city_err = "Te rugam introdu un oras valid.";
         $anyerror = 1;
     }
     else {
-        $city = trim($_POST["city"]);
+        $city = mysqli_real_escape_string($link, trim($_POST["city"]));
     }
 
      // Validare judet
@@ -242,24 +321,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if($_POST["county"] == "" || !isset($_POST["county"])) {
         $county_err = "Te rugam selecteaza un judet.";     
         $anyerror = 1;
-    } 
+    }
     elseif ($_POST["county"] != "NULL" && isset($_POST["county"])) {
-        $county = trim($_POST["county"]);
+        $county = mysqli_real_escape_string($link, trim($_POST["county"]));
     }
     
     // Verificarea erorilor de input inainte de introducerea in BD
     if($anyerror == 0){
         
         // Pregatesc cererea de inserare
-        $sql = "INSERT INTO `client` (`nume`, `prenume`, `telefon`, `email`, `adresa`, `username`, `parola`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `client` (`nume`, `prenume`, `telefon`, `email`, `adresa`, `username`, `parola`, `tip`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $query = "UPDATE coduri_utilizatori SET utilizat = 1 WHERE cod = '" . mysqli_real_escape_string($link, trim($code)) . "'";
+
+        $res = mysqli_query($link, $query);
          
         if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt, "sssssss", $param_lastname, $param_firstname, $param_phone, $param_email, $param_address, $param_username, $param_password);
+            mysqli_stmt_bind_param($stmt, "sssssssi", $param_lastname, $param_firstname, $param_phone, $param_email, $param_address, $param_username, $param_password, $param_user_type);
             
             $param_lastname = mysqli_real_escape_string($link, $lastname);
             $param_firstname = mysqli_real_escape_string($link, $firstname);
             $param_phone = mysqli_real_escape_string($link, $phone);
-            $param_email = mysqli_real_escape_string($link, $email);
+            $param_email = mysqli_real_escape_string($link, strtolower($email));
             $param_address = mysqli_real_escape_string($link, $street)
                              .' '
                              .mysqli_real_escape_string($link, $streetno)
@@ -269,6 +352,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                              .mysqli_real_escape_string($link, $county);
             $param_username = mysqli_real_escape_string($link, $username);
             $param_password = password_hash($password, PASSWORD_DEFAULT);
+            $param_user_type = $usertype;
             
             
             if(mysqli_stmt_execute($stmt)){
@@ -355,6 +439,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
 
+            <!-- Tip utilizator -->
+            <div class="form-group <?php echo (!empty($user_type_err)) ? 'has-error' : ''; ?>" id="user_type">
+                <label>Alege tipul de utilizator:</label> <br>
+                <input type="radio" name="usertype" value="client" class="radio_btn">
+                <label for="client">Client</label> <br>
+                <input type="radio" name="usertype" value="bibliotecar" class="radio_btn">
+                <label for="bibliotecar">Bibliotecar</label><br>
+                <input type="radio" name="usertype" value="admin" class="radio_btn">
+                <label for="admin">Administrator</label> <br>
+
+                <span class="help-block"><?php echo $user_type_err; ?></span>
+            </div>
+
             <!-- Adresa -->
             <label>Adresa:</label>
             <div class="form-group <?php echo (!empty($street_err)) ? 'has-error' : ''; ?>">
@@ -393,5 +490,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <!-- <input type="" name="error" value="<?php echo $anyerror; ?>" style="display:none;"> -->
         </form>
     </div>    
+
+    <script src="./js/register.js"></script>
 </body>
 </html>

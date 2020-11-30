@@ -4,6 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+// require '../Composer/vendor/autoload.php';
 require 'C:/xampp/Composer/vendor/autoload.php';
 
 if ($anyerror == 0)
@@ -11,7 +12,7 @@ if ($anyerror == 0)
 
 $hash = md5(rand(0,1000));
 
-$query = "UPDATE client SET token ='" . $hash . "' WHERE email='". $email . "'";
+$query = "UPDATE client SET token ='" . $hash . "' WHERE lower(email)='". strtolower($email) . "'";
 
 if ($stmt = mysqli_query($link, $query)) {
     $anyerror = 1;
@@ -71,7 +72,7 @@ $mail->Body    = '
     <br><br>
 
     <p>Apasa pe link-ul de mai jos pentru a-ti activa contul:</p>
-    http://'.$host.'/Proiect/requirements/user_activation.php?email=' . $email . '&hash=' . $hash . '
+    http://'.$host.'/Proiect/requirements/user_activation.php?email=' . strtolower($email) . '&hash=' . $hash . '
     <br>
     <p>Cu stima,<br>Echipa BNR</p>
 </div>';
@@ -81,7 +82,7 @@ if (!$mail->send()) {
     echo 'Mailer Error: '.$mail->ErrorInfo;
 }
 else {
-    print '<p style="margin-left: 50px;">A fost un trimis un email de confirmare.</p><br>';
+    print '<p style="margin-left: 50px;">A fost trimis un email de confirmare.</p><br>';
     print '<p style="margin-left: 50px;"><a href="./paginaprincipala.php">Inapoi la pagina principala</a></p><br>';
 }
 

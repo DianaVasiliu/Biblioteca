@@ -5,8 +5,8 @@
     $conn = connectdb();
 
     if (isset($_POST['upemail'])) {
-        $email = $_POST['email'];
-        $parola = $_POST['pw'];
+        $email = mysqli_real_escape_string($link, $_POST['email']);
+        $parola = mysqli_real_escape_string($link, $_POST['pw']);
         $ok = 1;
 
         $query = "SELECT parola FROM client WHERE email='" . $_SESSION['email'] . "'";
@@ -55,8 +55,8 @@
         }
     }
     elseif(isset($_POST['upname'])) {
-        $lastname = $_POST['lastname'];
-        $firstname = $_POST['firstname'];
+        $lastname = mysqli_real_escape_string($link, $_POST['lastname']);
+        $firstname = mysqli_real_escape_string($link, $_POST['firstname']);
 
         $query = "UPDATE client SET nume='" . $lastname . "', prenume='" . $firstname . "' WHERE email='" . $_SESSION['email'] . "'";
 
@@ -70,9 +70,9 @@
         }
     }
     elseif(isset($_POST['uppw'])) {
-        $parola_v = $_POST['oldpw'];
-        $parola1 = $_POST['newpw1'];
-        $parola2 = $_POST['newpw2'];
+        $parola_v = mysqli_real_escape_string($link, $_POST['oldpw']);
+        $parola1 = mysqli_real_escape_string($link, $_POST['newpw1']);
+        $parola2 = mysqli_real_escape_string($link, $_POST['newpw2']);
 
         $query = "SELECT parola FROM client WHERE email='" . $_SESSION['email'] . "'";
         $res = mysqli_query($conn, $query);
@@ -100,13 +100,13 @@
         }
     }
     elseif(isset($_POST['upaddress'])) {    
-        $street = $_POST['street'];
-        $number = $_POST['number'];
-        $city = $_POST['city'];
-        $county = $_POST['county'];
+        $street = mysqli_real_escape_string($link, $_POST['street']);
+        $number = mysqli_real_escape_string($link, $_POST['number']);
+        $city = mysqli_real_escape_string($link, $_POST['city']);
+        $county = mysqli_real_escape_string($link, $_POST['county']);
 
         if ($county != "0") {
-            $new_address = $_POST['street'] . ' ' . $_POST['number'] . ' ' . $_POST['city'] . ' ' . $_POST['county'];
+            $new_address = $street . ' ' . $number . ' ' . $city . ' ' . $county;
 
             $query = "UPDATE client SET adresa='" . $new_address . "' WHERE email='" . $_SESSION['email'] . "'";
     
