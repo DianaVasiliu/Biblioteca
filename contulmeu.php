@@ -20,7 +20,7 @@
 <html lang="ro">
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <link rel="stylesheet" href="./css/contulmeu.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/body.css">
@@ -83,13 +83,18 @@
             <div class="div_contulmeu">
                     <div class="stanga">
                         <button class="setare"><h3>Date personale</h3> <img src="./pics/rarrow.png"></button>
+<?php
+                if (isset($_SESSION['tip']) && $_SESSION['tip'] == 1) {
+?>
                         <button class="setare"><h3>Imprumuturile mele</h3> <img src="./pics/rarrow.png"></button>
                         <button class="setare"><h3>Favorite</h3> <img src="./pics/rarrow.png"></button>
                         <button class="setare"><h3>Notificari</h3> <img src="./pics/rarrow.png"></button>
-                        <!-- <button class="setare"><h3></h3> <img src="./pics/rarrow.png"></button> -->
+<?php 
+                } 
 
+?>
                     </div>
-                    <div class="dreapta">
+                    <div class="dreapta vizibil">
                         <div class="info first">
 <form method="post" action="./requirements/updateinfo.php">
     <h3>Email:</h3>
@@ -137,16 +142,20 @@
        $sql = "SELECT judet FROM judete ORDER BY judet";
        $res = mysqli_query($link, $sql);
 
-       $options = "";
-       while($row = mysqli_fetch_array($res)) {
-           $options = $options.'<option value="'. $row[0] .'">'.$row[0].'</option>';
-       }
     ?>
-
+    
     <select name="county" id="judete" required>
         <option value="0">--Alege--</option>
-        <?php echo $options; ?>
+    
+    <?php
+       while($row = mysqli_fetch_array($res)) {
+    ?>
+        <option value="<?php echo $row[0]; ?>"> <?php echo $row[0]; ?> </option>
+    <?php
+       }
+    ?>
     </select>
+    
     <input type="submit" value="Modifica" class="submit" name="upaddress">
 </form>
 <p style="color: red; margin-top: 3pc; font-weight: bolder; font-size: 120%;">
@@ -167,10 +176,14 @@
                         </div>
                     </div> <!-- inchid div-ul "dreapta" -->
 
+<?php
+                if (isset($_SESSION['tip']) && $_SESSION['tip'] == 1) {
+?>
+
                     <div class="dreapta">
                         <div class="info">
  <?php
-    $query = "SELECT titlu, categorie, url_fisier, COUNT(id_imprumut)
+    $query = "SELECT titlu, prenume, nume, categorie, url_fisier, COUNT(id_imprumut)
                 FROM carte c JOIN carte_autor ca USING (id_carte)
                 JOIN autor a USING (id_autor)
                 JOIN categorie cat USING (id_categorie)
@@ -357,7 +370,10 @@
                         </div>
                     </div>
                     <div class="dreapta">
-                        
+<?php 
+    } 
+
+?>
                     </div>
                     
 

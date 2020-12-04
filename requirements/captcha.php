@@ -40,13 +40,13 @@ for($i = 0; $i < 10; $i++) {
 $black = imagecolorallocate($image, 0, 0, 0);
 $white = imagecolorallocate($image, 255, 255, 255);
 $textcolors = [$black, $white];
- 
-$fonts = [dirname(__FILE__, 2).'\fonts\arial.ttf',
-          dirname(__FILE__, 2).'\fonts\JosefinSans.ttf',
-          dirname(__FILE__, 2).'\fonts\Ubuntu.ttf',
-          dirname(__FILE__, 2).'\fonts\RobotoMono.ttf',
-          dirname(__FILE__, 2).'\fonts\OpenSans.ttf',
-          dirname(__FILE__, 2).'\fonts\Poppins.ttf'
+
+$fonts = [dirname(__DIR__).'/fonts/arial.ttf',
+          dirname(__DIR__).'/fonts/JosefinSans.ttf',
+          dirname(__DIR__).'/fonts/Ubuntu.ttf',
+          dirname(__DIR__).'/fonts/RobotoMono.ttf',
+          dirname(__DIR__).'/fonts/OpenSans.ttf',
+          dirname(__DIR__).'/fonts/Poppins.ttf'
          ];
  
 $string_length = 6;

@@ -61,11 +61,34 @@ table {
     overflow-x: auto;
 }
 
-#div_imagine {
+.div_imagine {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .favs {
+    border: inset;
+    background-color: whitesmoke;
+    height: 3pc;
+    font-size: 1pc;
+    margin-left: auto;
+}
+
+.favsform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pcenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    flex-wrap: wrap;
+}
+
+.sort {
     border: inset;
     background-color: whitesmoke;
     height: 3pc;
@@ -90,7 +113,10 @@ table {
 
 .paragraphs {
     margin: 0;
-    margin-top: -1pc;
+}
+
+.center {
+    text-align: center;
 }
 
 #search {
@@ -102,4 +128,30 @@ table {
 #sortselect {
     margin-left: 2pc;
     margin-right: 2pc;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.colored-star {
+    color: rgb(255, 194, 71);
+}
+
+.star-rating{
+    text-align: center;
+}
+
+.rate {
+    background-color: whitesmoke;
+    height: auto;
+    padding: .7pc;
+    font-size: 80%;
 }

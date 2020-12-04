@@ -9,29 +9,28 @@
 
     <div id="login">
         <?php
-            // session_start();
-            // echo 'sesiune: '. ($_SESSION["loggedin"] ? 'true' : 'false');
-           // echo $_SESSION["loggedin"];
             if (isset($_SESSION['loggedin']) && $_SESSION["loggedin"] == true)
-                print 'Salut, ' . $_SESSION["username"] . "!";
+                echo 'Salut, ' . $_SESSION["username"] . "!";
         ?>
         <?php
 
             if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
-                print '
+        ?>
                 <p>
                     <a href="./contulmeu.php">Contul meu</a>
                     |
                     <a href="./requirements/logout.php">Deconectare</a>
-                </p>';
+                </p>
+        <?php
             }
-            else { //if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == false) {
-                print '
+            else {
+        ?>
                 <p>
                     <a href="./login.php">Autentificare</a>
                     |
                     <a href="./register.php">Inregistrare</a>
-                </p>';
+                </p>
+        <?php
             }
         ?>
     </div>

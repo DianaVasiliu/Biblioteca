@@ -7,7 +7,7 @@
 <html lang="ro">
 
 <head>
-	<meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
 	<link rel="stylesheet" href="./css/paginaprincipala.css">
 	<link rel="stylesheet" href="./css/header.css">
 	<link rel="stylesheet" href="./css/body.css">

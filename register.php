@@ -8,8 +8,7 @@ require_once "requirements/dbconnect.php";
 $link = connectdb();
 mysqli_set_charset($link , "utf8");
 
-// require '../Composer/vendor/autoload.php';
-require 'C:/xampp/Composer/vendor/autoload.php';
+require '../Composer/vendor/autoload.php';
 
 session_start();
 $_SESSION['changed_page'] = '';
@@ -19,14 +18,6 @@ function valid_email($str) {
     return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
 }
 
-
-$query = "SELECT judet FROM judete ORDER BY id_judet";
-
-$options = "";
-$res = mysqli_query($link, $query);
-while($row = mysqli_fetch_array($res)) {
-    $options = $options.'<option value="'.$row[0].'">'.$row[0].'</option>';
-}
 
 $username = $password = $confirm_password = "";
 $firstname = $lastname = "";
@@ -53,15 +44,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $value = $_POST['usertype'];
 
         if ($value == "client") {
-            echo "1";
             $usertype = 1;
         }
         elseif ($value == "bibliotecar") {
-            echo "2";
             $usertype = 2;
         }
         elseif ($value == "admin") {
-            echo "3";
             $usertype = 3;
         }
     }
@@ -73,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $ucodes = array();
 
-        if ($res = mysqli_query($querytype)) {
+        if ($res = mysqli_query($link, $querytype)) {
             while ($row = mysqli_fetch_array($res)) {
                 array_push($ucodes, $row[0]);
             }
@@ -377,7 +365,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <title>Inregistrare</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
@@ -441,7 +429,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <!-- Tip utilizator -->
             <div class="form-group <?php echo (!empty($user_type_err)) ? 'has-error' : ''; ?>" id="user_type">
-                <label>Alege tipul de utilizator:</label> <br>
+                <label>Alege tipul de utilizator: *</label> <br>
                 <input type="radio" name="usertype" value="client" class="radio_btn">
                 <label for="client">Client</label> <br>
                 <input type="radio" name="usertype" value="bibliotecar" class="radio_btn">
@@ -474,7 +462,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <select name="county" class="form-control" autocomplete="off" required>
                     <option value="">--Alege--</option>
                         <?php
-                            echo $options;
+                            $query = "SELECT judet FROM judete ORDER BY id_judet";
+                            $res = mysqli_query($link, $query);
+
+                            while($row = mysqli_fetch_array($res)) {
+                        ?>
+                            <option value="<?php echo $row[0]; ?>"> <?php echo $row[0]; ?> </option>
+                        <?php
+                            }
                         ?>
                 </select>
                 <span class="help-block"><?php echo $county_err; ?></span>
@@ -487,7 +482,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="reset" class="btn btn-default" value="Reset">
             </div>
             <p>Ai deja un cont? <a href="login.php">Autentificare</a>.</p>
-            <!-- <input type="" name="error" value="<?php echo $anyerror; ?>" style="display:none;"> -->
         </form>
     </div>    
 

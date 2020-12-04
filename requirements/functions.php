@@ -48,7 +48,26 @@ function check_filters ($value) {
     return '';
 }
 
+function update_rating($link, $query, $bookid) {
+    $res = mysqli_query($link, $query);
 
+    $query = "SELECT ROUND(AVG(nota), 2)
+              FROM reviews
+              WHERE id_carte = " . $bookid;
+
+    $res = mysqli_query($link, $query);
+
+    $average = 0;
+    while ($row = mysqli_fetch_array($res)) {
+        $average = $row[0];
+    }
+
+    $query = "UPDATE carte
+              SET nota = " . $average .
+            " WHERE id_carte = " . $bookid;
+
+    $res = mysqli_query($link, $query);
+}
 
 
 ?>

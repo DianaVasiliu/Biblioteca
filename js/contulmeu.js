@@ -2,6 +2,8 @@ var setari = document.getElementsByClassName("dreapta");
 
 var butoane = document.getElementsByClassName("setare");
 
+setari[0].display = "flex";
+
 for (let i = 0; i < butoane.length; i++) {
     butoane[i].onclick = function () {
         for (let j = 0; j < setari.length; j++) {

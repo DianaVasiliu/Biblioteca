@@ -14,9 +14,8 @@
         $query = mysqli_query($link, "SELECT email, token, activ FROM client WHERE email='" . $email . "' AND token='" . $hash . "' AND activ='0'") or die(mysql_error()); 
         $match  = mysqli_num_rows($query);
 
-        // echo $match;
         if ($match > 0) {
-            // echo 'We have a match! ' . $email;
+
             $updateq = "UPDATE client SET activ = 1 WHERE email='" . $email . "' AND token='" . $hash . "' AND activ=0";
 
             $result = mysqli_query($link, $updateq);
@@ -40,7 +39,7 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <title>Inregistrare</title>
     <link rel="stylesheet" href="../css/body.css">
     <style>
@@ -57,7 +56,7 @@
                 <div id="activat">
                     <p>
                         <?php
-                            print $message;
+                            echo $message;
                         ?>
                     </p>
                 </div>

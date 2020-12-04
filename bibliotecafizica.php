@@ -33,6 +33,9 @@
             case 'autor':
                 $_SESSION['order_by'] = 9;
                 break;
+            case 'rating':
+                $_SESSION['order_by'] = 10;
+                break;
             default:
                 $_SESSION['order_by'] = 8;
         }
@@ -84,12 +87,14 @@
 <html lang="ro">
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <link rel="stylesheet" href="./css/bibliotecafizica.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/body.css">
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/mobile_menu.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
     <title>Biblioteca fizica</title>
@@ -118,15 +123,16 @@
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         Sorteaza rezultatele dupa:
-        <select name="sortselect" id="sortselect" class="favs">
+        <select name="sortselect" id="sortselect" class="sort">
             <option value="original">Original</option>
             <option value="titlu">Titlu</option>
             <option value="autor">Autor</option>
             <option value="categorie">Categorie</option>
             <option value="an">Anul publicarii</option>
             <option value="editura">Editura</option>
+            <option value="rating">Rating</option>
         </select>
-        <input type="submit" name="sort" value="Sorteaza" class="favs" id="sort">
+        <input type="submit" name="sort" value="Sorteaza" class="sort" id="sort">
         </form>
     </div>
 
@@ -277,7 +283,7 @@
 <?php
 
         if (!isset($_POST['cauta'])) {
-            $query = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, prenume
+            $query = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, prenume, nota
                     FROM carte JOIN categorie USING (id_categorie) 
                     JOIN carte_autor USING (id_carte) JOIN autor USING (id_autor)
                     WHERE tip='fizica' GROUP BY titlu ORDER BY " . $_SESSION['order_by'];
@@ -350,7 +356,7 @@
                         }
                     }
                     if (isset($_SESSION['id'])) {
-                        if ($i % 2 == 0) {
+                        if ($i % 3 == 0) {
                             if ($i != 0) {
             ?>  
                     </tr>
@@ -377,9 +383,12 @@
                     <td class="tabledata">
                     <div class="div_imagine">
                         <img src="./pics/<?php echo $url[$i]; ?>" class="carti">
+                    </div>
+                    <br>
                     <?php
                         if (isset($_SESSION['id'])) {
                     ?>
+                        <div class="favsform">
                         <form method="post" action="./requirements/add_to_favs.php">
                             <input type="submit" name="favs<?php echo $ids[$i];?>" value="<?php
                                 if (in_array($ids[$i], $favs)) {
@@ -394,9 +403,81 @@
                                 }
                             ?>" class="favs" id="favs<?php echo $ids[$i]; ?>">
                         </form>
+                        </div>
+
+                        <br>
+
+                        
+
+                        <!--  -->
+
+                        <div class="rating" id="rating_div">
+                            <div class="star-rating">
+                            <form class="ratingform" action="./requirements/rating.php" method="post">
+                                <span class="fa fa-star starno1<?php echo $ids[$i]; ?>" data-rating="1" style="font-size:20px;"></span>
+                                <span class="fa fa-star starno2<?php echo $ids[$i]; ?>" data-rating="2" style="font-size:20px;"></span>
+                                <span class="fa fa-star starno3<?php echo $ids[$i]; ?>" data-rating="3" style="font-size:20px;"></span>
+                                <span class="fa fa-star starno4<?php echo $ids[$i]; ?>" data-rating="4" style="font-size:20px;"></span>
+                                <span class="fa fa-star starno5<?php echo $ids[$i]; ?>" data-rating="5" style="font-size:20px;"></span>
+                                <br>
+                                <input type="hidden" name="rating<?php echo $ids[$i]; ?>" class="rating-value">
+                                <input type="submit" class="rate" value="Trimite nota">
+                                
+                            </form>
+                            </div>
+                        <div>
+                        <span>Rating:</span>
+<?php
+                            $query = "SELECT nota
+                                        FROM carte
+                                        WHERE id_carte = " . $ids[$i];
+                            
+                            $nota = 0;
+                            $res = mysqli_query($link, $query);
+                            while ($row = mysqli_fetch_array($res)) {
+                                $nota = $row[0];
+                            }
+
+                            echo $nota ? $nota : "unknown";
+?>
+                        
+                        </div>
+                        <div>
+                        <span>Numar de rating-uri:</span>
+
+<?php
+                            $query = "SELECT COUNT(*)
+                                        FROM reviews
+                                        WHERE id_carte = " . $ids[$i];
+                            
+                            $nr = 0;
+                            $res = mysqli_query($link, $query);
+                            while ($row = mysqli_fetch_array($res)) {
+                                $nr = $row[0];
+                            }
+
+                            echo $nr;
+?>                        
+                        
+                        </div>
+                        </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
                     <?php } ?>
-                    </div>
-                    <br><br><p class="paragraphs">
+                    <br><br>
+                    <div class="pcenter">
+                    <p class="paragraphs center">
             <?php
                     echo '"'.$titlu[$i] . '" - ';
                     for ($j = 0; $j < count($autor); $j++) {
@@ -406,20 +487,25 @@
                         }
                     }
             ?>
-                    </p><br><br>
-                    <p class="paragraphs">
+                    </p>
+                    <p></p>
+                    <p class="paragraphs center"><span class="title">Categorie:</span>
             <?php
-                    echo 'Categorie: ' . $categorie[$i];
+                    echo $categorie[$i];
             ?>
-                    </p><br><br><p class="paragraphs">
+                    </p>
+                    <p class="paragraphs center"><span class="title">Anul publicarii:</span>
             <?php
-                    echo 'Anul publicarii: ' . $an[$i];
+                    echo $an[$i];
             ?>
-                    </p><br><br><p class="paragraphs">
+                    </p>
+                    <p class="paragraphs center"><span class="title">Editura:</span>
             <?php
-                    echo 'Editura: ' . $editura[$i];
+                    echo $editura[$i];
             ?>
-                    </p><br><br>
+                    </p>
+                    </div>
+                <br><br>
             <?php
                     if (isset($_SESSION['id'])) {
             ?>
@@ -427,10 +513,11 @@
             <?php
                         echo $descriere[$i];
             ?>
-                    </p><br><br><p class="paragraphs">
+                    </p>
+                    <p class="paragraphs center"><span class="title">Stoc:</span>
             <?php
                     
-                        echo 'Stoc: ' . $stoc[$i];
+                        echo $stoc[$i];
             ?>
                     </p>
             <?php
@@ -457,8 +544,9 @@
     include ($IPATH."requirements/footer.php"); 
     ?>
 
-<script src="./js/bibliotecafizica.js"> </script>
-<script src="./js/common.js"> </script>
+<script src="./js/rating.js"></script>
+<script src="./js/bibliotecafizica.js"></script>
+<script src="./js/common.js"></script>
 </body>
 
 </html>

@@ -20,17 +20,17 @@
         array_push($categories_id, $row[0]);
         array_push($categories, $row[1]);
     }
-
-    print '<div id="categorii"><div class="column">';
-
+?>
+    <div id="categorii"><div class="column">
+<?php
     for ($nrcat = 0; $nrcat <= count($categories) / 2 - 1; $nrcat++) {
         $titlu = array();
         $fisier = array();
         $link = '';
-
-        print '<h2>'.ucfirst(strtolower($categories[$nrcat])).'</h2>';
-        print '<ol class="listacarti fictiune">';
-
+?>
+    <h2><?php echo ucfirst(strtolower($categories[$nrcat])); ?></h2>
+    <ol class="listacarti fictiune">
+<?php
         $query2 = "SELECT DISTINCT titlu
                     FROM carte JOIN carte_autor USING (id_carte)
                     JOIN autor USING (id_autor)
@@ -62,32 +62,41 @@
                 array_push($nume, $row[1]);
                 array_push($fisier, $row[2]);
             }
-
-            print '<li><a href="'.$fisier[$i].'">'; 
-            print '"' . $titlu[$i] . '" - ';
+?>
+    <li><a href="<?php echo $fisier[$i]; ?>">
+<?php
+             
+            echo '"' . $titlu[$i] . '" - ';
             for($j = 0; $j < count($nume); $j++) {
-                print $prenume[$j] . ' ' . $nume[$j];
+                echo $prenume[$j] . ' ' . $nume[$j];
                 if ($j < count($nume) - 1) {
-                    print ', ';
+                    echo ', ';
                 }
             }
-            print '</a></li><br>';
+?>
+        </a></li><br>
+<?php
         }
-        print '</ol><br>';
+?>
+    </ol><br>
+<?php
     }
+?>
 
-    print '</div>'; // inchid prima coloana
-    print '<div class="column">';
+</div> <!-- inchid prima coloana -->
+<div class="column">
 
+<?php
     for ($nrcat = count($categories) / 2; $nrcat < count($categories); $nrcat++) {
         $titlu = array();
         $prenume = array();
         $nume = array();
         $fisier = array();
         $link = '';
-
-        print '<h2>'.ucfirst(strtolower($categories[$nrcat])).'</h2>';
-        print '<ol class="listacarti fictiune">';
+?>
+        <h2><?php echo ucfirst(strtolower($categories[$nrcat])); ?></h2>
+        <ol class="listacarti <?php echo $categories[$nrcat]; ?>">
+<?php
 
         $query2 = "SELECT DISTINCT titlu
                     FROM carte JOIN carte_autor USING (id_carte)
@@ -121,19 +130,23 @@
                 array_push($nume, $row[1]);
                 array_push($fisier, $row[2]);
             }
-
-            print '<li><a href="'.$fisier[$i].'">'; 
-            print '"' . $titlu[$i] . '" - ';
+?>
+            <li><a href="<?php echo $fisier[$i]; ?>">
+<?php
+            echo '"' . $titlu[$i] . '" - ';
             for($j = 0; $j < count($nume); $j++) {
-                print $prenume[$j] . ' ' . $nume[$j];
+                echo $prenume[$j] . ' ' . $nume[$j];
                 if ($j < count($nume) - 1) {
-                    print ', ';
+                    echo ', ';
                 }
             }
-            print '</a></li><br>';
-        }
-        print '</ol><br>';
-    }
-    print '</div></div>';   // inchid a doua coloana si "categorii"
-    
 ?>
+            </a></li><br>
+<?php
+        }
+?>
+        </ol><br>
+<?php
+    }
+?>
+    </div></div>  <!-- inchid a doua coloana si "categorii" -->

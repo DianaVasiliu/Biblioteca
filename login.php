@@ -77,7 +77,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["address"] = $adresa;
                             $_SESSION["tip"] = $tip;                 
                             
-                            header("location: paginaprincipala.php");
+                            header("location: contulmeu.php");
                             
                             //$_SESSION["loggedin"] = false;
                         } else{
@@ -105,7 +105,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <title>Autentificare</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">

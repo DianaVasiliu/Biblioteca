@@ -25,6 +25,10 @@
     /* border: solid green; */
 }
 
+.vizibil {
+    display: flex;
+}
+
 .setare {
     width: 100%;
     height: 5pc;

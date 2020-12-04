@@ -4,8 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// require '../Composer/vendor/autoload.php';
-require 'C:/xampp/Composer/vendor/autoload.php';
+require '../Composer/vendor/autoload.php';
 
 if ($anyerror == 0)
 {
@@ -41,8 +40,8 @@ $mail->SMTPOptions = array(
     )
 );
 
-$host = "localhost";
-// $host = "bib.epizy.com";
+// $host = "localhost";
+$host = "bib.epizy.com";
 
 $mail->SMTPSecure = 'tls';
 
@@ -82,15 +81,18 @@ if (!$mail->send()) {
     echo 'Mailer Error: '.$mail->ErrorInfo;
 }
 else {
-    print '<p style="margin-left: 50px;">A fost trimis un email de confirmare.</p><br>';
-    print '<p style="margin-left: 50px;"><a href="./paginaprincipala.php">Inapoi la pagina principala</a></p><br>';
+?>
+    <p style="margin-left: 50px;">A fost trimis un email de confirmare.</p><br>
+    <p style="margin-left: 50px;"><a href="./paginaprincipala.php">Inapoi la pagina principala</a></p><br>
+<?php
 }
 
 }
 else {
-    print '<p style="margin-left: 50px;">Am intampinat o problema. Ne cerem scuze.</p><br>';
-    print '<p style="margin-left: 50px;"><a href="../paginaprincipala.php">Inapoi la pagina principala</a></p><br>';
+?>
+    <p style="margin-left: 50px;">Am intampinat o problema. Ne cerem scuze.</p><br>
+    <p style="margin-left: 50px;"><a href="../paginaprincipala.php">Inapoi la pagina principala</a></p><br>
+<?php
 }
 }
-
 ?>

@@ -3,8 +3,7 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
-    // require '../Composer/vendor/autoload.php';
-    require 'C:/xampp/Composer/vendor/autoload.php';
+    require '../Composer/vendor/autoload.php';
     require_once './requirements/dbconnect.php';
 
     session_start();
@@ -80,7 +79,7 @@
 <html lang="ro">
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <link rel="stylesheet" href="./css/desprenoi.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/body.css">
