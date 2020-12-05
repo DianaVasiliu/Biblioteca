@@ -7,67 +7,55 @@ mysqli_set_charset($link , "utf8");
 
 session_start();
 
-
-// DE TEST - sa nu raman autentificat fara buton de logout
-//$_SESSION["loggedin"] = false;
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: paginaprincipala.php");
     exit;
 }
 
-
 $username = $password = "";
 $tip = 0;
 $username_err = $password_err = $active_err = "";
  
-
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    
-    if(empty(mysqli_real_escape_string($link, mysqli_real_escape_string($link, trim($_POST["username"]))))){
+
+    if(empty(mysqli_real_escape_string($link, mysqli_real_escape_string($link, trim($_POST["username"]))))) {
         $username_err = "Te rugam introdu username sau email.";
-    } else {
+    } 
+    else {
         $username = mysqli_real_escape_string($link, trim($_POST["username"]));
     }
     
-
-    if(empty(mysqli_real_escape_string($link, trim($_POST["password"])))){
+    if(empty(mysqli_real_escape_string($link, trim($_POST["password"])))) {
         $password_err = "Te rugam introdu parola";
-    } else{
+    } 
+    else {
         $password = mysqli_real_escape_string($link, trim($_POST["password"]));
     }
     
     
     if(empty($username_err) && empty($password_err)){
         
-        $sql = "SELECT id_client, username, parola, email, activ, nume, prenume, adresa, tip FROM client WHERE username = ?";
+        $query = "SELECT id_client, username, parola, email, activ, nume, prenume, adresa, tip 
+                  FROM client 
+                  WHERE BINARY username = ?";
         
-        if($stmt = mysqli_prepare($link, $sql)){
-
+        if($stmt = mysqli_prepare($link, $query)) {
             mysqli_stmt_bind_param($stmt, "s", $param_username);
             
             $param_username = $username;
             
-            if(mysqli_stmt_execute($stmt)){
-                
+            if(mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
                 
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){   
+                if(mysqli_stmt_num_rows($stmt) == 1) {   
                     mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password,$email, $activ, $nume, $prenume, $adresa, $tip);
 
-                    if(mysqli_stmt_fetch($stmt)){
+                    if(mysqli_stmt_fetch($stmt)) {
                         if ($activ == 0) {
                             $active_err = "Cont inactiv! Te rugam activeaza-ti contul!";
                         }
-
-                        elseif(password_verify($password, $hashed_password)){
-                            
-                            session_start();
-                            
-                            
+                        elseif(password_verify($password, $hashed_password)) {
+                           
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;
@@ -79,19 +67,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             
                             header("location: contulmeu.php");
                             
-                            //$_SESSION["loggedin"] = false;
-                        } else{
-                            
+                        }
+                        else {
                             $password_err = "Date de conectare invalide.";
                             $username_err = "Date de conectare invalide.";
                         }
                     }
-                } else{
-
+                } 
+                else {
                     $username_err = "Date de conectare invalide.";
                     $password_err = "Date de conectare invalide.";
                 }
-            } else{
+            } 
+            else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
 
@@ -109,8 +97,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Autentificare</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; margin: auto;}
+        body { 
+            font: 14px sans-serif; 
+        }
+        .wrapper { 
+            width: 350px; 
+            padding: 20px; 
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <h2>Autentificare</h2>
         <p>Te rugam completeaza datele pentru logare.</p>
         <span class="help-block"><?php echo $active_err; ?></span>
+        
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
@@ -133,6 +128,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
             <p>Nu ai un cont? <a href="register.php">Inregistreaza-te</a>.</p>
+            <p><a href="./requirements/password_recovery/enter_email.php">Ai uitat parola?</a></p>
             
         </form>
     </div>    

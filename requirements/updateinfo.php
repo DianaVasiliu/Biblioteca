@@ -2,23 +2,23 @@
     require_once 'dbconnect.php';
     session_start();
 
-    $conn = connectdb();
+    $link = connectdb();
 
     if (isset($_POST['upemail'])) {
         $email = mysqli_real_escape_string($link, $_POST['email']);
         $parola = mysqli_real_escape_string($link, $_POST['pw']);
         $ok = 1;
 
-        $query = "SELECT parola FROM client WHERE email='" . $_SESSION['email'] . "'";
-        $res = mysqli_query($conn, $query);
+        $query = "SELECT parola FROM client WHERE BINARY email = '" . $_SESSION['email'] . "'";
+        $res = mysqli_query($link, $query);
         $hash = mysqli_fetch_array($res)[0];
 
         if (password_verify($parola, $hash)) {
-            $query = "SELECT 1 FROM client WHERE email='" . $email . "'";
+            $query = "SELECT 1 FROM client WHERE BINARY email = '" . $email . "'";
 
             $temp = array();
 
-            if ($res = mysqli_query($conn, $query)) {
+            if ($res = mysqli_query($link, $query)) {
 
                 while($row = mysqli_fetch_array($res)) {
                     array_push($temp, row[0]);
@@ -39,14 +39,14 @@
 
 
             if ($ok == 1) {
-                $query = "UPDATE client SET email='" . $email . "' WHERE email='" . $_SESSION['email'] . "'";
+                $query = "UPDATE client SET email='" . $email . "' WHERE BINARY email = '" . $_SESSION['email'] . "'";
 
-                if ($res = mysqli_query($conn, $query)) {
+                if ($res = mysqli_query($link, $query)) {
                     $_SESSION['erroremail'] = 'Succes';
                     $_SESSION['email'] = $email;
                 }
                 else {
-                    echo mysqli_error($conn);
+                    echo mysqli_error($link);
                 }
             }
         }
@@ -58,9 +58,9 @@
         $lastname = mysqli_real_escape_string($link, $_POST['lastname']);
         $firstname = mysqli_real_escape_string($link, $_POST['firstname']);
 
-        $query = "UPDATE client SET nume='" . $lastname . "', prenume='" . $firstname . "' WHERE email='" . $_SESSION['email'] . "'";
+        $query = "UPDATE client SET nume='" . $lastname . "', prenume='" . $firstname . "' WHERE BINARY email = '" . $_SESSION['email'] . "'";
 
-        if ($res = mysqli_query($conn, $query)) {
+        if ($res = mysqli_query($link, $query)) {
             $_SESSION['errorname'] = 'Succes';
             $_SESSION['lastname'] = $lastname;
             $_SESSION['firstname'] = $firstname;
@@ -70,25 +70,25 @@
         }
     }
     elseif(isset($_POST['uppw'])) {
-        $parola_v = mysqli_real_escape_string($link, $_POST['oldpw']);
-        $parola1 = mysqli_real_escape_string($link, $_POST['newpw1']);
-        $parola2 = mysqli_real_escape_string($link, $_POST['newpw2']);
+        $parola_v = $_POST['oldpw'];
+        $parola1 = $_POST['newpw1'];
+        $parola2 = $_POST['newpw2'];
 
-        $query = "SELECT parola FROM client WHERE email='" . $_SESSION['email'] . "'";
-        $res = mysqli_query($conn, $query);
+        $query = "SELECT parola FROM client WHERE BINARY email = '" . $_SESSION['email'] . "'";
+        $res = mysqli_query($link, $query);
         $hash = mysqli_fetch_array($res)[0];
 
         if (password_verify($parola_v, $hash)) {
             if (strcmp($parola1,$parola2) == 0) {
                 $hash2 = password_hash($parola1, PASSWORD_DEFAULT);
 
-                $query = "UPDATE client SET parola='" . $hash2 . "' WHERE email='" . $_SESSION['email'] . "'";
+                $query = "UPDATE client SET parola='" . $hash2 . "' WHERE BINARY email = '" . $_SESSION['email'] . "'";
 
-                if ($res = mysqli_query($conn, $query)) {
+                if ($res = mysqli_query($link, $query)) {
                     $_SESSION['errorpw'] = 'Succes';
                 }
                 else {
-                    $_SESSION['errorpw'] = 'Nu a putut fi schimbata parola.';
+                    $_SESSION['errorpw'] = 'Nu a putut fi schimbata parola. Nu s-a putut face update';
                 }
             }
             else {
@@ -96,7 +96,7 @@
             }
         }
         else {
-            $_SESSION['errorpw'] = 'Nu a putut fi schimbata parola.';
+            $_SESSION['errorpw'] = 'Nu a putut fi schimbata parola. Parola veche nu e buna';
         }
     }
     elseif(isset($_POST['upaddress'])) {    
@@ -108,9 +108,9 @@
         if ($county != "0") {
             $new_address = $street . ' ' . $number . ' ' . $city . ' ' . $county;
 
-            $query = "UPDATE client SET adresa='" . $new_address . "' WHERE email='" . $_SESSION['email'] . "'";
+            $query = "UPDATE client SET adresa='" . $new_address . "' WHERE BINARY email='" . $_SESSION['email'] . "'";
     
-            if ($res = mysqli_query($conn, $query)) {
+            if ($res = mysqli_query($link, $query)) {
                 $_SESSION['erroraddress'] = 'Succes';
             }
             else {
@@ -122,9 +122,9 @@
         }
     }
     else if (isset($_POST['confirm'])) {
-        $query = "UPDATE client SET activ=0 WHERE email='" . $_SESSION['email'] . "'";
+        $query = "UPDATE client SET activ=0 WHERE BINARY email='" . $_SESSION['email'] . "'";
 
-        if ($res = mysqli_query($conn, $query)) {
+        if ($res = mysqli_query($link, $query)) {
             $_SESSION['err'] = 'Succes';
             $_SESSION['loggedin'] = false;
         }

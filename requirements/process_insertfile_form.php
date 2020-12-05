@@ -28,11 +28,11 @@ if (isset($_POST['uploadfile'])) {
         array_push($firstname, $fn);
         array_push($lastname, $name[count($name) - 1]);
 
-        $query = "SELECT id_autor "
-                ."FROM autor "
-                ."WHERE lower(nume)='"
+        $query = "SELECT id_autor 
+                  FROM autor  
+                  WHERE BINARY lower(nume) = '"
                 . strtolower($lastname[$i])
-                . "' AND lower(prenume)='"
+                . "' AND BINARY lower(prenume) = '"
                 . strtolower($firstname[$i])
                 . "'";
 

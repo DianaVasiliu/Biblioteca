@@ -1,6 +1,5 @@
 <?php
     session_start();
-    $_SESSION['changed_page'] = '';
 ?>
 
 <!DOCTYPE html>
@@ -23,50 +22,39 @@
                 padding-top: 10pc;
             }
         }
-
     </style>
 
 </head>
 
 <body>
 	<header id="header">
-        <?php 
+<?php 
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
         include ($IPATH."requirements/header.php"); 
-        ?>
+?>
             
     </header>
-    <?php
+<?php
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
         include ($IPATH."requirements/mobile_menu.php"); 
-    ?>
+?>
 
     <div id="corp">
         <div id="continut">
             <input type="text" id="search" placeholder="Cauta o carte">
-            <?php
+<?php
                 $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
                 include ($IPATH."requirements/showbooks.php"); 
-            ?>
-            
-            <br><br>
-            <br><br>
-
-            <?php 
-                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['tip'] == 3) {
-                    $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
-                    include ($IPATH."requirements/admin_digital_add.php"); 
-                }
-            ?>
+?>
 
         </div>
     </div>
 
 
-    <?php 
+<?php 
     $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
     include ($IPATH."requirements/footer.php"); 
-    ?>
+?>
 
     <script src="./js/bibliotecadigitala.js"></script>
     <script src="./js/common.js"></script>

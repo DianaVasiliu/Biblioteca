@@ -18,7 +18,6 @@
     background-color: whitesmoke;
     padding: 20px;
     display: flex;
-    justify-content: space-evenly;
     display: none;
     overflow-x: auto;
 
@@ -161,4 +160,66 @@ table {
         flex-direction: row;
     }
 
+}
+
+
+#contulmeu_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+#btn_imprumut {
+    background-color: whitesmoke;
+    height: 50%;
+    /* align-self: center; */
+}
+
+#form_imprumut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#select_carte {
+    padding: .5pc;
+    border: none;
+    text-align: center;
+}
+
+#data_impr {
+    text-align: center;
+    margin: 0;
+}
+
+.submitborrow {
+    margin-top: 2pc;
+    margin-left: 0;
+}
+
+.refresh-captcha:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.elem-group {
+    text-align: center;
+    padding: 0;
+    margin-top: 2pc;
+}
+
+.centrat {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#captcha {
+    margin: 0;
+}
+
+#div_form_imprumut {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

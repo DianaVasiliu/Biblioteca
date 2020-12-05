@@ -2,11 +2,12 @@
 
     require_once 'dbconnect.php';
 
-    $conn = connectdb();
+    $link = connectdb();
 
     $query = "SELECT DISTINCT id_categorie, categorie
-                FROM carte JOIN categorie USING (id_categorie)
-                WHERE tip='digitala'
+                FROM carte 
+                JOIN categorie USING (id_categorie)
+                WHERE tip = 'digitala'
                 ORDER BY categorie";
 
     $categories = array();
@@ -15,31 +16,35 @@
     $prenume = array();
     $nume = array();
 
-    $result = mysqli_query($conn, $query);
-    while ($row = mysqli_fetch_array($result)) {
+    $res = mysqli_query($link, $query);
+    while ($row = mysqli_fetch_array($res)) {
         array_push($categories_id, $row[0]);
         array_push($categories, $row[1]);
     }
 ?>
+
     <div id="categorii"><div class="column">
+
 <?php
-    for ($nrcat = 0; $nrcat <= count($categories) / 2 - 1; $nrcat++) {
+    for ($nrcat = 0; $nrcat <= count($categories) / 2; $nrcat++) {
         $titlu = array();
         $fisier = array();
-        $link = '';
 ?>
+
     <h2><?php echo ucfirst(strtolower($categories[$nrcat])); ?></h2>
     <ol class="listacarti fictiune">
+
 <?php
-        $query2 = "SELECT DISTINCT titlu
-                    FROM carte JOIN carte_autor USING (id_carte)
-                    JOIN autor USING (id_autor)
-                    WHERE tip='digitala' AND id_categorie = '"
-                 . $categories_id[$nrcat]."'";
+        $query = "SELECT DISTINCT titlu
+                  FROM carte 
+                  JOIN carte_autor USING (id_carte)
+                  JOIN autor USING (id_autor) 
+                  WHERE tip = 'digitala' AND id_categorie = "
+                 . $categories_id[$nrcat];
 
-        $result2 = mysqli_query($conn, $query2);
+        $res = mysqli_query($link, $query);
 
-        while($row = mysqli_fetch_array($result2)) {
+        while($row = mysqli_fetch_array($res)) {
             array_push($titlu, $row[0]);
         }
 
@@ -48,24 +53,25 @@
             $prenume = array();
             $nume = array();
             
-            $query2 = "SELECT prenume, nume, url_fisier
+            $query = "SELECT prenume, nume, url_fisier
                         FROM carte JOIN carte_autor USING (id_carte)
                         JOIN autor USING (id_autor)
-                        WHERE tip='digitala'
+                        WHERE BINARY tip = 'digitala'
                         AND id_categorie = " . $categories_id[$nrcat] . 
-                        " AND titlu = '" . $titlu[$i] . "'";
+                        " AND BINARY titlu = '" . $titlu[$i] . "'";
 
-            $result2 = mysqli_query($conn, $query2);
+            $res = mysqli_query($link, $query);
 
-            while($row = mysqli_fetch_array($result2)) {
+            while($row = mysqli_fetch_array($res)) {
                 array_push($prenume, $row[0]);
                 array_push($nume, $row[1]);
                 array_push($fisier, $row[2]);
             }
 ?>
-    <li><a href="<?php echo $fisier[$i]; ?>">
-<?php
-             
+
+        <li><a target="_blank" href="<?php echo $fisier[$i]; ?>">
+
+<?php  
             echo '"' . $titlu[$i] . '" - ';
             for($j = 0; $j < count($nume); $j++) {
                 echo $prenume[$j] . ' ' . $nume[$j];
@@ -74,11 +80,14 @@
                 }
             }
 ?>
-        </a></li><br>
+            </a>
+        </li>
+        <br>
 <?php
         }
 ?>
-    </ol><br>
+    </ol>
+    <br>
 <?php
     }
 ?>
@@ -87,26 +96,25 @@
 <div class="column">
 
 <?php
-    for ($nrcat = count($categories) / 2; $nrcat < count($categories); $nrcat++) {
+    for ($nrcat = count($categories) / 2 + 1; $nrcat < count($categories); $nrcat++) {
         $titlu = array();
         $prenume = array();
         $nume = array();
         $fisier = array();
-        $link = '';
 ?>
         <h2><?php echo ucfirst(strtolower($categories[$nrcat])); ?></h2>
         <ol class="listacarti <?php echo $categories[$nrcat]; ?>">
 <?php
 
-        $query2 = "SELECT DISTINCT titlu
+        $query = "SELECT DISTINCT titlu
                     FROM carte JOIN carte_autor USING (id_carte)
                     JOIN autor USING (id_autor)
-                    WHERE tip='digitala' AND id_categorie = '"
+                    WHERE BINARY tip = 'digitala' AND id_categorie = '"
                  . $categories_id[$nrcat]."'";
 
-        $result2 = mysqli_query($conn, $query2);
+        $res = mysqli_query($link, $query);
 
-        while($row = mysqli_fetch_array($result2)) {
+        while($row = mysqli_fetch_array($res)) {
             array_push($titlu, $row[0]);
         }
 
@@ -116,22 +124,22 @@
             $nume = array();
             $fisier = array();
 
-            $query2 = "SELECT prenume, nume, url_fisier
+            $query = "SELECT prenume, nume, url_fisier
                         FROM carte JOIN carte_autor USING (id_carte)
                         JOIN autor USING (id_autor)
-                        WHERE tip='digitala'
+                        WHERE BINARY tip = 'digitala'
                         AND id_categorie = " . $categories_id[$nrcat] . 
-                        " AND titlu = '" . $titlu[$i] . "'";
+                        " AND BINARY titlu = '" . $titlu[$i] . "'";
 
-            $result2 = mysqli_query($conn, $query2);
+            $res = mysqli_query($link, $query);
 
-            while($row = mysqli_fetch_array($result2)) {
+            while($row = mysqli_fetch_array($res)) {
                 array_push($prenume, $row[0]);
                 array_push($nume, $row[1]);
                 array_push($fisier, $row[2]);
             }
 ?>
-            <li><a href="<?php echo $fisier[$i]; ?>">
+            <li><a target="_blank" href="<?php echo $fisier[$i]; ?>">
 <?php
             echo '"' . $titlu[$i] . '" - ';
             for($j = 0; $j < count($nume); $j++) {

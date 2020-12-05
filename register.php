@@ -4,20 +4,18 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+require '../Composer/vendor/autoload.php';
 require_once "requirements/dbconnect.php";
+
 $link = connectdb();
 mysqli_set_charset($link , "utf8");
 
-require '../Composer/vendor/autoload.php';
-
 session_start();
-$_SESSION['changed_page'] = '';
 
 function valid_email($str) {
-
-    return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
+    return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) 
+    ? FALSE : TRUE;
 }
-
 
 $username = $password = $confirm_password = "";
 $firstname = $lastname = "";
@@ -57,11 +55,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($usertype == 2) {
         $code = mysqli_real_escape_string($link, trim($_POST['bibliotecar']));
 
-        $querytype = "SELECT cod FROM coduri_utilizatori WHERE tip = 2 AND utilizat = 0";
+        $query = "SELECT cod FROM coduri_utilizatori WHERE tip = 2 AND utilizat = 0";
 
         $ucodes = array();
 
-        if ($res = mysqli_query($link, $querytype)) {
+        if ($res = mysqli_query($link, $query)) {
             while ($row = mysqli_fetch_array($res)) {
                 array_push($ucodes, $row[0]);
             }
@@ -84,11 +82,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($usertype == 3) {
         $code = mysqli_real_escape_string($link, trim($_POST['admin']));
 
-        $querytype = "SELECT cod FROM coduri_utilizatori WHERE tip = 3 AND utilizat = 0";
+        $query = "SELECT cod FROM coduri_utilizatori WHERE tip = 3 AND utilizat = 0";
 
         $ucodes = array();
 
-        if ($res = mysqli_query($link, $querytype)) {
+        if ($res = mysqli_query($link, $query)) {
             while ($row = mysqli_fetch_array($res)) {
                 array_push($ucodes, $row[0]);
             }
@@ -115,9 +113,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } 
     else{
         // Pregatesc cererea sql
-        $sql = "SELECT id_client FROM client WHERE username = ?";
+        $query = "SELECT id_client FROM client WHERE BINARY username = ?";
         
-        if($stmt = mysqli_prepare($link, $sql)){
+        if($stmt = mysqli_prepare($link, $query)){
             // Inlocuiesc valorile ? din cerere cu valorile parametrilor
             mysqli_stmt_bind_param($stmt, "s", $param_username);
             
@@ -200,9 +198,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     else {
         // Pregatesc cererea sql
-        $sql = "SELECT id_client FROM client WHERE telefon = ?";
+        $query = "SELECT id_client FROM client WHERE telefon = ?";
         
-        if($stmt = mysqli_prepare($link, $sql)) {
+        if($stmt = mysqli_prepare($link, $query)) {
             // Inlocuiesc valorile ? din cerere cu valorile parametrilor
             mysqli_stmt_bind_param($stmt, "s", $param_phone);
             
@@ -240,9 +238,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $anyerror = 1;
     }
     else {
-        $sql = "SELECT id_client FROM client WHERE email = ?";
+        $query = "SELECT id_client FROM client WHERE BINARY email = ?";
         
-        if($stmt = mysqli_prepare($link, $sql)){
+        if($stmt = mysqli_prepare($link, $query)){
             // Inlocuiesc valorile ? din cerere cu valorile parametrilor
             mysqli_stmt_bind_param($stmt, "s", $param_email);
             
@@ -317,14 +315,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Verificarea erorilor de input inainte de introducerea in BD
     if($anyerror == 0){
         
-        // Pregatesc cererea de inserare
-        $sql = "INSERT INTO `client` (`nume`, `prenume`, `telefon`, `email`, `adresa`, `username`, `parola`, `tip`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
         $query = "UPDATE coduri_utilizatori SET utilizat = 1 WHERE cod = '" . mysqli_real_escape_string($link, trim($code)) . "'";
 
         $res = mysqli_query($link, $query);
-         
-        if($stmt = mysqli_prepare($link, $sql)){
+        
+        // Pregatesc cererea de inserare
+        $query = "INSERT INTO `client` (`nume`, `prenume`, `telefon`, `email`, `adresa`, `username`, `parola`, `tip`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        if($stmt = mysqli_prepare($link, $query)){
             mysqli_stmt_bind_param($stmt, "sssssssi", $param_lastname, $param_firstname, $param_phone, $param_email, $param_address, $param_username, $param_password, $param_user_type);
             
             $param_lastname = mysqli_real_escape_string($link, $lastname);
@@ -352,13 +350,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "Something went wrong. Please try again later.";
             }
 
-            //mysqli_stmt_close($stmt);
+            mysqli_stmt_close($stmt);
         }
-    }
-    
-    //mysqli_close($link);
-
-
+    }    
 }
 ?>
  
@@ -373,6 +367,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         .wrapper{ width: 350px; padding: 20px; margin: auto;}
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <h2>Inregistrare</h2>
@@ -461,16 +456,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label>Judet *</label>
                 <select name="county" class="form-control" autocomplete="off" required>
                     <option value="">--Alege--</option>
-                        <?php
-                            $query = "SELECT judet FROM judete ORDER BY id_judet";
-                            $res = mysqli_query($link, $query);
+<?php
+                $query = "SELECT judet FROM judete ORDER BY id_judet";
+                $res = mysqli_query($link, $query);
 
-                            while($row = mysqli_fetch_array($res)) {
-                        ?>
-                            <option value="<?php echo $row[0]; ?>"> <?php echo $row[0]; ?> </option>
-                        <?php
-                            }
-                        ?>
+                while($row = mysqli_fetch_array($res)) {
+?>
+                    <option value="<?php echo $row[0]; ?>"> <?php echo $row[0]; ?> </option>
+<?php
+                }
+?>
                 </select>
                 <span class="help-block"><?php echo $county_err; ?></span>
             </div>
@@ -483,7 +478,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <p>Ai deja un cont? <a href="login.php">Autentificare</a>.</p>
         </form>
-    </div>    
+    </div> 
+
+
+<?php
+    mysqli_close($link);
+?>
 
     <script src="./js/register.js"></script>
 </body>

@@ -11,7 +11,7 @@ if ($anyerror == 0)
 
 $hash = md5(rand(0,1000));
 
-$query = "UPDATE client SET token ='" . $hash . "' WHERE lower(email)='". strtolower($email) . "'";
+$query = "UPDATE client SET token = '" . $hash . "' WHERE BINARY email LIKE '". $email . "'";
 
 if ($stmt = mysqli_query($link, $query)) {
     $anyerror = 1;

@@ -11,15 +11,23 @@
         $email = mysqli_escape_string($link, $_GET['email']); // Set email variable
         $hash = mysqli_escape_string($link, $_GET['hash']); // Set hash variable
 
-        $query = mysqli_query($link, "SELECT email, token, activ FROM client WHERE email='" . $email . "' AND token='" . $hash . "' AND activ='0'") or die(mysql_error()); 
-        $match  = mysqli_num_rows($query);
+        $query = "SELECT email, token, activ 
+                  FROM client 
+                  WHERE BINARY email = '" . $email . "' 
+                  AND BINARY token = '" . $hash . "' 
+                  AND activ = '0'";
+
+        $res = mysqli_query($link, $query);
+
+        $match  = mysqli_num_rows($res);
 
         if ($match > 0) {
 
-            $updateq = "UPDATE client SET activ = 1 WHERE email='" . $email . "' AND token='" . $hash . "' AND activ=0";
+            $query = "UPDATE client SET activ = 1 WHERE BINARY email='" . $email . "' AND BINARY token='" . $hash . "' AND activ='0'";
 
-            $result = mysqli_query($link, $updateq);
-            if (!$result) {
+            $res = mysqli_query($link, $query);
+
+            if (!$res) {
                 die(mysqli_error());
             }
 

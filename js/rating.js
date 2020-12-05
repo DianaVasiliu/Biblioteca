@@ -19,8 +19,6 @@ for (let i = 0; i < stars.length; i++) {
 var ratingform = document.getElementsByClassName("ratingform");
 var ratingvalue = document.getElementsByClassName("rating-value");
 
-// alert(ratingvalue.length == ratingform.length);
-
 for (let i = 0; i < ratingform.length; i++) {
   ratingform[i].onsubmit = function() {
     let nota = 0;

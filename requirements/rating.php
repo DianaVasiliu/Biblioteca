@@ -9,7 +9,7 @@
 
     $query = "SELECT DISTINCT id_carte
               FROM carte 
-              WHERE tip='fizica'";
+              WHERE BINARY tip = 'fizica'";
 
     $res = mysqli_query($link, $query);
     $ids = array();
@@ -59,7 +59,6 @@
 
     }
 
-  
     header("Location: ../bibliotecafizica.php");
 
 ?>

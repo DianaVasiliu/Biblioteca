@@ -155,3 +155,13 @@ table {
     padding: .7pc;
     font-size: 80%;
 }
+
+.booktitle {
+    font-size: 120%;
+    text-decoration: underline;
+    color: rgb(51, 0, 0);
+}
+
+#carti {
+    overflow-x: auto;
+}
