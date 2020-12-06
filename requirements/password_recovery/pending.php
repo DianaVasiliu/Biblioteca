@@ -1,10 +1,10 @@
 <?php include('reset_password.php'); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
 	<meta charset="UTF-8">
-	<title>Password Reset PHP</title>
-	<link rel="stylesheet" href="../../css/main.css">
+	<title>Resetare parola</title>
+	<link rel="stylesheet" href="../../css/pw_reset.css">
 </head>
 
 <body>

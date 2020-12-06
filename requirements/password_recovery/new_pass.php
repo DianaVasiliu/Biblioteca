@@ -3,11 +3,11 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
 	<meta charset="UTF-8">
 	<title>Resetare parola</title>
-	<link rel="stylesheet" href="../../css/main.css">
+	<link rel="stylesheet" href="../../css/pw_reset.css">
 </head>
 
 <body>

@@ -310,3 +310,14 @@ INSERT INTO coduri_utilizatori VALUES
 ('0D;p~\\#%LqFr=', 2, 0),
 ('kL-),16XX]cS!@', 3, 0);
 
+
+
+select * from coduri_utilizatori;
+
+select * from carte_autor;
+select * from carte;
+select * from autor;
+
+alter table autor auto_increment = 1;
+delete from autor where id_autor in (36,37,38,39,40,41,42);
+

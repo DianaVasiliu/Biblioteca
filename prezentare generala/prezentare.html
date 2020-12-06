@@ -16,7 +16,7 @@
             cartilor si de administrare a bazei de date.
         </p>
         <p>
-            Aplicatia isi propune sa aiba un sistem de logare/autentificare, intrucat aproape nicio functie nu poate fi
+            Aplicatia isi propune sa aiba un sistem de autentificare/inregistrare, intrucat aproape nicio functie nu poate fi
             realizata in mod anonim.
             De asemenea, este necesara existenta mai multor tipuri de utilizatori, mai exact utilizatori de tip client,
             de tip administrator (pentru baza de date) si de tip bibliotecar.
@@ -25,7 +25,7 @@
         </p>
         <p>
             In cazul in care utilizatorul nu este autentificat, el poate alege intre doua variante: autentificare sau
-            inregistrare. In cazul autentificarii, ii va aparea un formular in care i se va cere e-mailul si parola. In
+            inregistrare. In cazul autentificarii, ii va aparea un formular in care i se va cere username-ul si parola. In
             cazul inregistrarii, va avea un formular de inscriere, care va contine cateva date personale. Vor fi cerute
             informatii despre tipul de utilizator dorit, iar, pentru
             fiecare caz, vor fi cerute diferite informatii (formularul va fi dinamic). In cazul administratorului sau a
@@ -40,10 +40,10 @@
                 Utilizatorul de tip client:
                 <ul>
                     <li>
-                        poate realiza imprumuturi, respectiv restituiri, la cartile disponibile din biblioteca
+                        poate realiza imprumuturi, respectiv restituiri, la cartile fizice disponibile din biblioteca
                     </li>
                     <li>
-                        poate oferi review-uri la carti
+                        poate oferi review-uri la carti (note de la 1 la 5)
                     </li>
                     <li>
                         are acces la descrierile cartilor
@@ -52,7 +52,7 @@
                         primeste notificari cu privire la restituirea cartilor (in cadrul aplicatiei si pe e-mail)
                     </li>
                     <li>
-                        are, in cadrul contului, o lista cu toate cartile imprumutate de-a lungul timpului
+                        are, in cadrul contului, o lista cu toate cartile imprumutate de-a lungul timpului si o lista cu toate cartile favorite
                     </li>
                 </ul>
             </li> <!-- sf facilitati client -->
@@ -96,7 +96,7 @@
                         "Biblioteca digitala", "Intrebari frecvente" care nu necesita logare
                     </li>
                     <li>
-                        nu poate imprumuta carti si, implicit, nu poate vedea istoricul imprumuturilor si cartile
+                        nu poate imprumuta carti si, implicit, nu poate vedea istoricul imprumuturilor sau cartile
                         favorite
                     </li>
                     <li>
@@ -124,8 +124,7 @@
             informatii despre acestea, precum si informatii despre imprumuturile realizate de
             clienti, in functie de care se calculeaza taxele de intarziere de retur, necesitatea notificarii clientului
             de a returna o carte imprumutata. De asemenea, in baza de date sunt retinute si review-urile utilizatorilor,
-            pentru a putea calcula media generala a unei carti si pentru a putea afisa, in cadrul aplicatiei, lista de
-            review-uri publica tuturor utilizatorilor.
+            pentru a putea calcula media generala a unei carti si pentru a putea afisa, in cadrul aplicatiei, aceasta medie generala pentru fiecare carte.
         </p>
 
         <p>

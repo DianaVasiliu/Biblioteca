@@ -21,18 +21,20 @@ table_select.onchange = function () {
       h52.id = "titlu_prenume";
       let input1 = document.createElement("input");
       input1.id = 'nume_autor';
+      input1.name = 'nume_autor';
       input1.style.marginLeft = 0;
       input1.style.width = "30%";
       let input2 = document.createElement("input");
       input2.id = 'prenume_autor';
+      input2.name = 'prenume_autor';
       input2.style.marginLeft = 0;
       input2.style.width = "30%";
 
       insert_form.insertBefore(h3, submit_insert);
-      insert_form.insertBefore(h51, submit_insert);
-      insert_form.insertBefore(input1, submit_insert);
       insert_form.insertBefore(h52, submit_insert);
       insert_form.insertBefore(input2, submit_insert);
+      insert_form.insertBefore(h51, submit_insert);
+      insert_form.insertBefore(input1, submit_insert);
   }
   else if (table_select.selectedIndex == 2) {
     delete_from_1();
@@ -44,6 +46,7 @@ table_select.onchange = function () {
     h3_titlu.innerHTML = "Titlul cartii:";
     let input1 = document.createElement("input");
     input1.id = 'titlu_carte';
+    input1.name = 'titlu_carte';
     input1.style.marginLeft = 0;
     input1.style.width = "30%";
     let h3_categorie = document.createElement("h3");
@@ -51,6 +54,7 @@ table_select.onchange = function () {
     h3_categorie.innerHTML = "Id-ul categoriei:";
     let input2 = document.createElement("input");
     input2.id = 'id_categorie';
+    input2.name = 'id_categorie';
     input2.style.marginLeft = 0;
     input2.style.width = "10%";
     let h3_an = document.createElement("h3");
@@ -58,6 +62,7 @@ table_select.onchange = function () {
     h3_an.innerHTML = "Anul publicarii:";
     let input3 = document.createElement("input");
     input3.id = 'an';
+    input3.name = 'an';
     input3.type = "number";
     input3.min = "1900";
     input3.max = new Date().getFullYear();
@@ -68,6 +73,7 @@ table_select.onchange = function () {
     h3_editura.innerHTML = "Editura:";
     let input4 = document.createElement("input");
     input4.id = 'editura';
+    input4.name = 'editura';
     input4.style.marginLeft = 0;
     input4.style.width = "30%";
     let h3_tip = document.createElement("h3");
@@ -106,6 +112,7 @@ table_select.onchange = function () {
     h3_stoc.innerHTML = "Stoc:";
     let input5 = document.createElement("input");
     input5.id = 'stoc';
+    input5.name = 'stoc';
     input5.type = "number";
     input5.min = 0;
     input5.max = 100;
@@ -116,6 +123,7 @@ table_select.onchange = function () {
     h3_descriere.innerHTML = "Descriere:";
     let textarea = document.createElement("textarea");
     textarea.id = 'descriere';
+    textarea.name = 'descriere';
     textarea.style.marginLeft = 0;
     textarea.style.width = "70%";
     textarea.style.maxWidth = "90%";
@@ -136,12 +144,24 @@ table_select.onchange = function () {
     h5_url.style.marginTop = 0;
     let input6 = document.createElement("input");
     input6.id = 'url_fisier';
+    input6.name = 'url_fisier';
     input6.style.marginLeft = 0;
     input6.style.width = "30%";
+    let h3_autori = document.createElement("h3");
+    h3_autori.id = "h3_autori";
+    h3_autori.innerHTML = "Autori:";
+    let input7 = document.createElement("input");
+    input7.id = 'autori';
+    input7.name = 'autori';
+    input7.style.marginLeft = 0;
+    input7.style.width = "30%";
+    input7.placeholder = "Numele separate prin ','";
 
 
     insert_form.insertBefore(h3_titlu, submit_insert);
     insert_form.insertBefore(input1, submit_insert);
+    insert_form.insertBefore(h3_autori, submit_insert);
+    insert_form.insertBefore(input7, submit_insert);
     insert_form.insertBefore(h3_categorie, submit_insert);
     insert_form.insertBefore(input2, submit_insert);
     insert_form.insertBefore(h3_an, submit_insert);
@@ -171,6 +191,7 @@ table_select.onchange = function () {
     h3_cod.innerHTML = "Codul:";
     let input = document.createElement("input");
     input.id = 'cod_utilizator';
+    input.name = 'cod_utilizator';
     input.style.marginLeft = 0;
     input.style.width = "30%";
     let h3_tip = document.createElement("h3");
@@ -209,6 +230,11 @@ table_select.onchange = function () {
     insert_form.insertBefore(input, submit_insert);
     insert_form.insertBefore(h3_tip, submit_insert);
     insert_form.insertBefore(div_radio, submit_insert);
+  }
+  else {
+    delete_from_1();
+    delete_from_2();
+    delete_from_3();
   }
 
 }
