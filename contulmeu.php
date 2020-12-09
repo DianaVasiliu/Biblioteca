@@ -4,7 +4,6 @@
     mysqli_set_charset($link , "utf8");
 
     session_start();
-    $_SESSION['changed_page'] = '';
     $_SESSION['captcha_location'] = 'borrow';
 ?>
 
@@ -158,7 +157,6 @@
     
                             <select name="county" id="judete" required>
                                 <option value="0">--Alege--</option>
-    
 <?php
                             while($row = mysqli_fetch_array($res)) {
 ?>
@@ -170,7 +168,6 @@
     
                             <input type="submit" value="Modifica" class="submit" name="upaddress">
                         </form>
-
 
                         <p style="color: red; margin-top: 3pc; font-weight: bolder; font-size: 120%;">
 <?php 
@@ -206,14 +203,12 @@
 ?>
 
             </div> <!-- inchid div-ul "div_contulmeu" -->
-            
+          
 <?php
         } // end if ($_SESSION['loggedin'] == true)
 ?>
-
         </div> <!--inchid "continut" -->
     </div> <!-- inchid "corp" -->
-
 
 <?php 
     $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
@@ -223,6 +218,6 @@
     <script src="./js/contulmeu_admin.js"> </script>
     <script src="./js/contulmeu.js"> </script>
     <script src="./js/common.js"> </script>
-</body>
 
+</body>
 </html>

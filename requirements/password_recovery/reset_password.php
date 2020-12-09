@@ -52,8 +52,8 @@ if (isset($_POST['reset-password'])) {
       )
     );
 
-    $host = "localhost";
-    // $host = "bib.epizy.com";
+    // $host = "localhost";
+    $host = "bib.epizy.com";
 
     $mail->SMTPSecure = 'tls';
 

@@ -123,7 +123,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label>Parola</label>
                 <input type="password" name="password" class="form-control">
                 <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
+            </div>            
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>

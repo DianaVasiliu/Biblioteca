@@ -97,6 +97,7 @@ input[name="email"] {
     font-size: 80%;
     margin-left: 1pc;
     margin-right: 0;
+    border: none;
 }
 
 #imprumuturi {

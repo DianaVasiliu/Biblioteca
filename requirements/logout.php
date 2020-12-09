@@ -1,10 +1,7 @@
 <?php
     session_start();
-
-    $_SESSION["loggedin"] = false;
-    $_SESSION["id"] = null;
-    $_SESSION["username"] = null;
-    $_SESSION["email"] = null;
+    session_unset();
+    session_destroy();
 
     header("Location: ../paginaprincipala.php");
 ?>

@@ -7,12 +7,16 @@
 
     session_start();
 
+    // trebuie sa fac sa tina minte filtrele
     if (!isset($_SESSION['filters'])) {
         $_SESSION['filters'] = array();
     }
+    if (!isset($_SESSION['order_by'])) {
+        $_SESSION['order_by'] = 8;
+    }
 
     if (!isset($_POST['sort'])) {
-        $_SESSION['order_by'] = 8;
+        // $_SESSION['order_by'] = 8;
     }
     else {
         switch($_POST['sortselect']) {
@@ -74,7 +78,7 @@
             $query = $query . " AND BINARY editura IN " . $editurafilter;
         }
         
-        $query = $query . " GROUP BY titlu ORDER BY titlu";
+        $query = $query . " GROUP BY titlu ORDER BY " . $_SESSION['order_by'];
 
         $_SESSION['query'] = $query;
     }

@@ -1,3 +1,6 @@
+
+
+
 <div id="top">
     <div id="div_titlu">
         <h1><a href="paginaprincipala.php">
@@ -7,6 +10,23 @@
         
     </div>   
 
+<?php
+    
+    $inactive = 3600;
+    ini_set('session.gc_maxlifetime', $inactive);
+
+    if (isset($_SESSION['testing']) && (time() - $_SESSION['testing'] > $inactive)) {
+        
+        session_unset();
+        session_destroy();
+    }
+    $_SESSION['testing'] = time(); // Update session
+?>
+    <p style="color: white">
+<?php
+    echo $_SESSION['ok'];
+?>
+    </p>
     <div id="login">
         <?php
             if (isset($_SESSION['loggedin']) && $_SESSION["loggedin"] == true)
@@ -66,5 +86,7 @@
 
 
 </div>
+
+
 
 
