@@ -1,5 +1,6 @@
 <?php
     require_once './dbconnect.php';
+    require './functions.php';
 
     $link = connectdb();
     session_start();
@@ -12,7 +13,7 @@
                         . " AND id_carte=" . $_SESSION['books'][$i];
 
                 if($res = mysqli_query($link, $query)) {
-                    $_SESSION['errfavs'] = "No error: " . mysqli_affected_rows($res);
+                    $_SESSION['errfavs'] = "No error: " . mysqli_affected_rows($link);
                 }
                 else {
                     $_SESSION['errfavs'] = "Error: " . mysqli_error($link);
@@ -23,7 +24,7 @@
                        . ", " . $_SESSION['books'][$i] . ")";
 
                 if($res = mysqli_query($link, $query)) {
-                    $_SESSION['errfavs'] = "No error: " . mysqli_affected_rows($res);
+                    $_SESSION['errfavs'] = "No error: " . mysqli_affected_rows($link);
                 }
                 else {
                     $_SESSION['errfavs'] = "Error: " . mysqli_error($link);
@@ -31,6 +32,7 @@
             }
             break;
         }
+        cauta(0);
     }
     if($_SESSION['favslocation'] == "contulmeu") {
         header("Location: ../contulmeu.php");

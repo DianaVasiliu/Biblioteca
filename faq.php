@@ -1,7 +1,3 @@
-<?php
-    session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="ro">
 
@@ -16,11 +12,11 @@
     <title>Intrebari frecvente</title>
 </head>
 
-<script src="paginaprincipala.js"></script>
-
 <body>
     <header id="header">
 <?php 
+        session_start();
+        
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
         include ($IPATH."/requirements/header.php"); 
 ?>
@@ -78,7 +74,7 @@
                         </div>
                         <div class="answer">
                         <p>
-                            Poti imprumuta o carte doar daca esti autentificat in contul tau de utilizator. La "Profilul meu", exista un formular de cerere de imprumut. Completezi datele cerute acolo si vei primi un mesaj cu statusul cartii cerute. Trebuie sa alegi o data la care poti ridica cartea! 
+                            Poti imprumuta o carte doar daca esti autentificat in contul tau de utilizator. La "Contul meu", exista un formular de cerere de imprumut. Completezi datele cerute acolo si vei primi un mesaj cu statusul cartii cerute. Trebuie sa alegi o data la care poti ridica cartea! 
                         </p>
                         <p>
                             Cartea poate fi ridicata de la sediul central al bibliotecii noastre, de pe Bulevardul Unirii nr. 22, in timpul programului afisat.
@@ -112,7 +108,7 @@
                         </div>
                         <div class="answer">
                         <p>
-                            Citeste <a href="../pdf_files/Regulament.pdf" download="../pdf_files/Regulament.pdf">regulamentul</a> si scrie-ne la exemplu@gmail.com. Iti vom raspunde in cel mai scurt timp.
+                            Citeste <a href="https://drive.google.com/file/d/1gOaVO5SeKFcUAfEHEnsCzyms07fqozEv/view?usp=sharing" target="_blank">regulamentul</a> si scrie-ne la <a href="mailto:diana-elena.vasiliu@my.fmi.unibuc.ro">diana-elena.vasiliu@my.fmi.unibuc.ro</a>. Iti vom raspunde in cel mai scurt timp.
                         </p> 
                         </div>
                     </div>
@@ -136,8 +132,14 @@
                         </div>
                         <div class="answer">
                         <p>
-                            Utilizatorii au acces in spatiile deschise, in limita locurilor disponibile, dupa urmatorul program: Luni, Miercuri, Vineri ora 08:00-20:00, Marti, Joi ora 08:00-18:00, Sambata ora 09:00-18:00, Duminica inchis.
+                            Utilizatorii au acces in spatiile deschise, in limita locurilor disponibile, dupa urmatorul program:
                         </p> 
+                        <ul>
+                            <li>Luni, Miercuri, Vineri ora 08:00-20:00</li>
+                            <li>Marti, Joi ora 08:00-18:00</li>
+                            <li>Sambata ora 09:00-18:00</li>
+                            <li>Duminica inchis</li>
+                        </ul>
                         </div>
                     </div>
                     <div class="accordion-item" id="question8">

@@ -1,7 +1,3 @@
-<?php
-    session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="ro">
 
@@ -16,11 +12,11 @@
 	<title>Bine ai venit la Biblioteca!</title>
 </head>
 
-<script src="paginaprincipala.js"></script>
-
 <body>
 <header id="header">
 <?php 
+    session_start();
+    
     $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
     include ($IPATH."requirements/header.php"); 
 ?>

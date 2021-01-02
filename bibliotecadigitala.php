@@ -1,7 +1,3 @@
-<?php
-    session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="ro">
 
@@ -11,7 +7,6 @@
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/body.css">
     <link rel="stylesheet" href="./css/footer.css">
-    <link rel="stylesheet" href="./css/searchbook.css">
     <link rel="stylesheet" href="./css/mobile_menu.css">
 
     <title>Biblioteca digitala</title>
@@ -29,6 +24,8 @@
 <body>
 	<header id="header">
 <?php 
+        session_start();
+        
         $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
         include ($IPATH."requirements/header.php"); 
 ?>

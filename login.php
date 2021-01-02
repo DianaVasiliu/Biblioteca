@@ -63,10 +63,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["lastname"] = $nume;
                             $_SESSION["firstname"] = $prenume;
                             $_SESSION["address"] = $adresa;
-                            $_SESSION["tip"] = $tip;                 
+                            $_SESSION["tip"] = $tip;
+
+                            if ($tip == 1) {
+                                $_SESSION['redirecting'] = 1;
+                                header("location: contulmeu.php");
+                            }
                             
-                            header("location: contulmeu.php");
-                            
+                            if ($tip == 2) {
+                                $_SESSION["insert_notif_bibl_flag"] = 1;
+                                $_SESSION['send_notif_retur_flag'] = 1;  
+                                $_SESSION['send_notif_taxa_flag'] = 1;
+                            }
+                        
+                            if ($tip == 2 || $tip == 3) {
+                                header("location: contulmeu.php");    
+                            }
                         }
                         else {
                             $password_err = "Date de conectare invalide.";

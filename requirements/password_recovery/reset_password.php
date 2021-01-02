@@ -60,7 +60,7 @@ if (isset($_POST['reset-password'])) {
     $mail->Host = 'smtp.gmail.com';
     $mail->Port = 587;
 
-    $mail->setFrom('diana.vasiliu10@gmail.com', 'Biblioteca');
+    $mail->setFrom('myemail', 'Biblioteca');
     $mail->addAddress($email);
 
     $resetlink = $host . '/Proiect/requirements/password_recovery/new_pass.php?token=' . $token;

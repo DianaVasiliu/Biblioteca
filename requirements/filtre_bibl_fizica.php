@@ -1,4 +1,11 @@
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <h3>
+<?php
+    if (isset($_SESSION['my_filter']) && $_SESSION['my_filter'] != '') {
+        echo "Filtru suplimentar: '" . $_SESSION['my_filter'] . "'";
+    }
+?>
+    </h3>
     <div class="filtru">
         <div class="header">
             <h3>Autor</h3>
@@ -6,7 +13,11 @@
 
         <div class="options">
 <?php
-        $query = "SELECT prenume, nume FROM autor";
+        $query = "SELECT DISTINCT prenume, nume 
+                    FROM autor
+                    JOIN carte_autor USING (id_autor)
+                    JOIN carte USING (id_carte)
+                    WHERE tip = 'fizica'";
         $res = mysqli_query($link, $query);
 
         $checkbox = array();
@@ -42,7 +53,10 @@
 
         <div class="options">
 <?php
-        $query = "SELECT DISTINCT categorie FROM categorie";
+        $query = "SELECT DISTINCT categorie 
+                    FROM categorie
+                    JOIN carte USING (id_categorie)
+                    WHERE tip = 'fizica'";
         $res = mysqli_query($link, $query);
 
         $checkbox = array();

@@ -6,10 +6,10 @@ use PHPMailer\PHPMailer\Exception;
 require '../Composer/vendor/autoload.php';
 require_once './requirements/dbconnect.php';
 
-session_start();
-
 $link = connectdb();
 mysqli_set_charset($link , "utf8");
+
+session_start();
 
 $captcha_err = '';
 $trimis = '';
@@ -46,8 +46,8 @@ if (isset($_POST['submit'])) {
     
         $mail->Host = 'smtp.gmail.com';
     
-        $mail->setFrom('diana.vasiliu10@gmail.com', 'Biblioteca');
-        $mail->addAddress('diana.vasiliu10@gmail.com', 'Biblioteca');
+        $mail->setFrom('myemail', 'Biblioteca');
+        $mail->addAddress('myemail', 'Biblioteca');
     
         $mail->isHTML(true);
         $mail->Subject = 'E-mail nou de la utilizator';
@@ -107,10 +107,10 @@ if (isset($_POST['submit'])) {
         <section class="sectiune istoric">
             <h2 id="istoric">Scurt istoric</h2>
             <p>
-            Potrivit celor mai mulţi istorici şi cercetători, Biblioteca Naţională a României îşi găseşte originile într-una dintre cele mai vechi şi reprezentative biblioteci din România - Biblioteca Colegiului Sf. Sava din Bucureşti. Aceasta şi-a deschis colecţiile către publicul larg în anul 1838, atunci când au fost catalogate aproximativ 1000 de volume de carte franţuzească. După Unirea din 1859, aceasta a obţinut statutul de bibliotecă naţională, primind alternativ denumirea de Bibliotecă Naţională şi Bibliotecă Centrală. În anul 1864, prin legea Reglementărilor publice, este numită Biblioteca Centrală a Statului, denumire şi statut păstrate până în anul 1901, când este desfiinţată, iar colecţiile sale sunt transferate Bibliotecii Academiei Române care primeşte statutul de bibliotecă naţională. Pentru perioada aceasta doar o singură funcţie naţională poate fi considerată relevantă pentru bibliotecă şi anume, funcţia patrimonială. În anul 1955 fondul de carte revine noii biblioteci înfiinţate - Biblioteca Centrală de Stat, principala bibliotecă publică din România.
+            Potrivit celor mai multi istorici si cercetatori, Biblioteca Nationala a Romaniei isi gaseste originile intr-una dintre cele mai vechi si reprezentative biblioteci din Romania - Biblioteca Colegiului Sf. Sava din Bucuresti. Aceasta si-a deschis colectiile catre publicul larg in anul 1838, atunci cand au fost catalogate aproximativ 1000 de volume de carte frantuzeasca. Dupa Unirea din 1859, aceasta a obtinut statutul de biblioteca nationala, primind alternativ denumirea de Biblioteca Nationala si Biblioteca Centrala. in anul 1864, prin legea Reglementarilor publice, este numita Biblioteca Centrala a Statului, denumire si statut pastrate pana in anul 1901, cand este desfiintata, iar colectiile sale sunt transferate Bibliotecii Academiei Romane care primeste statutul de biblioteca nationala. Pentru perioada aceasta doar o singura functie nationala poate fi considerata relevanta pentru biblioteca si anume, functia patrimoniala. in anul 1955 fondul de carte revine noii biblioteci infiintate - Biblioteca Centrala de Stat, principala biblioteca publica din Romania.
             </p>
             <p>
-            Imediat după prăbuşirea comunismului, la începutul lunii ianuarie 1990, Biblioteca Centrală de Stat a devenit Biblioteca Naţională a României (ISIL RO-B-011), ca urmare a deciziei adoptate de noua putere, iar după intrarea României în Uniunea Europeană aceasta îşi dezvoltă funcţiile, implicându-se activ în numeroase proiecte naţionale şi internaţionale, precum TELplus, Manuscriptorium, Rediscover ş.a. 
+            Imediat dupa prabusirea comunismului, la inceputul lunii ianuarie 1990, Biblioteca Centrala de Stat a devenit Biblioteca Nationala a Romaniei (ISIL RO-B-011), ca urmare a deciziei adoptate de noua putere, iar dupa intrarea Romaniei in Uniunea Europeana aceasta isi dezvolta functiile, implicandu-se activ in numeroase proiecte nationale si internationale, precum TELplus, Manuscriptorium, Rediscover s.a. 
             </p>
         </section>
         <br>
@@ -126,7 +126,7 @@ if (isset($_POST['submit'])) {
             <p>
                 Ca in orice institutie civilizata, trebuie sa existe si un set de reguli ce trebuie respectate. Acestea pot fi gasite la link-ul de mai jos:
             </p>
-            <a href="./pdf_files/Regulament.pdf" download="Regulament.pdf">Regulament</a>
+            <a href="https://drive.google.com/file/d/1gOaVO5SeKFcUAfEHEnsCzyms07fqozEv/view?usp=sharing" target="_blank">Regulament</a>
         </section>
         <br>
         <section class="sectiune gdpr">
@@ -134,7 +134,7 @@ if (isset($_POST['submit'])) {
             <p>
                 Ne asumam raspunderea de a avea grija de toate datele furnizate de clientii nostri, astfel ca avem politica GDPR foarte bine pusa la punct. O poti vedea accesand link-ul de mai jos:
             </p>
-            <a href="./pdf_files/GDPR.pdf" download="Politica_BNR_GDPR_2020.pdf">GDPR</a>
+            <a href="https://drive.google.com/file/d/1uJzkwqSEfR8VJXo9em6gol38LwRU2q02/view?usp=sharing" target="_blank">GDPR</a>
         </section>
         <br>
         <hr>

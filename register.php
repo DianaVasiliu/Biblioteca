@@ -38,13 +38,13 @@ $anyerror = 0;
 
 $usertype = 0;
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $secret = "6LdpCwAaAAAAAPwPtP3bXf9qZ_lTvf7Kk4LIWlMG";
+    $secret = "secretkey";
     $response = $_POST['g-recaptcha-response'];
     $url = "https://www.google.com/recaptcha/api/siteverify";
     $data = array(
-        'secret' => "6LdpCwAaAAAAAPwPtP3bXf9qZ_lTvf7Kk4LIWlMG",
+        'secret' => "secretkey",
         'response' => $_POST['g-recaptcha-response']
     );
     $options = array(
@@ -216,7 +216,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $phone_err = "Te rugam introdu un numar de telefon.";  
             $anyerror = 1;   
         } 
-        elseif (strlen(mysqli_real_escape_string($link, trim($_POST["phone"]))) != 10 || mysqli_real_escape_string($link, trim($_POST["phone"]))[0] != "0") {
+        elseif (strlen(mysqli_real_escape_string($link, trim($_POST["phone"]))) != 10 || mysqli_real_escape_string($link, trim($_POST["phone"]))[0] != "0" ||
+        !is_numeric(mysqli_real_escape_string($link, trim($_POST["phone"])))) {
             $phone_err = "Te rugam introdu un numar de telefon valid.";
             $anyerror = 1;
         }

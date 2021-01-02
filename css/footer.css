@@ -8,6 +8,11 @@ footer {
     /* border-top: solid black 10px; */
 }
 
+#footer_terms {
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
 .footer_content {
     display: flex;    
     position: relative;

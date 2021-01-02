@@ -95,7 +95,7 @@ table {
     font-size: 1pc;
 }
 
-#searchbooks {
+#filter {
     background-image: url('../pics/searchicon.png');
     background-position: 5% center;
     background-size: 1.5vw 2.5vh;
@@ -164,4 +164,8 @@ table {
 
 #carti {
     overflow-x: auto;
+}
+
+#search_div {
+    display: flex;
 }

@@ -1,28 +1,11 @@
-var search = document.getElementById("searchbooks");
-var cells = document.getElementsByClassName("tabledata");
-var searchItems = document.querySelectorAll(".paragraphs");
-
-search.onkeyup = function () {
-    var filter = search.value.toUpperCase();
-
-    for (var j = 0; j < cells.length; j++) {
-        var ok = 0;
-        for (var i = j * 4; i < (j + 1) * 4; i++) {
-            var text = searchItems[i].innerText;
-
-            if (text.toUpperCase().indexOf(filter) != -1) {
-                cells[j].style.display = "";
-                ok = 1;
-            }
-        }
-        if (!ok) {
-            cells[j].style.display = "none";
-        }
-    }
-}
-
 var select = document.getElementById('sortselect');
 var select_submit = document.getElementById('sort');
+var links = document.getElementsByTagName("a");
+var search_book = document.getElementById("search_book");
+
+search_book.onclick = function () {
+    localStorage.removeItem("selected_filter");
+}
 
 if (!localStorage.getItem('selected_filter'))
     localStorage.setItem('selected_filter', 'original');
@@ -39,3 +22,10 @@ for (let i = 0; i < select.length; i++) {
 window.onclose = function () {
     localStorage.removeItem("selected_filter");
 }
+
+for (let i = 0; i < links.length - 1; i++) {
+    links[i].onclick = function () {        
+        localStorage.removeItem("selected_filter");
+    }
+}
+

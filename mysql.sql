@@ -3,101 +3,96 @@
 -- ----------------------------------
 
 CREATE TABLE carte (
-  id_carte         INTEGER AUTO_INCREMENT,
-  titlu            VARCHAR(150) NOT NULL,
-  id_categorie	   INTEGER NOT NULL,
-  an			   YEAR,
-  editura		   VARCHAR(30),
-  tip              VARCHAR(10) NOT NULL,
-  nota             DECIMAL(3, 2) DEFAULT NULL,
-  stoc             INTEGER DEFAULT 1,
-  descriere        VARCHAR(2000),
-  url_fisier       VARCHAR(1000),
-    CONSTRAINT PRIMARY KEY (id_carte)
+	id_carte         INTEGER AUTO_INCREMENT,
+	titlu            VARCHAR(150) NOT NULL,
+	id_categorie	 INTEGER NOT NULL,	
+	an			   	 YEAR,
+	editura		   	 VARCHAR(30),
+	tip              VARCHAR(10) NOT NULL,
+	nota             DECIMAL(3, 2) DEFAULT NULL,
+	stoc             INTEGER DEFAULT 1,
+	descriere        VARCHAR(2000),
+	url_fisier       VARCHAR(1000),
+		PRIMARY KEY (id_carte)
 );
 
 CREATE TABLE autor (
-  id_autor   INTEGER AUTO_INCREMENT,
-  nume       VARCHAR(30),
-  prenume    VARCHAR(30),
-    CONSTRAINT PRIMARY KEY (id_autor)
+	id_autor   INTEGER AUTO_INCREMENT,
+	nume       VARCHAR(30),
+	prenume    VARCHAR(30),
+		PRIMARY KEY (id_autor)
 );
 
 CREATE TABLE carte_autor (
-	id_carte 	INTEGER,
-    id_autor	INTEGER,
-     CONSTRAINT fk_carte_autor_carte FOREIGN KEY (id_carte)
-		REFERENCES carte (id_carte),
-	 CONSTRAINT fk_carte_autor_autor FOREIGN KEY (id_autor)
-		REFERENCES autor (id_autor),
-	CONSTRAINT PRIMARY KEY (id_carte, id_autor)
+	id_carte 	INTEGER,	
+	id_autor	INTEGER,
+		PRIMARY KEY (id_carte, id_autor)
 );
 
 CREATE TABLE client (
-  id_client           INTEGER AUTO_INCREMENT,
-  nume                VARCHAR(20) NOT NULL,
-  prenume             VARCHAR(20) NOT NULL,
-  telefon             VARCHAR(20) UNIQUE,
-  email               VARCHAR(40) UNIQUE,
-  adresa              VARCHAR(100),
-  data_inregistrare   DATETIME NOT NULL DEFAULT current_timestamp,
-  tip				          INTEGER NOT NULL,
-  taxa_retur          DECIMAL(6, 2) DEFAULT 0.00,
-  username            VARCHAR(40) NOT NULL,
-  parola              VARCHAR(255) NOT NULL,
-  activ               INTEGER DEFAULT 0,
-  token               VARCHAR(35),
-    CONSTRAINT PRIMARY KEY (id_client)
+	id_client           INTEGER AUTO_INCREMENT,
+	nume                VARCHAR(20) NOT NULL,
+	prenume             VARCHAR(20) NOT NULL,
+	telefon             VARCHAR(20) UNIQUE,
+	email               VARCHAR(40) UNIQUE,
+	adresa              VARCHAR(100),
+	data_inregistrare   DATETIME NOT NULL DEFAULT current_timestamp,
+	tip		 	        INTEGER NOT NULL,
+	taxa_retur          DECIMAL(6, 2) DEFAULT 0.00,
+	username            VARCHAR(40) NOT NULL,
+	parola              VARCHAR(255) NOT NULL,
+	activ               INTEGER DEFAULT 0,
+	token               VARCHAR(35),
+		PRIMARY KEY (id_client)
 );
 
 CREATE TABLE imprumut (
-  id_imprumut     INTEGER AUTO_INCREMENT,
-  id_client       INTEGER NOT NULL,
-  id_carte        INTEGER NOT NULL,
-  data_cerere     DATETIME DEFAULT CURRENT_TIMESTAMP,
-  data_ridicare   DATE,
-  data_retur      DATE,
-    CONSTRAINT PRIMARY KEY (id_imprumut, id_client, id_carte, data_cerere)
+	id_imprumut		INTEGER,
+	id_client       INTEGER NOT NULL,
+	id_carte        INTEGER NOT NULL,
+	data_cerere     DATETIME DEFAULT CURRENT_TIMESTAMP,
+	data_ridicare   DATE,
+	data_retur      DATE,
+    restituit 		INTEGER DEFAULT 0,
+		PRIMARY KEY (id_imprumut, id_client, id_carte, data_cerere)
 );
 
 CREATE TABLE carte_imprumut (
 	id_imprumut		INTEGER,
     id_carte		INTEGER,
-		CONSTRAINT PRIMARY KEY (id_imprumut, id_carte),
-        CONSTRAINT fk_carte_imprumut_carte FOREIGN KEY (id_carte) REFERENCES carte(id_carte),
-        CONSTRAINT fk_carte_imprumut_imprumut FOREIGN KEY (id_imprumut) REFERENCES imprumut(id_imprumut)
+		PRIMARY KEY (id_imprumut, id_carte)
 );
 
 CREATE TABLE categorie (
 	id_categorie		INTEGER AUTO_INCREMENT,
     categorie			VARCHAR(100) UNIQUE,
-		CONSTRAINT PRIMARY KEY (id_categorie)
+		PRIMARY KEY (id_categorie)
 );
 
 CREATE TABLE coduri_utilizatori (
-  cod             VARCHAR(100),
-  tip             INTEGER,
-  utilizat        INTEGER DEFAULT 0,
-    CONSTRAINT PRIMARY KEY (cod)
+	cod             VARCHAR(100),
+	tip             INTEGER,
+	utilizat        INTEGER DEFAULT 0,
+		PRIMARY KEY (cod)
 );
 
 CREATE TABLE judete (
-  id_judet INTEGER AUTO_INCREMENT,
-  judet VARCHAR(20),
-    CONSTRAINT PRIMARY KEY(id_judet)
+	id_judet 	INTEGER AUTO_INCREMENT,
+	judet 		VARCHAR(20),
+		PRIMARY KEY(id_judet)
 );
 
 CREATE TABLE user_favourites (
 	id_client		INTEGER,
     id_carte		INTEGER,
-    PRIMARY KEY (id_client, id_carte)
+		PRIMARY KEY (id_client, id_carte)
 );
 
 CREATE TABLE reviews (
 	id_client		INTEGER,
     id_carte		INTEGER,
     nota			INTEGER,
-		CONSTRAINT PRIMARY KEY (id_client, id_carte)
+		PRIMARY KEY (id_client, id_carte)
 );
 
 CREATE TABLE password_reset (
@@ -108,37 +103,92 @@ CREATE TABLE password_reset (
 		PRIMARY KEY (id_pw_reset)
 );
 
+CREATE TABLE notificari (
+	id_notificare	INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_client		INTEGER,
+    id_sender		INTEGER,    
+    descriere		VARCHAR(200),
+    citit			INTEGER DEFAULT 0,
+    data_creere		DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE taxe (
+	id_taxa			INTEGER PRIMARY KEY AUTO_INCREMENT,
+	id_client		INTEGER,
+    descriere		VARCHAR(100),
+    suma			INTEGER,
+    platit			INTEGER DEFAULT 0,
+    data_taxare		DATETIME DEFAULT CURRENT_TIMESTAMP,
+    data_plata		DATETIME DEFAULT NULL
+);
+
 -- ------------------------------------------
 -- ------- ADAUGAREA CONSTRANGERILOR --------
 -- ------------------------------------------
+ALTER TABLE carte_autor
+	-- DROP CONSTRAINT fk_carte_autor_carte;
+	ADD CONSTRAINT fk_carte_autor_carte FOREIGN KEY (id_carte)
+		REFERENCES carte (id_carte) ON DELETE CASCADE;
+
+ALTER TABLE carte_autor
+	-- DROP CONSTRAINT fk_carte_autor_autor;
+	ADD CONSTRAINT fk_carte_autor_autor FOREIGN KEY (id_autor)
+		REFERENCES autor (id_autor) ON DELETE CASCADE;
+        
+ALTER TABLE carte_imprumut
+	-- DROP CONSTRAINT fk_carte_imprumut_carte;
+	ADD CONSTRAINT fk_carte_imprumut_carte FOREIGN KEY (id_carte) 
+		REFERENCES carte(id_carte) ON DELETE CASCADE;
+        
+ALTER TABLE carte_imprumut
+	-- DROP CONSTRAINT fk_carte_imprumut_imprumut;
+	ADD CONSTRAINT fk_carte_imprumut_imprumut FOREIGN KEY (id_imprumut) 
+		REFERENCES imprumut(id_imprumut) ON DELETE CASCADE;
 
 ALTER TABLE imprumut
-  ADD CONSTRAINT fk_imprumut_client FOREIGN KEY ( id_client )
-    REFERENCES client ( id_client );
+	-- DROP CONSTRAINT fk_imprumut_client;
+	ADD CONSTRAINT fk_imprumut_client FOREIGN KEY ( id_client )
+		REFERENCES client ( id_client ) ON DELETE CASCADE;
 
 ALTER TABLE imprumut
-  ADD CONSTRAINT fk_imprumut_carte FOREIGN KEY ( id_carte )
-    REFERENCES carte ( id_carte );
+	-- DROP CONSTRAINT fk_imprumut_carte; 
+	ADD CONSTRAINT fk_imprumut_carte FOREIGN KEY ( id_carte )
+		REFERENCES carte ( id_carte ) ON DELETE CASCADE;
 
 ALTER TABLE user_favourites
+	-- DROP CONSTRAINT fk_favs_client;
 	ADD CONSTRAINT fk_favs_client foreign key (id_client) 
-		REFERENCES client(id_client);
+		REFERENCES client(id_client) ON DELETE CASCADE;
 
 ALTER TABLE user_favourites
+	-- DROP CONSTRAINT fk_favs_carte;
 	ADD CONSTRAINT fk_favs_carte foreign key (id_carte)
-		REFERENCES carte(id_carte);
-
+		REFERENCES carte(id_carte) ON DELETE CASCADE;
+        
 ALTER TABLE carte
+	-- DROP CONSTRAINT fk_categorie_carte;
 	ADD CONSTRAINT fk_categorie_carte FOREIGN KEY (id_categorie)
 		REFERENCES categorie(id_categorie);
 
 ALTER TABLE reviews
+	-- DROP CONSTRAINT fk_review_client;
 	ADD CONSTRAINT fk_review_client FOREIGN KEY (id_client)
-		REFERENCES client(id_client);
+		REFERENCES client(id_client) ON DELETE CASCADE;
 
 ALTER TABLE reviews
+	-- DROP CONSTRAINT fk_review_carte;
 	ADD CONSTRAINT fk_review_carte FOREIGN KEY (id_carte)
-		REFERENCES carte(id_carte);
+		REFERENCES carte(id_carte) ON DELETE CASCADE;
+        
+ALTER TABLE notificari
+	-- DROP CONSTRAINT fk_notificari_client;
+	ADD CONSTRAINT fk_notificari_client FOREIGN KEY (id_client)
+		REFERENCES client(id_client);
+
+ALTER TABLE taxe
+	-- DROP CONSTRAINT fk_taxe_client;
+	ADD CONSTRAINT fk_taxe_client FOREIGN KEY (id_client)
+		REFERENCES client(id_client);
 
 -- ------------------------------------
 -- ------- POPULAREA TABELELOR --------
@@ -202,6 +252,31 @@ INSERT INTO categorie (categorie) VALUES
 ('Limbi straine'),
 ('Psihologie'),
 ('Stiinte');
+
+INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+(1, 5, 1, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+(1, 5, 2, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+(1, 5, 3, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+(1, 5, 4, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY));
+
+INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+(2, 5, 2, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+(2, 5, 1, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY));
+
+INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+(3, 5, 1, NOW(), DATE_ADD(NOW(), INTERVAL 10 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY));
+
+INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+(4, 5, 1, DATE('2020-12-01'), DATE('2020-12-01'), DATE_ADD(DATE('2020-12-01'), INTERVAL 15 DAY)),
+(4, 5, 2, DATE('2020-12-01'), DATE('2020-12-01'), DATE_ADD(DATE('2020-12-01'), INTERVAL 15 DAY));
+
+INSERT INTO carte_imprumut VALUES
+(1,1), (1,2), (1,3), (1,4),
+(2,1), (2,2),
+(3,1),
+(4,1), (4,2);
+
+SELECT * FROM imprumut;
 
 INSERT INTO autor (nume, prenume) VALUES
 ('Yalom','Irvin'),
@@ -311,13 +386,200 @@ INSERT INTO coduri_utilizatori VALUES
 ('kL-),16XX]cS!@', 3, 0);
 
 
+select * from imprumut;
 
-select * from coduri_utilizatori;
+SELECT DISTINCT id_client
+FROM imprumut
+WHERE DATE_ADD(NOW(), INTERVAL 7 DAY) <= data_retur;
 
-select * from carte_autor;
-select * from carte;
-select * from autor;
+SELECT DISTINCT nume, prenume, id_client
+FROM client
+WHERE id_client IN (SELECT DISTINCT id_client
+					FROM imprumut
+					WHERE DATE_ADD(NOW(), INTERVAL 7 DAY) <= data_retur);
 
-alter table autor auto_increment = 1;
-delete from autor where id_autor in (36,37,38,39,40,41,42);
+SELECT DISTINCT id_imprumut
+FROM imprumut
+WHERE id_client IN (SELECT DISTINCT id_client
+					FROM imprumut
+					WHERE DATE_ADD(NOW(), INTERVAL 7 DAY) >= data_retur);
+                    
+SELECT DISTINCT carte.titlu
+FROM imprumut
+JOIN carte_imprumut ON (imprumut.id_imprumut = carte_imprumut.id_imprumut)
+JOIN carte ON (carte.id_carte = carte_imprumut.id_carte)
+WHERE imprumut.id_imprumut = 1;
+
+SELECT DISTINCT id_client
+FROM imprumut
+WHERE data_retur >= NOW() 
+AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY);
+
+SELECT DISTINCT id_imprumut, DATEDIFF(date_add(now(), interval 7 day), data_retur) + 1
+FROM imprumut
+WHERE id_client = 5
+AND data_retur >= NOW() 
+AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY)
+ORDER BY id_client;
+
+SET lc_time_names = 'ro_RO';
+
+SELECT id_client, prenume, nume, email, taxa
+FROM client
+WHERE tip = 1
+AND taxa > 0.00;
+
+SELECT *
+FROM notificari;
+
+SELECT *
+FROM client;
+
+select * from imprumut;
+
+SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+FROM carte 
+JOIN categorie USING (id_categorie) 
+JOIN carte_autor USING (id_carte) 
+JOIN autor USING (id_autor)
+WHERE tip='fizica'
+AND id_carte IN (
+	SELECT id_carte
+    FROM carte_autor
+	WHERE 1 = 1 
+	AND id_autor IN (
+		SELECT id_autor
+        FROM autor
+        WHERE id_autor IN (
+			SELECT id_autor
+            FROM autor 
+            WHERE BINARY CONCAT(lower(prenume), ' ', lower(nume)) IN ('chris voss', 'tahl raz')
+		)
+	)
+)
+-- AND lower(editura) IN (
+-- 	SELECT lower(editura)
+-- 	FROM carte
+-- 	WHERE BINARY lower(editura) = 'scholastic'
+-- )
+-- AND an IN (
+-- 	SELECT an
+-- 	FROM carte
+-- 	WHERE an IN (1999,2000)
+-- )
+-- AND categorie IN (
+-- 	SELECT categorie
+-- 	FROM categorie
+-- 	WHERE lower(categorie) = 'limbi straine'
+-- )
+GROUP BY titlu;
+
+SELECT *
+FROM notificari;
+
+SELECT *
+FROM imprumut;
+
+SELECT *
+FROM client;
+
+SELECT DISTINCT id_client, nume, prenume 
+FROM client 
+WHERE id_client IN (18) 
+ORDER BY id_client;
+
+UPDATE notificari
+SET citit = 0
+WHERE id_notificare IN (3,7);
+
+SELECT DISTINCT id_imprumut
+FROM imprumut
+WHERE restituit = 0
+AND data_retur >= NOW() 
+AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY);
+
+SELECT DATE_FORMAT(data_creere, '%d-%m-%Y, %H:%i')
+FROM notificari;
+
+SELECT * FROM notificari;
+SELECT * FROM client;
+SELECT * FROM carte;
+SELECT * FROM imprumut;
+
+DELETE FROM notificari WHERE id_notificare in (18,19,20,21);
+ALTER TABLE notificari auto_increment = 1;
+
+SELECT *
+FROM notificari
+WHERE descriere LIKE 'CERERE%'
+AND descriere LIKE '%2021-01-04';
+
+SELECT id_notificare, descriere, id_sender
+FROM notificari
+WHERE id_client = 21
+AND citit = 0
+AND descriere LIKE BINARY 'CERERE%'
+ORDER BY 1;
+
+select *
+from imprumut;
+
+SELECT id_sender
+FROM notificari
+WHERE descriere LIKE '%2021-01-05';
+
+select *
+from carte;
+
+SELECT *
+FROM imprumut
+WHERE id_carte = 1
+AND data_retur < '2021-01-05'
+AND restituit = 0;
+
+SELECT id_carte, stoc
+FROM carte
+WHERE titlu = 'Minciuni pe canapea'
+AND tip = 'fizica';
+
+select * from notificari;
+
+SELECT *
+FROM notificari
+WHERE BINARY descriere LIKE 'CERERE%'
+AND BINARY descriere LIKE '%2021-01-05';
+
+INSERT INTO notificari (id_client, id_sender, descriere) VALUES 
+(21, 24, 'CERERE: imprumutul cartii cu titlul "Culorile si viata lor secreta" cu ridicare la data de 2021-01-05'),
+(21, 24, 'CERERE: imprumutul cartii cu titlul "Arta negocierii" cu ridicare la data de 2021-01-05');
+
+SELECT DISTINCT id_sender FROM notificari WHERE id_notificare IN (12,13,30,31,34,35);
+
+select * from imprumut;
+
+SELECT id_imprumut
+FROM imprumut
+ORDER BY id_imprumut DESC;
+
+SELECT id_notificare, descriere, id_sender
+FROM notificari
+WHERE id_client = 21
+AND citit = 0
+AND descriere LIKE BINARY 'CERERE%'
+ORDER BY 1;
+
+UPDATE notificari
+SET id_client = 21, id_sender = 5
+WHERE id_notificare IN (9,10,11);
+
+DELETE FROM notificari
+WHERE id_notificare in (9,10,11);
+
+SELECT descriere, data_creere, DATE_FORMAT(data_creere, '%d %M %Y, %H:%i'), id_notificare
+FROM notificari
+WHERE id_client = 5
+AND citit = 0
+ORDER BY data_creere DESC;
+
+select * from taxe;
 

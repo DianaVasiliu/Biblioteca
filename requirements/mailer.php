@@ -48,7 +48,7 @@ $mail->SMTPSecure = 'tls';
 $mail->Host = 'smtp.gmail.com';
 $mail->Port = 587;
 
-$mail->setFrom('diana.vasiliu10@gmail.com', 'Biblioteca');
+$mail->setFrom('myemail', 'Biblioteca');
 $mail->addAddress($email, $name);
 
 $mail->isHTML(true);

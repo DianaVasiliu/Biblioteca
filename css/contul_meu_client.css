@@ -1,0 +1,41 @@
+.client_submit {
+  margin: 0;
+  /* padding-left: 1pc;
+  padding-right: 1pc; */
+  background-color: white;
+  border-left: solid black 5px;
+  font-size: large;
+  transition: 0.3s;
+}
+
+.client_submit:hover {
+  cursor: pointer;
+  color: white;
+  background-color: rgb(51, 0, 0);
+}
+
+.mark_as_read_div {
+  display: flex;
+  margin-top: 1pc;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mark_as_read_header {
+  display: flex;
+  margin-top: 1pc;
+  margin-left: 2.5pc;
+}
+
+#divdescriere {
+  width: 42%;
+  font-weight: bold;
+}
+
+#divdata {
+  font-weight: bold;
+}
+
+.notif_div {
+  width: 35%;
+}

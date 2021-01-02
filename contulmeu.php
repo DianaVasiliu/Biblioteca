@@ -5,6 +5,7 @@
 
     session_start();
     $_SESSION['captcha_location'] = 'borrow';
+
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +14,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <link rel="stylesheet" href="./css/contulmeu.css">
+    <link rel="stylesheet" href="./css/contul_meu_client.css">
     <link rel="stylesheet" href="./css/contul_meu_admin.css">
     <link rel="stylesheet" href="./css/contul_meu_bibl.css">
     <link rel="stylesheet" href="./css/header.css">
@@ -38,8 +40,6 @@
         include ($IPATH."requirements/mobile_menu.php"); 
 ?>
 
-
-
     <div id="corp">
         <div id="continut">
 <?php
@@ -48,7 +48,7 @@
             <h3 align="center">Trebuie sa fii logat ca sa accesezi aceasta pagina!</h3>
 <?php
         }
-        else if ($_SESSION['loggedin'] == true){
+        else if ($_SESSION['loggedin'] == true) {
             if (!isset($_SESSION['erroremail'])) {
                 $_SESSION['erroremail'] = '';
             }
@@ -70,13 +70,49 @@
             if (!isset($_SESSION['city'])) {
                 $_SESSION['city'] = '';
             }
+            
+            if ($_SESSION['tip'] == 1) {
+                $query = "SELECT COUNT(*)
+                          FROM notificari
+                          WHERE id_client = " . $_SESSION['id'] . 
+                        " AND citit = 0";
+
+                $res = mysqli_query($link, $query);
+
+                $nr_notif = mysqli_fetch_array($res)[0];
+            
+                $_SESSION['nr_notif_client'] = $nr_notif;
+            }
+            else if ($_SESSION['tip'] == 2) {
+                $nr_notif = 0;
+
+                $query = "SELECT DISTINCT id_imprumut
+                          FROM imprumut
+                          WHERE restituit = 0
+                          AND data_retur >= NOW() 
+                          AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY)
+                          GROUP BY id_client";
+
+                $res = mysqli_query($link, $query);
+                $nr_notif += mysqli_num_rows($res);
+
+                $query = "SELECT 1
+                          FROM client
+                          WHERE tip = 1
+                          AND taxa > 0.00";
+
+                $res = mysqli_query($link, $query);
+                $nr_notif += mysqli_num_rows($res);
+
+                $_SESSION['nr_notif_bibl'] = $nr_notif;
+            }
 ?>
             <div id="contulmeu_header">
                 <h1 id="contulmeu">CONTUL MEU</h1>
 <?php 
                 if (isset($_SESSION['tip']) && $_SESSION['tip'] == 1) {
 ?>
-                    <button id="btn_imprumut"><h3>Imprumuta o carte noua</h3></button>
+                    <button id="btn_imprumut"><h3>Imprumut nou</h3></button>
 <?php
                 }
 ?>
@@ -90,11 +126,15 @@
 ?>
                     <button class="setare"><h3>Imprumuturile mele</h3> <img src="./pics/rarrow.png"></button>
                     <button class="setare"><h3>Favorite</h3> <img src="./pics/rarrow.png"></button>
-                    <button class="setare"><h3>Notificari</h3> <img src="./pics/rarrow.png"></button>
+                    <button class="setare"><h3>Notificari (<?php echo $_SESSION['nr_notif_client']; ?>)</h3> <img src="./pics/rarrow.png"></button>
 <?php 
                 }
                 else if (isset($_SESSION['tip']) && $_SESSION['tip'] == 2) {
-
+?>
+                    <button class="setare"><h3>Notificari (<?php echo $_SESSION['nr_notif_bibl']; ?>)</h3> <img src="./pics/rarrow.png"></button>
+                    <button class="setare"><h3>Cereri de imprumut</h3> <img src="./pics/rarrow.png"></button>
+                    <button class="setare"><h3>Taxare clienti</h3> <img src="./pics/rarrow.png"></button>
+<?php
                 }
                 else if (isset($_SESSION['tip']) && $_SESSION['tip'] == 3) {
 ?>
@@ -110,9 +150,9 @@
                 <div class="dreapta vizibil">
                     <div class="info first">
                         <form method="post" action="./requirements/updateinfo.php">
-                            <h3>Email:</h3>
+                            <h3>Email nou:</h3>
                             <input type="email" value="<?php echo $_SESSION['email']; ?>" id="email" name="email" class="updatedinfo">
-                            <h3>Parola:</h3>
+                            <h3>Parola curenta:</h3>
                             <input type="password" value="" id="pw" name="pw" class="updatedpw" autocomplete="new-password">
                             
                             <input type="submit" value="Modifica" class="submit" name="upemail">
@@ -215,8 +255,26 @@
     include ($IPATH."requirements/footer.php"); 
 ?>
 
-    <script src="./js/contulmeu_admin.js"> </script>
-    <script src="./js/contulmeu.js"> </script>
+<?php
+    if (isset($_SESSION['tip']) && $_SESSION['tip'] == 1) {
+?>
+        <script src="./js/contulmeu_client.js"> </script>
+        <script src="./js/contulmeu.js"> </script>
+<?php
+    }
+    else if (isset($_SESSION['tip']) && $_SESSION['tip'] == 2) {
+?>
+        <script src="./js/contulmeu_bibl.js"> </script>
+        <script src="./js/contulmeu.js"> </script>
+<?php
+    }
+    else if (isset($_SESSION['tip']) && $_SESSION['tip'] == 3) {
+?>
+        <script src="./js/contulmeu_admin.js"> </script>
+        <script src="./js/contulmeu.js"> </script>
+<?php
+    }
+?>
     <script src="./js/common.js"> </script>
 
 </body>

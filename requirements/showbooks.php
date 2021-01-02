@@ -3,6 +3,7 @@
     require_once 'dbconnect.php';
 
     $link = connectdb();
+    mysqli_set_charset($link , "utf8");
 
     $query = "SELECT DISTINCT id_categorie, categorie
                 FROM carte 

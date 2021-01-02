@@ -7,18 +7,25 @@
 
     session_start();
 
-    // trebuie sa fac sa tina minte filtrele
+    $ok = 1;
+
     if (!isset($_SESSION['filters'])) {
-        $_SESSION['filters'] = array();
+        reset_filters();
     }
+
     if (!isset($_SESSION['order_by'])) {
         $_SESSION['order_by'] = 8;
     }
 
     if (!isset($_POST['sort'])) {
-        // $_SESSION['order_by'] = 8;
+        $_SESSION['order_by'] = 8;
     }
     else {
+        $ok = 0;
+        if (isset($_SESSION['query'])) {
+            $query = $_SESSION['query'];
+        }
+
         switch($_POST['sortselect']) {
             case 'titlu':
                 $_SESSION['order_by'] = 1;
@@ -41,6 +48,7 @@
             default:
                 $_SESSION['order_by'] = 8;
         }
+        cauta(1);
     }
 
     if (!isset($_SESSION['order_by'])) {
@@ -48,39 +56,66 @@
     }
     
     if (isset($_POST['resetfilters'])) {
-        $_SESSION['filters'] = array();
+        $ok = 0;
+        reset_filters();
+        $_SESSION['my_filter'] = '';
     }
 
     if (isset($_POST['cauta'])) {
+        $ok = 0;
+        reset_filters();
+        $_SESSION['my_filter'] = '';
+        cauta(0);
+        $_SESSION['my_filter'] = '';
+    }
 
-        $autorfilter = verify_filter("autor");
-        $catfilter = verify_filter("categorie");
-        $anfilter = verify_filter("an");
-        $editurafilter = verify_filter("editura");
-
-        $query = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, nume
-                  FROM carte 
-                  JOIN categorie USING (id_categorie) 
-                  JOIN carte_autor USING (id_carte) 
-                  JOIN autor USING (id_autor)
-                  WHERE tip='fizica'";
-
-        if (!empty($autorfilter)) {
-            $query = $query . " AND BINARY CONCAT(prenume, ' ', nume) IN " . $autorfilter;
-        }
-        if (!empty($catfilter)) {
-            $query = $query . " AND BINARY categorie IN " . $catfilter;
-        }
-        if (!empty($anfilter)) {
-            $query = $query . " AND an IN " . $anfilter;
-        }
-        if (!empty($editurafilter)) {
-            $query = $query . " AND BINARY editura IN " . $editurafilter;
-        }
+    if (isset($_POST['search_book'])) {
+        $ok = 0;
+        $filter = mysqli_real_escape_string($link, trim($_POST['filter']));
         
-        $query = $query . " GROUP BY titlu ORDER BY " . $_SESSION['order_by'];
+        if ($filter != '') {
+        
+            $_SESSION['my_filter'] = $filter;            
 
-        $_SESSION['query'] = $query;
+            $query = "SELECT DISTINCT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
+                    FROM carte 
+                    JOIN categorie USING (id_categorie) 
+                    JOIN carte_autor USING (id_carte) 
+                    JOIN autor USING (id_autor)
+                    WHERE tip='fizica'
+                    AND (
+                        lower(titlu) LIKE BINARY '%" . strtolower($filter) . "%'
+                        OR 
+                        lower(categorie) LIKE BINARY '%" . strtolower($filter) . "%'
+                        OR 
+                        lower(nume) LIKE BINARY '%" . strtolower($filter) . "%'
+                        OR 
+                        lower(prenume) LIKE BINARY '%" . strtolower($filter) . "%'
+                    )";
+
+            reset_filters();
+            $_SESSION['query'] = $query;
+        }
+        else {
+            $query = "SELECT DISTINCT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, prenume, nota
+                          FROM carte 
+                          JOIN categorie USING (id_categorie) 
+                          JOIN carte_autor USING (id_carte) 
+                          JOIN autor USING (id_autor)
+                          WHERE tip='fizica' 
+                          GROUP BY titlu 
+                          ORDER BY " . $_SESSION['order_by'];
+                
+            if ($_SESSION['order_by'] == 10) {
+                $query = $query . " DESC";
+            }
+            $_SESSION['query'] = $query;
+        }
+    }
+
+    if ($ok) {
+        reset_filters();
+        $_SESSION['my_filter'] = '';
     }
 ?>
 
@@ -99,8 +134,6 @@
     <title>Biblioteca fizica</title>
 </head>
 
-<script src="paginaprincipala.js"></script>
-
 <body>
 	<header id="header">
 <?php 
@@ -116,8 +149,13 @@
 <div id="corp">
     <div id="search">
         
-        <input type="text" id="searchbooks" placeholder="Cauta o carte">
-
+        <div id="search_div">
+            
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <input type="text" id="filter" name="filter" placeholder="Cauta o carte">
+                <input type="submit" name="search_book" id="search_book" value="cauta" class="sort">
+            </form>
+        </div>
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             Sorteaza rezultatele dupa:
             <select name="sortselect" id="sortselect" class="sort">
@@ -147,8 +185,8 @@
         <div id="div_carti">
 <?php
 
-            if (!isset($_POST['cauta'])) {
-                $query = "SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, prenume, nota
+            if (!isset($_POST['cauta']) && !isset($_POST['search_book']) && !isset($_POST['sort'])) {
+                $query = "SELECT DISTINCT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte, prenume, nota
                           FROM carte 
                           JOIN categorie USING (id_categorie) 
                           JOIN carte_autor USING (id_carte) 
@@ -264,6 +302,7 @@
                             <br>
 <?php
                         if (isset($_SESSION['id'])) {
+                            if ($_SESSION['tip'] == 1) {
 ?>
                             <div class="favsform">
                                 <form method="post" action="./requirements/add_to_favs.php">
@@ -298,8 +337,12 @@
                                         
                                     </form>
                                 </div> <!-- inchid "star-rating" -->
-                                <div>
-                                    <span class="title">Rating:</span>
+<?php
+                                }
+                            }
+?>
+                                <div style="text-align: center;">
+                                    <span class="title" >Rating:</span>
 <?php
                                     $query = "SELECT nota
                                             FROM carte
@@ -314,7 +357,8 @@
                                     echo $nota ? $nota : "unknown";
 ?>
                                 </div> <!-- inchid "noname" -->
-                                <div>
+
+                                <div style="text-align: center;">
                                     <span class="title">Numar de rating-uri:</span>
 <?php
                                     $query = "SELECT COUNT(*)
@@ -328,6 +372,9 @@
                                     }
 
                                     echo $nr;
+            
+                                    if (isset($_SESSION['id'])) {
+                                        if ($_SESSION['tip'] == 1) {
 ?>                        
                                 </div> <!-- inchid "noname" -->
                                 <div>
@@ -355,6 +402,7 @@
 
                             </div> <!-- inchid "rating" -->
 <?php 
+                            }
                         }
 ?>
                             <br><br>
@@ -391,7 +439,7 @@
 <?php
                             if (isset($_SESSION['id'])) {
 ?>
-                            <p class="paragraphs">
+                            <p class="paragraphs center">
 <?php
                                 echo $descriere[$i];
 ?>
@@ -423,8 +471,8 @@
 <?php 
     $IPATH = $_SERVER["DOCUMENT_ROOT"]."/Proiect/"; 
     include ($IPATH."requirements/footer.php"); 
-?>
 
+?>
     <script src="./js/rating.js"></script>
     <script src="./js/bibliotecafizica.js"></script>
     <script src="./js/common.js"></script>

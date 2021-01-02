@@ -1,0 +1,106 @@
+table {
+  border-spacing: 2vw;
+  margin-top: -2vw;
+}
+
+td {
+  border-left: solid brown 5px;
+}
+
+.h3_bibl {
+  padding: 0;
+}
+
+.h2_bibl {
+  text-decoration: underline;
+}
+
+.info_bibl {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.bibl_submit {
+  margin: 0;
+  padding-left: 1pc;
+  padding-right: 1pc;
+  background-color: white;
+  border-left: solid black 5px;
+  font-size: large;
+  transition: 0.3s;
+}
+
+.bibl_submit:hover {
+  cursor: pointer;
+  color: white;
+  background-color: rgb(51, 0, 0);
+}
+
+.termen {
+  font-weight: bold;
+  color: red;
+}
+
+.bibl_form {
+  width: 98%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1pc;
+  padding: 0;
+}
+
+.h2_margin_top {
+  margin-top: 5pc;
+}
+
+.form_bibl {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 95%;
+}
+
+.div_confirm_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cerere_imprumut {
+  margin-right: 1pc;
+}
+
+.form_bibl {
+  margin-bottom: 1pc;
+}
+
+.div_cerere {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2pc;
+}
+
+.acc_ref_form {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.span_elem {
+  margin-left: 2pc;
+}
+
+.descriere {
+  width: 50%;
+}
+
+.bibl_submit {
+  margin-left: 5pc;
+}
+
+.bibl_select {
+  width: auto;
+  padding: .5pc;
+  text-align: center;
+  border: none;
+}
