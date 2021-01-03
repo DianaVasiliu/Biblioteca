@@ -37,8 +37,8 @@ CREATE TABLE client (
 	email               VARCHAR(40) UNIQUE,
 	adresa              VARCHAR(100),
 	data_inregistrare   DATETIME NOT NULL DEFAULT current_timestamp,
-	tip		 	        INTEGER NOT NULL,
-	taxa_retur          DECIMAL(6, 2) DEFAULT 0.00,
+	tip		 	        		INTEGER NOT NULL,
+	taxa			          DECIMAL(6, 2) DEFAULT 0.00,
 	username            VARCHAR(40) NOT NULL,
 	parola              VARCHAR(255) NOT NULL,
 	activ               INTEGER DEFAULT 0,
@@ -380,3 +380,7 @@ INSERT INTO coduri_utilizatori VALUES
 ('12Abq\]p-09.~?', 2, 0),
 ('0D;p~\\#%LqFr=', 2, 0),
 ('kL-),16XX]cS!@', 3, 0);
+
+
+SELECT DATE_ADD(SYSDATE(), INTERVAL 7 HOUR)
+FROM DUAL;

@@ -113,10 +113,10 @@ class PDF extends FPDF
     $this->Ln();
     $this->SetFont($font, '', 8);
     $this->Cell(15);
-    $this->Cell(60, 7, '+40723456789', $borders, 0, 'L');
+    $this->Cell(60, 7, '+40728653397', $borders, 0, 'L');
     $this->Ln();
     $this->Cell(15);
-    $this->Cell(60, 7, 'exemplu@gmail.com', $borders, 0, 'L');
+    $this->Cell(60, 7, 'diana-elena.vasiliu@my.fmi.unibuc.ro', $borders, 0, 'L');
     $x = 7;
     $y = 266;
     $w = 5;
@@ -133,7 +133,7 @@ class PDF extends FPDF
   }
 }
 
-  $query = "SELECT SYSDATE()
+  $query = "SELECT DATE_ADD(SYSDATE(), INTERVAL 7 HOUR)
             FROM dual";
 
   $res = mysqli_query($link, $query);

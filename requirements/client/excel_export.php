@@ -14,7 +14,7 @@
 
   session_start();
 
-  $query = "SELECT SYSDATE()
+  $query = "SELECT DATE_ADD(SYSDATE(), INTERVAL 7 HOUR)
             FROM dual";
 
   $res = mysqli_query($link, $query);
@@ -63,6 +63,11 @@
     ->getFont()
     ->setName('Arial')
     ->setSize(10);
+
+    $spreadsheet->getActiveSheet()->getPageSetup()
+    ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
+$spreadsheet->getActiveSheet()->getPageSetup()
+    ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
   
   $sheet = $spreadsheet->getActiveSheet();
 
@@ -72,7 +77,7 @@
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER);
   $sheet->getStyle('I2')->getFont()->setSize(14);
-  $sheet->setCellValue('I2', $data_cerere);
+  $sheet->getCell('I2')->setValue($data_cerere);
 
 
   // setari titlu
@@ -110,7 +115,7 @@
   $sheet->getColumnDimension('K')->setWidth(9);
   $sheet->getRowDimension('2')->setRowHeight(40);
   $sheet->mergeCells('B2:F2');
-  $sheet->setCellValue('B2', 'Istoric taxare');
+  $sheet->getCell('B2')->setValue('Istoric taxare');
   $sheet->getStyle('B2')
           ->getFont()
           ->setSize(26);
@@ -125,17 +130,17 @@
   $sheet->getRowDimension('7')->setRowHeight(20);
   $sheet->getRowDimension('8')->setRowHeight(20);
   $sheet->getStyle('B5')->getFont()->setBold(true);
-  $sheet->setCellValue('B5', 'Nume si prenume:');
-  $sheet->setCellValue('D5', $prenume . ' ' . $nume);
+  $sheet->getCell('B5')->setValue('Nume si prenume:');
+  $sheet->getCell('D5')->setValue($prenume . ' ' . $nume);
   $sheet->getStyle('B6')->getFont()->setBold(true);
-  $sheet->setCellValue('B6', 'Email:');
-  $sheet->setCellValue('D6', $email);
+  $sheet->getCell('B6')->setValue('Email:');
+  $sheet->getCell('D6')->setValue($email);
   $sheet->getStyle('B7')->getFont()->setBold(true);
-  $sheet->setCellValue('B7', 'Telefon:');
-  $sheet->setCellValue('D7', $telefon);
+  $sheet->getCell('B7')->setValue('Telefon:');
+  $sheet->getCell('D7')->setValue('(+4' . $telefon[0] . ')' . substr($telefon, 1));
   $sheet->getStyle('B8')->getFont()->setBold(true);
-  $sheet->setCellValue('B8', 'Adresa:');
-  $sheet->setCellValue('D8', $adresa);
+  $sheet->getCell('B8')->setValue('Adresa:');
+  $sheet->getCell('D8')->setValue($adresa);
 
   // titlu 
   $sheet->mergeCells("I5:K6");
@@ -143,13 +148,13 @@
           ->getFont()
           ->setSize(20);
   $sheet->getStyle('I5')->getFont()->setBold(true);
-  $sheet->setCellValue('I5', 'BIBLIOTECA');
+  $sheet->getCell('I5')->setValue('BIBLIOTECA');
   $sheet->mergeCells("I7:K8");
   $sheet->getStyle('I7')
           ->getFont()
           ->setSize(20);
   $sheet->getStyle('I7')->getFont()->setBold(true);
-  $sheet->setCellValue('I7', 'NATIONALA');
+  $sheet->getCell('I7')->setValue('NATIONALA');
 
   // setari table header
   $header = [
@@ -176,7 +181,7 @@
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER)
           ->setVertical(Alignment::VERTICAL_CENTER);
-  $sheet->setCellValue('A11', 'Nr.');
+  $sheet->getCell('A11')->setValue('Nr.');
 
   $sheet->mergeCells('B11:F11');
   $sheet->getStyle('B11')->getFont()->setBold(true);
@@ -184,7 +189,7 @@
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER)
           ->setVertical(Alignment::VERTICAL_CENTER);
-  $sheet->setCellValue('B11', 'Descriere');
+  $sheet->getCell('B11')->setValue('Descriere');
 
   $sheet->mergeCells('G11:H11');
   $sheet->getStyle('G11')->getFont()->setBold(true);
@@ -192,7 +197,7 @@
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER)
           ->setVertical(Alignment::VERTICAL_CENTER);
-  $sheet->setCellValue('G11', 'Suma');
+  $sheet->getCell('G11')->setValue('Suma');
 
   $sheet->mergeCells('I11:K11');
   $sheet->getStyle('I11')->getFont()->setBold(true);
@@ -200,7 +205,7 @@
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER)
           ->setVertical(Alignment::VERTICAL_CENTER);
-  $sheet->setCellValue('I11', 'Data taxarii');
+  $sheet->getCell('I11')->setValue('Data taxarii');
 
 
   // continut tabel
@@ -228,10 +233,10 @@
     $sheet->mergeCells('G' . ($start + $i) . ':H' . ($start + $i));
     $sheet->mergeCells('I' . ($start + $i) . ':K' . ($start + $i));
 
-    $sheet->setCellValue('A' . ($start + $i),  ($i + 1));
-    $sheet->setCellValue('B' . ($start + $i), $descriere[$i]);
-    $sheet->setCellValue('G' . ($start + $i), $suma[$i]);
-    $sheet->setCellValue('I' . ($start + $i), $data[$i]);
+    $sheet->getCell('A' . ($start + $i))->setValue(($i + 1));
+    $sheet->getCell('B' . ($start + $i))->setValue($descriere[$i]);
+    $sheet->getCell('G' . ($start + $i))->setValue($suma[$i]);
+    $sheet->getCell('I' . ($start + $i))->setValue($data[$i]);
     
   $sheet->getStyle('A' . ($start + $i))
           ->getAlignment()
@@ -259,7 +264,7 @@
   $sheet->getStyle('F' . $y_total)
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER);
-  $sheet->setCellValue('F' . $y_total, 'Rest de plata');
+  $sheet->getCell('F' . $y_total)->setValue('Rest de plata');
 
   
   $sheet->mergeCells('J' . $y_total . ':K' . $y_total);
@@ -267,7 +272,7 @@
   $sheet->getStyle('J' . $y_total)
           ->getAlignment()
           ->setHorizontal(Alignment::HORIZONTAL_CENTER);
-  $sheet->setCellValue('J' . $y_total, $taxa . "RON");
+  $sheet->getCell('J' . $y_total)->setValue($taxa . "RON");
 
 
   // footer
@@ -275,7 +280,7 @@
 
   $sheet->getStyle('B' . $y_footer)->getFont()->setBold(true);
   $sheet->getStyle('B' . $y_footer)->getFont()->setSize(12);
-  $sheet->setCellValue('B' . $y_footer, 'Contact');
+  $sheet->getCell('B' . $y_footer)->setValue('Contact');
 
   $y_footer += 2;
   $image1 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -285,7 +290,7 @@
   $image1->setWidth(20);
   $image1->setOffsetX(5);
   $image1->setWorksheet($sheet);
-  $sheet->setCellValue('B' . $y_footer, 'Bulevardul Unirii nr. 22, Bucuresti, Sector 3');
+  $sheet->getCell('B' . $y_footer)->setValue('Bulevardul Unirii nr. 22, Bucuresti, Sector 3');
 
   // semnatura
   $image = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -305,7 +310,7 @@
   $image2->setWidth(20);
   $image2->setOffsetX(5);
   $image2->setWorksheet($sheet);
-  $sheet->setCellValue('B' . $y_footer, '0728653397');
+  $sheet->getCell('B' . $y_footer)->setValue('(+40)728653397');
 
 
   $y_footer += 2;
@@ -316,11 +321,14 @@
   $image3->setWidth(20);
   $image3->setOffsetX(5);
   $image3->setWorksheet($sheet);
-  $sheet->setCellValue('B' . $y_footer, 'exemplu@gmail.com');
+  $sheet->getCell('B' . $y_footer)->setValue('diana-elena.vasiliu@my.fmi.unibuc.ro');
 
 
-  $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-  $writer->save('C:/Istoric_taxare.xlsx');
+  $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
+  header('Content-Type: Application/vnd.ms-excel');
+  header('Content-Disposition: attachment; filename="Istoric_taxare.xlsx"');
+  $writer->save('php://output');
+  
 
   header("Location: ../../contulmeu.php");
 ?>

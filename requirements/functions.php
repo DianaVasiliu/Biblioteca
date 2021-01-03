@@ -176,4 +176,29 @@ function reset_filters() {
     $_SESSION['filters']['editura'] = array();
 }
 
+function make_mysql_filter_list ($tip) {
+    $filter = "(";
+
+    if ($tip != 'an') {
+        for ($i = 0; $i < count($_SESSION['filters'][$tip]); $i++) {
+            $filter .= "'" . $_SESSION['filters'][$tip][$i] . "'";
+            if ($i < count($_SESSION['filters'][$tip]) - 1) {
+                $filter .= ", ";
+            }
+        }
+    }
+    else {
+        for ($i = 0; $i < count($_SESSION['filters'][$tip]); $i++) {
+            $filter .= $_SESSION['filters'][$tip][$i];
+            if ($i < count($_SESSION['filters'][$tip]) - 1) {
+                $filter .= ", ";
+            }
+        }
+    }
+
+    $filter .= ")";
+
+    return $filter;
+}
+
 ?>
