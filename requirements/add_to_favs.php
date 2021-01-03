@@ -1,8 +1,9 @@
 <?php
     require_once './dbconnect.php';
     require './functions.php';
-
     $link = connectdb();
+    mysqli_set_charset($link , "utf8");
+
     session_start();
 
     for ($i = 0; $i < count($_SESSION['books']); $i++) {

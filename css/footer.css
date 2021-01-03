@@ -5,7 +5,6 @@ footer {
     width: 100%;
     color: whitesmoke;
     position: relative;
-    /* border-top: solid black 10px; */
 }
 
 #footer_terms {
@@ -63,7 +62,6 @@ footer {
     text-align: center;
     display: flex;
     justify-content: center;
-
 }
 
 .copyright {

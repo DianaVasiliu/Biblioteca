@@ -28,7 +28,6 @@ $name = $lastname . ' ' . $firstname;
 
 $mail = new PHPMailer(true);
 
-//$mail->SMTPDebug = 2;
 $mail->isSMTP();
 $mail->SMTPAuth = true;
 
@@ -40,7 +39,6 @@ $mail->SMTPOptions = array(
     )
 );
 
-// $host = "localhost";
 $host = "bib.epizy.com";
 
 $mail->SMTPSecure = 'tls';
@@ -48,7 +46,7 @@ $mail->SMTPSecure = 'tls';
 $mail->Host = 'smtp.gmail.com';
 $mail->Port = 587;
 
-$mail->setFrom('myemail', 'Biblioteca');
+$mail->setFrom('exemplu@gmail.com', 'Biblioteca');
 $mail->addAddress($email, $name);
 
 $mail->isHTML(true);

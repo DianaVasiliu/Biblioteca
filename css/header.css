@@ -9,32 +9,6 @@
 	border-bottom: solid black 10px;
 }
 
-/* #titlu {
-	height: 100%;
-}
-
-#titlu img {
-	width: 100%;
-	height: 100%;
-}
-
-#titlu:hover {
-	box-shadow: 0 0 20px rgb(83, 14, 0);
-}
-
-#div_titlu
-{
-	display: block;
-	width: 17vw;
-	height: 13vw;
-	position: absolute;
-	padding: 3pc;
-	padding-left: 5pc;
-	left: 0;
-	z-index: 2;
-	top: 0;
-} */
-
 #div_titlu {
 	display: flex;
 	width: 35vw;
@@ -56,10 +30,8 @@
 	width: 60%;
 	height: 50%;
 	display: inline-block;
-	/* bottom: 50%; */
 	right: 0;
 	position: absolute;
-	/* align-self: flex-end; */
 }
 
 .meniu {
@@ -105,14 +77,12 @@
 	width: 100%;
 	display: flex;
 	box-sizing: border-box;
-	
 	align-items: flex-end;
 }
 
 #menu_icon {
 	float: right;
 }
-
 
 #hamburger {
 	display: block;

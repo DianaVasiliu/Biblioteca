@@ -3,9 +3,11 @@ body {
 	font-size: 1.1em;
 	font-family: sans-serif;
 }
+
 a {
 	text-decoration: none;
 }
+
 form {
 	width: 25%;
 	margin: 70px auto;
@@ -13,18 +15,22 @@ form {
 	padding: 10px;
 	border-radius: 3px;
 }
+
 h2.form-title {
 	text-align: center;
 }
+
 input {
 	display: block;
 	box-sizing: border-box;
 	width: 100%;
 	padding: 8px;
 }
+
 form .form-group {
 	margin: 10px auto;
 }
+
 form button {
 	width: 100%;
 	border: none;
@@ -33,6 +39,7 @@ form button {
 	padding: 15px;
 	border-radius: 5px;
 }
+
 .msg {
 	margin: 5px auto;
 	border-radius: 5px;

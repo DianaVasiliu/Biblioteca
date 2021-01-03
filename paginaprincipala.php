@@ -117,7 +117,6 @@
         include ($IPATH."requirements/footer.php"); 
 ?>
 
-    <script src="./js/paginaprincipala.js"> </script>
     <script src="./js/common.js"> </script>
 </body>
 </html>

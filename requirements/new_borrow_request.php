@@ -1,6 +1,7 @@
 <?php
     require_once 'dbconnect.php';
     $link = connectdb();
+    mysqli_set_charset($link , "utf8");
 
     session_start();
 
@@ -63,8 +64,8 @@
 
         $_SESSION['captcha_err_borrow'] = $captcha_err;
 
-        }
+    }
 
-        header("Location: ../contulmeu.php");
+    header("Location: ../contulmeu.php");
 
 ?>

@@ -41,7 +41,7 @@
         <div class="contact">
             <h2>Contact</h2>
             <p>Telefon: +40723456789</p>
-            <p>E-mail: diana-elena.vasiliu<br>@my.fmi.unibuc.ro</p>
+            <p>E-mail: exemplu<br>@gmail</p>
             <p><a href="./desprenoi.php#contact">Formular de contact</a></p>
         </div>
     </div>

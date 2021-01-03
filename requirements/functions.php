@@ -38,7 +38,6 @@ function verify_filter ($filter) {
 
 }
 
-
 function check_filters ($value) {    
     for ($j = 0; $j < count($_SESSION['filters']['autor']); $j++) {
         if ($_SESSION['filters']['autor'][$j] == $value) {
@@ -85,31 +84,6 @@ function update_rating($link, $query, $bookid) {
             " WHERE id_carte = " . $bookid;
 
     $res = mysqli_query($link, $query);
-}
-
-function make_mysql_filter_list ($tip) {
-    $filter = "(";
-
-    if ($tip != 'an') {
-        for ($i = 0; $i < count($_SESSION['filters'][$tip]); $i++) {
-            $filter .= "'" . $_SESSION['filters'][$tip][$i] . "'";
-            if ($i < count($_SESSION['filters'][$tip]) - 1) {
-                $filter .= ", ";
-            }
-        }
-    }
-    else {
-        for ($i = 0; $i < count($_SESSION['filters'][$tip]); $i++) {
-            $filter .= $_SESSION['filters'][$tip][$i];
-            if ($i < count($_SESSION['filters'][$tip]) - 1) {
-                $filter .= ", ";
-            }
-        }
-    }
-
-    $filter .= ")";
-
-    return $filter;
 }
 
 function cauta($mod) {

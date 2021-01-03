@@ -24,7 +24,8 @@
     }
 ?>
 
-    <div id="categorii"><div class="column">
+    <div id="categorii">
+        <div class="column">
 
 <?php
     for ($nrcat = 0; $nrcat <= count($categories) / 2; $nrcat++) {

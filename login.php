@@ -103,7 +103,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
  
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
     <title>Autentificare</title>

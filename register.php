@@ -328,7 +328,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Validare judet
-
         if($_POST["county"] == "" || !isset($_POST["county"])) {
             $county_err = "Te rugam selecteaza un judet.";     
             $anyerror = 1;
@@ -495,7 +494,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="form-group">
-                <div class="g-recaptcha" data-sitekey="6LdpCwAaAAAAACIkVR4C5faZyqanFLMZSYG7Ew_m">
+                <div class="g-recaptcha" data-sitekey="sitekey">
                 </div>
                 <span class="help_block"><?php echo $captcha_err; ?></span>
             </div>

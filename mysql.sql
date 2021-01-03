@@ -117,9 +117,7 @@ CREATE TABLE taxe (
 	id_client		INTEGER,
     descriere		VARCHAR(100),
     suma			INTEGER,
-    platit			INTEGER DEFAULT 0,
-    data_taxare		DATETIME DEFAULT CURRENT_TIMESTAMP,
-    data_plata		DATETIME DEFAULT NULL
+    data_taxare		DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ------------------------------------------
@@ -133,7 +131,7 @@ ALTER TABLE carte_autor
 ALTER TABLE carte_autor
 	-- DROP CONSTRAINT fk_carte_autor_autor;
 	ADD CONSTRAINT fk_carte_autor_autor FOREIGN KEY (id_autor)
-		REFERENCES autor (id_autor) ON DELETE CASCADE;
+		REFERENCES autor (id_autor);
         
 ALTER TABLE carte_imprumut
 	-- DROP CONSTRAINT fk_carte_imprumut_carte;
@@ -143,22 +141,22 @@ ALTER TABLE carte_imprumut
 ALTER TABLE carte_imprumut
 	-- DROP CONSTRAINT fk_carte_imprumut_imprumut;
 	ADD CONSTRAINT fk_carte_imprumut_imprumut FOREIGN KEY (id_imprumut) 
-		REFERENCES imprumut(id_imprumut) ON DELETE CASCADE;
+		REFERENCES imprumut(id_imprumut);
 
 ALTER TABLE imprumut
 	-- DROP CONSTRAINT fk_imprumut_client;
 	ADD CONSTRAINT fk_imprumut_client FOREIGN KEY ( id_client )
-		REFERENCES client ( id_client ) ON DELETE CASCADE;
+		REFERENCES client ( id_client );
 
 ALTER TABLE imprumut
 	-- DROP CONSTRAINT fk_imprumut_carte; 
 	ADD CONSTRAINT fk_imprumut_carte FOREIGN KEY ( id_carte )
-		REFERENCES carte ( id_carte ) ON DELETE CASCADE;
+		REFERENCES carte ( id_carte );
 
 ALTER TABLE user_favourites
 	-- DROP CONSTRAINT fk_favs_client;
 	ADD CONSTRAINT fk_favs_client foreign key (id_client) 
-		REFERENCES client(id_client) ON DELETE CASCADE;
+		REFERENCES client(id_client);
 
 ALTER TABLE user_favourites
 	-- DROP CONSTRAINT fk_favs_carte;
@@ -173,7 +171,7 @@ ALTER TABLE carte
 ALTER TABLE reviews
 	-- DROP CONSTRAINT fk_review_client;
 	ADD CONSTRAINT fk_review_client FOREIGN KEY (id_client)
-		REFERENCES client(id_client) ON DELETE CASCADE;
+		REFERENCES client(id_client);
 
 ALTER TABLE reviews
 	-- DROP CONSTRAINT fk_review_carte;
@@ -275,8 +273,6 @@ INSERT INTO carte_imprumut VALUES
 (2,1), (2,2),
 (3,1),
 (4,1), (4,2);
-
-SELECT * FROM imprumut;
 
 INSERT INTO autor (nume, prenume) VALUES
 ('Yalom','Irvin'),
@@ -384,202 +380,3 @@ INSERT INTO coduri_utilizatori VALUES
 ('12Abq\]p-09.~?', 2, 0),
 ('0D;p~\\#%LqFr=', 2, 0),
 ('kL-),16XX]cS!@', 3, 0);
-
-
-select * from imprumut;
-
-SELECT DISTINCT id_client
-FROM imprumut
-WHERE DATE_ADD(NOW(), INTERVAL 7 DAY) <= data_retur;
-
-SELECT DISTINCT nume, prenume, id_client
-FROM client
-WHERE id_client IN (SELECT DISTINCT id_client
-					FROM imprumut
-					WHERE DATE_ADD(NOW(), INTERVAL 7 DAY) <= data_retur);
-
-SELECT DISTINCT id_imprumut
-FROM imprumut
-WHERE id_client IN (SELECT DISTINCT id_client
-					FROM imprumut
-					WHERE DATE_ADD(NOW(), INTERVAL 7 DAY) >= data_retur);
-                    
-SELECT DISTINCT carte.titlu
-FROM imprumut
-JOIN carte_imprumut ON (imprumut.id_imprumut = carte_imprumut.id_imprumut)
-JOIN carte ON (carte.id_carte = carte_imprumut.id_carte)
-WHERE imprumut.id_imprumut = 1;
-
-SELECT DISTINCT id_client
-FROM imprumut
-WHERE data_retur >= NOW() 
-AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY);
-
-SELECT DISTINCT id_imprumut, DATEDIFF(date_add(now(), interval 7 day), data_retur) + 1
-FROM imprumut
-WHERE id_client = 5
-AND data_retur >= NOW() 
-AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY)
-ORDER BY id_client;
-
-SET lc_time_names = 'ro_RO';
-
-SELECT id_client, prenume, nume, email, taxa
-FROM client
-WHERE tip = 1
-AND taxa > 0.00;
-
-SELECT *
-FROM notificari;
-
-SELECT *
-FROM client;
-
-select * from imprumut;
-
-SELECT titlu, categorie, descriere, stoc, url_fisier, an, editura, id_carte
-FROM carte 
-JOIN categorie USING (id_categorie) 
-JOIN carte_autor USING (id_carte) 
-JOIN autor USING (id_autor)
-WHERE tip='fizica'
-AND id_carte IN (
-	SELECT id_carte
-    FROM carte_autor
-	WHERE 1 = 1 
-	AND id_autor IN (
-		SELECT id_autor
-        FROM autor
-        WHERE id_autor IN (
-			SELECT id_autor
-            FROM autor 
-            WHERE BINARY CONCAT(lower(prenume), ' ', lower(nume)) IN ('chris voss', 'tahl raz')
-		)
-	)
-)
--- AND lower(editura) IN (
--- 	SELECT lower(editura)
--- 	FROM carte
--- 	WHERE BINARY lower(editura) = 'scholastic'
--- )
--- AND an IN (
--- 	SELECT an
--- 	FROM carte
--- 	WHERE an IN (1999,2000)
--- )
--- AND categorie IN (
--- 	SELECT categorie
--- 	FROM categorie
--- 	WHERE lower(categorie) = 'limbi straine'
--- )
-GROUP BY titlu;
-
-SELECT *
-FROM notificari;
-
-SELECT *
-FROM imprumut;
-
-SELECT *
-FROM client;
-
-SELECT DISTINCT id_client, nume, prenume 
-FROM client 
-WHERE id_client IN (18) 
-ORDER BY id_client;
-
-UPDATE notificari
-SET citit = 0
-WHERE id_notificare IN (3,7);
-
-SELECT DISTINCT id_imprumut
-FROM imprumut
-WHERE restituit = 0
-AND data_retur >= NOW() 
-AND data_retur <= DATE_ADD(NOW(), INTERVAL 7 DAY);
-
-SELECT DATE_FORMAT(data_creere, '%d-%m-%Y, %H:%i')
-FROM notificari;
-
-SELECT * FROM notificari;
-SELECT * FROM client;
-SELECT * FROM carte;
-SELECT * FROM imprumut;
-
-DELETE FROM notificari WHERE id_notificare in (18,19,20,21);
-ALTER TABLE notificari auto_increment = 1;
-
-SELECT *
-FROM notificari
-WHERE descriere LIKE 'CERERE%'
-AND descriere LIKE '%2021-01-04';
-
-SELECT id_notificare, descriere, id_sender
-FROM notificari
-WHERE id_client = 21
-AND citit = 0
-AND descriere LIKE BINARY 'CERERE%'
-ORDER BY 1;
-
-select *
-from imprumut;
-
-SELECT id_sender
-FROM notificari
-WHERE descriere LIKE '%2021-01-05';
-
-select *
-from carte;
-
-SELECT *
-FROM imprumut
-WHERE id_carte = 1
-AND data_retur < '2021-01-05'
-AND restituit = 0;
-
-SELECT id_carte, stoc
-FROM carte
-WHERE titlu = 'Minciuni pe canapea'
-AND tip = 'fizica';
-
-select * from notificari;
-
-SELECT *
-FROM notificari
-WHERE BINARY descriere LIKE 'CERERE%'
-AND BINARY descriere LIKE '%2021-01-05';
-
-INSERT INTO notificari (id_client, id_sender, descriere) VALUES 
-(21, 24, 'CERERE: imprumutul cartii cu titlul "Culorile si viata lor secreta" cu ridicare la data de 2021-01-05'),
-(21, 24, 'CERERE: imprumutul cartii cu titlul "Arta negocierii" cu ridicare la data de 2021-01-05');
-
-SELECT DISTINCT id_sender FROM notificari WHERE id_notificare IN (12,13,30,31,34,35);
-
-select * from imprumut;
-
-SELECT id_imprumut
-FROM imprumut
-ORDER BY id_imprumut DESC;
-
-SELECT id_notificare, descriere, id_sender
-FROM notificari
-WHERE id_client = 21
-AND citit = 0
-AND descriere LIKE BINARY 'CERERE%'
-ORDER BY 1;
-
-UPDATE notificari
-SET id_client = 21, id_sender = 5
-WHERE id_notificare IN (9,10,11);
-
-DELETE FROM notificari
-WHERE id_notificare in (9,10,11);
-
-SELECT descriere, data_creere, DATE_FORMAT(data_creere, '%d %M %Y, %H:%i'), id_notificare
-FROM notificari
-WHERE id_client = 5
-AND citit = 0
-ORDER BY data_creere DESC;
-
-select * from taxe;
-

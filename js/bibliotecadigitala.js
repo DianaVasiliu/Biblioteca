@@ -1,4 +1,4 @@
-
+// searchbar
 var search = document.getElementById("search");
 
 search.onkeyup = function () {
@@ -16,11 +16,4 @@ search.onkeyup = function () {
             searchListItems[i].style.display = "none";
         }
     }
-}
-
-
-var resetInputs = document.getElementsByTagName("input");
-for (let i = 0; i < resetInputs.length; i++) {
-    if (resetInputs[i].classList != "noreset")
-        resetInputs[i].value = '';
 }

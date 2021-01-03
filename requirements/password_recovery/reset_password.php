@@ -7,6 +7,7 @@ require '../../../Composer/vendor/autoload.php';
 require_once '../dbconnect.php';
 
 $link = connectdb();
+mysqli_set_charset($link , "utf8");
 
 session_start();
 
@@ -40,7 +41,6 @@ if (isset($_POST['reset-password'])) {
 
     $mail = new PHPMailer(true);
 
-    //$mail->SMTPDebug = 2;
     $mail->isSMTP();
     $mail->SMTPAuth = true;
 
@@ -52,7 +52,6 @@ if (isset($_POST['reset-password'])) {
       )
     );
 
-    // $host = "localhost";
     $host = "bib.epizy.com";
 
     $mail->SMTPSecure = 'tls';
@@ -60,7 +59,7 @@ if (isset($_POST['reset-password'])) {
     $mail->Host = 'smtp.gmail.com';
     $mail->Port = 587;
 
-    $mail->setFrom('myemail', 'Biblioteca');
+    $mail->setFrom('exemplu@gmail.com', 'Biblioteca');
     $mail->addAddress($email);
 
     $resetlink = $host . '/Proiect/requirements/password_recovery/new_pass.php?token=' . $token;
@@ -110,7 +109,7 @@ if (isset($_POST['new_password'])) {
       $query = "UPDATE client SET parola='" . $new_pass . "' WHERE email LIKE BINARY '" . $email . "'";
       $res = mysqli_query($link, $query);
 
-      header('location: index.php');
+      header("Location: ../../paginaprincipala.php");
     }
   }
 }

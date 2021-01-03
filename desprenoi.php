@@ -37,7 +37,6 @@ if (isset($_POST['submit'])) {
             )
         );
     
-        //$mail->SMTPDebug = 2;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
     
@@ -46,8 +45,8 @@ if (isset($_POST['submit'])) {
     
         $mail->Host = 'smtp.gmail.com';
     
-        $mail->setFrom('myemail', 'Biblioteca');
-        $mail->addAddress('myemail', 'Biblioteca');
+        $mail->setFrom('exemplu@gmail.com', 'Biblioteca');
+        $mail->addAddress('exemplu@gmail.com', 'Biblioteca');
     
         $mail->isHTML(true);
         $mail->Subject = 'E-mail nou de la utilizator';
@@ -228,5 +227,3 @@ if (isset($_POST['submit'])) {
 
 </body>
 </html>
-
-

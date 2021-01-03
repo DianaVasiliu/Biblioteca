@@ -57,6 +57,7 @@
                     FROM categorie
                     JOIN carte USING (id_categorie)
                     WHERE tip = 'fizica'";
+                    
         $res = mysqli_query($link, $query);
 
         $checkbox = array();

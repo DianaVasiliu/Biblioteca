@@ -134,6 +134,7 @@
                     <button class="setare"><h3>Notificari (<?php echo $_SESSION['nr_notif_bibl']; ?>)</h3> <img src="./pics/rarrow.png"></button>
                     <button class="setare"><h3>Cereri de imprumut</h3> <img src="./pics/rarrow.png"></button>
                     <button class="setare"><h3>Taxare clienti</h3> <img src="./pics/rarrow.png"></button>
+                    <button class="setare"><h3>Marcare imprumuturi restituite</h3> <img src="./pics/rarrow.png"></button>
 <?php
                 }
                 else if (isset($_SESSION['tip']) && $_SESSION['tip'] == 3) {
@@ -143,7 +144,6 @@
                     <button class="setare"><h3>Stergere date din BD</h3> <img src="./pics/rarrow.png"></button>
 <?php
                 }
-
 ?>
                 </div> <!-- inchid stanga -->
 
@@ -217,8 +217,18 @@
                             echo $_SESSION['erroraddress']; $_SESSION['erroraddress']='';
 ?>
                         </p>
-
-                        <br><br><br>
+                        <br>
+<?php
+                        if (isset($_SESSION['tip']) && $_SESSION['tip'] == 1) {
+?>
+                            <p style="color: brown; margin-left: 2pc; font-weight: bolder; font-size: 120%;">Istoricul taxarilor tale:</p>
+                            <a href="./requirements/client/excel_export.php" style="color: black; margin-left: 2pc; font-weight: bolder;">Excel</a>
+                            <a href="./requirements/client/pdf_export.php" style="color: black; margin-left: 2pc; font-weight: bolder;">PDF</a>
+                            <br><br>
+<?php
+                        }
+?>
+                        <br><br>
 
                         <form action="./requirements/updateinfo.php" method="post">
                             <div id="div_stergere">   

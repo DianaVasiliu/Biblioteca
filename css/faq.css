@@ -1,20 +1,3 @@
-#corp {
-    font-size: large;
-    box-sizing: border-box;
-}
-
-#bottom>h2 {
-    padding-right: 40%;
-    align-self: flex-end;
-}
-
-section {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-}
-
 .container {
     width: 100%;
     max-width: 60vw;
@@ -34,7 +17,6 @@ section {
     font-size: 1.6rem;
     color: white;
     text-decoration: none;
-    /* background-color: cyan; */
     width: 100%;
     display: flex;
     align-items: center;
@@ -57,7 +39,6 @@ section {
 .answer {
     overflow: hidden;
     max-height: 0;
-    /* position: relative;  */
     color: white;
     background-color:  rgb(51, 0, 0);
     border-left: solid white .6pc;
@@ -83,5 +64,4 @@ a {
     section {
         font-size: small;
     }
-
 }

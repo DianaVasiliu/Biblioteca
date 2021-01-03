@@ -3,7 +3,7 @@
 
 <?php
 
-    $query = "SELECT titlu, prenume, nume, categorie, url_fisier, COUNT(id_imprumut)
+    $query = "SELECT titlu, prenume, nume, categorie, url_fisier, COUNT(DISTINCT id_imprumut)
                 FROM carte c JOIN carte_autor ca USING (id_carte)
                 JOIN autor a USING (id_autor)
                 JOIN categorie cat USING (id_categorie)

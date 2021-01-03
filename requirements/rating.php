@@ -37,26 +37,24 @@
       $res = mysqli_query($link, $query);
 
       if (mysqli_num_rows($res) != 0) {
-      // UPDATE
-      $query = "UPDATE reviews
-              SET nota = " . $nota .  
-            " WHERE id_client = " . $_SESSION['id'] . 
-            " AND id_carte = " . $bookid;
+        // UPDATE
+        $query = "UPDATE reviews
+                SET nota = " . $nota .  
+              " WHERE id_client = " . $_SESSION['id'] . 
+              " AND id_carte = " . $bookid;
 
-      update_rating($link, $query, $bookid);
-
+        update_rating($link, $query, $bookid);
       }
       else {
-      // INSERT
-      $query = "INSERT INTO reviews VALUES
-              (" . $_SESSION['id'] . 
-              ", " . $bookid . 
-              ", " . $nota .
-              ")";
+        // INSERT
+        $query = "INSERT INTO reviews VALUES
+                (" . $_SESSION['id'] . 
+                ", " . $bookid . 
+                ", " . $nota .
+                ")";
 
-      update_rating($link, $query, $bookid);
+        update_rating($link, $query, $bookid);
       }   
-
     }
 
     header("Location: ../bibliotecafizica.php");

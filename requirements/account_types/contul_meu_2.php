@@ -106,48 +106,10 @@
 
     $res = mysqli_query($link, $query);
 
-    $res2 = false;
-
     while ($row = mysqli_fetch_array($res)) {
       array_push($id_imprumut, $row[0]);
       array_push($termen, $row[1]);
       array_push($data_retur, $row[2]);
-
-      // if ($_SESSION['insert_notif_bibl_flag'] == 1) {
-      //   $id = $row[0];
-
-      //   $query = "SELECT id_carte
-      //             FROM imprumut
-      //             WHERE id_imprumut = " . $id;
-        
-      //   $res2 = mysqli_query($link, $query);
-
-      //   $titluri = array();
-      //   while ($row = mysqli_fetch_array($res2)) {
-      //     $query = "SELECT titlu
-      //               FROM carte
-      //               WHERE id_carte = " . $row[0];
-          
-      //     $res3 = mysqli_query($link, $query);
-
-      //     $titlu = mysqli_fetch_array($res3)[0];
-      //     array_push($titluri, $titlu);
-      //   }
-        
-      //   $query = "INSERT INTO notificari (id_client, id_sender, descriere) VALUES (
-      //               " . $row[3] . ",
-      //               " . $_SESSION['id'] . ",
-      //               'RETUR: imprumutul cu id-ul " . $row[0] . " si termen limita in " . $row[1] . " zile; Titluri: ";
-      //   for ($contor = 0; $contor < count($titluri); $contor++) {
-      //     $query .= $titluri[$contor] . ";";
-      //   }
-        
-      //   $res2 = mysqli_query($link, $query);
-      // }
-    }
-
-    if ($res2) {
-      $_SESSION['insert_notif_bibl_flag'] = 0;
     }
     
     $_SESSION['termen'] = $termen;
@@ -240,27 +202,12 @@
     
     $res = mysqli_query($link, $query);
 
-    $res2 = false;
-
     while ($row = mysqli_fetch_array($res)) {
       array_push($id_client, $row[0]);
       array_push($prenume, $row[1]);
       array_push($nume, $row[2]);
       array_push($email, $row[3]);
       array_push($taxa, $row[4]);
-
-      // if ($_SESSION['insert_notif_bibl_flag'] == 1) {
-      //   $query = "INSERT INTO notificari (id_client, id_sender, descriere) VALUES (
-      //               " . $_SESSION['id'] . ",
-      //               " . $row[0] . ",
-      //               'PLATA: suma de " . $row[4] . "RON pentru clientul " . $row[1] . " " . $row[2] . "' 
-      //             )";      
-      //   $res2 = mysqli_query($link, $query);
-      // }
-    }
-
-    if ($res) {
-      $_SESSION['insert_notif_bibl_flag'] = 0;
     }
     
     $_SESSION['clients_to_pay'] = $id_client;
@@ -385,6 +332,7 @@
         }
 ?>
       <div class="div_cerere">
+        <div class="text_cerere">
 <?php
         // pentru fiecare client, daca stocul unei carti cerute e 0, atunci ok se face 0
         $ok = 1;
@@ -440,7 +388,7 @@
 <?php
         }
 ?>
-
+</div>
       <form method="post" action="./requirements/bibl/confirm_borrow.php" class="acc_ref_form">
 <?php
         if ($ok == 1) {
@@ -508,7 +456,10 @@
         <option value="3">Intarziere plata</option>
       </select>
 
-      <span class="span_elem">Descriere:</span>
+      <span class="span_elem" >Nr. zile:</span>
+      <input type="number" name="nr_zile" id="nr_zile" min="1" max="15" class="nr_zile">
+
+      <span class="span_elem" id="before">Descriere:</span>
       <input type="text" name="descriere1" class="descriere">
 
       <input type="submit" name="tax" value="Taxeaza" class="bibl_submit">
@@ -520,7 +471,7 @@
 
     <form action="./requirements/bibl/tax.php" method="post">
       <span>Client:</span>
-      <select name="select_client_2" id="select_client_2" class="admin_select">
+      <select name="select_client_2" id="select_client_2" class="bibl_select">
         <option value="0">--Alege--</option>
 <?php
         $query = "SELECT id_client, nume, prenume
@@ -567,7 +518,7 @@
         $_SESSION['tax_error'] = "";
       }
 
-      if ($_SESSION['tax_error'] == "") {
+      if ($_SESSION['tax_error'] == "" || $_SESSION['tax_error'] == "Succes!") {
         $color = "green";
       }
       else {
@@ -581,5 +532,96 @@
 ?>
       </p>
 
+    </div>
+</div>
+
+
+
+<div class="dreapta"> <!-- cereri de imprumut -->
+    <div class="info_bibl">
+
+<?php
+      $query = "SELECT DISTINCT id_imprumut
+                FROM imprumut
+                WHERE restituit = 0" . "
+                ORDER BY 1";
+
+      $res = mysqli_query($link, $query);
+
+      $ids = array();
+      while ($row = mysqli_fetch_array($res)) {
+        array_push($ids, $row[0]);
+      }
+?>
+      <ol>
+<?php
+      for ($i = 0; $i < count($ids); $i++) {
+?>
+        <li>
+<?php
+
+        $query = "SELECT id_client, id_carte, data_cerere
+                  FROM imprumut
+                  WHERE id_imprumut = " . $ids[$i];
+
+        $res = mysqli_query($link, $query);
+
+        $id_cl = 0;
+        $id_carti = array();
+        $data = '';
+
+        while($row = mysqli_fetch_array($res)) {
+          $id_cl = $row[0];
+          array_push($id_carti, $row[1]);
+          $data = $row[2];
+        }
+
+        $query = "SELECT nume, prenume
+                  FROM client
+                  WHERE id_client = " . $id_cl;
+        
+        $res = mysqli_query($link, $query);
+
+        $row = mysqli_fetch_array($res);
+        $n = $row[0];
+        $pr = $row[1];
+
+?>
+
+        <form action="./requirements/bibl/returned.php" method="post">
+          <h3>Imprumutul cu id-ul <?php echo $ids[$i]; ?></h3>
+          <input type="submit" name="restituie<?php echo $i; ?>" id="restituie<?php echo $i; ?>" class="bibl_submit" value="Restituit">
+        </form>
+
+        <p>Clientul cu id-ul <?php echo $id_cl; ?>; Nume: <?php echo $n . " " . $pr?></p>
+
+        <p><span style="text-decoration: underline;">Titluri imprumutate:</span> 
+<?php
+
+        for ($j = 0; $j < count($id_carti); $j++) {
+          $query = "SELECT titlu
+                    FROM carte
+                    WHERE id_carte = " . $id_carti[$j];
+
+          $res = mysqli_query($link, $query);
+
+          $titlu = mysqli_fetch_array($res)[0];
+
+          echo $titlu;
+
+          if ($j < count($id_carti) - 1) {
+            echo " / ";
+          }
+        }
+
+?>
+        </p>
+
+        </li>
+<?php
+      }
+
+?>
+      </ol>
     </div>
 </div>

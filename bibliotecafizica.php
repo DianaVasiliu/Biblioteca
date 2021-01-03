@@ -172,14 +172,21 @@
     </div>
 
     <div id="continut">
-
         <div id="div_filtre">
+            
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <input type="submit" name="resetfilters" value="Sterge filtrele" class="cauta" style="width: auto;">
             </form>
 <?php
             include ('./requirements/filtre_bibl_fizica.php');
 ?>
+
+            <br><br><br>
+            <hr>
+            <br>
+
+            <a href="./recomandari_externe.php" style="color: brown; font-weight: bold; font-size: 120%;">Recomandarile elefant.ro</a>
+
         </div> <!-- end div_filtre -->
 
         <div id="div_carti">

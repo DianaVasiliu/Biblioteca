@@ -2,24 +2,19 @@
     display: flex;
     justify-content: space-between;
     height: 40pc;
-
-    /* border: solid black; */
 }
 
 #div_filtre {
     width: 20%;
     height: 100%;
-
-    /* border: solid red; */
 }
 
 #div_carti {
     width: 75%;
     height: 100%;
-
-    /* border: solid green; */
 }
 
+/* header-ul filtrului (numele lui) */
 .header {
     display: flex;
     flex-direction: row;
@@ -28,6 +23,7 @@
     padding-right: 1pc;
 }
 
+/* butoanele de "stergere filtre" si "cauta" - dupa filtre */
 .cauta {
     height: 2pc;
     width: 5pc;
@@ -35,6 +31,7 @@
     border: inset;
 }
 
+/* filtrele */
 .options {
     max-height: 10pc;
     overflow-y: auto;
@@ -51,12 +48,9 @@ td {
     padding-bottom: 4pc;
     width: 25%;
     vertical-align: top;
-
-    /* border: solid black; */
 }
 
 table {
-    /* border: solid pink; */
     width: 100%;
     overflow-x: auto;
 }
@@ -95,6 +89,7 @@ table {
     font-size: 1pc;
 }
 
+/* bara de search */
 #filter {
     background-image: url('../pics/searchicon.png');
     background-position: 5% center;
@@ -166,6 +161,10 @@ table {
     overflow-x: auto;
 }
 
-#search_div {
-    display: flex;
+@media only screen and (max-width: 1000px) {
+    #search {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 3pc;
+    }
 }

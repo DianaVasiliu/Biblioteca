@@ -2,8 +2,6 @@ var radios = document.getElementsByClassName("radio_btn");
 var wrapper = document.getElementById("user_type");
 
 function add_input (elim, utype) {
-//   alert(elim);
-//   alert(utype);
   var elim1 = document.getElementById(elim.concat("_input"));
   var elim2 = document.getElementById(elim.concat("_text"));
 

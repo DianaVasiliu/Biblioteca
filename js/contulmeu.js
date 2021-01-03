@@ -1,5 +1,5 @@
+// afisarea meniului selectat
 var setari = document.getElementsByClassName("dreapta");
-
 var butoane = document.getElementsByClassName("setare");
 
 setari[0].display = "flex";
@@ -17,6 +17,7 @@ for (let i = 0; i < butoane.length; i++) {
     }
 }
 
+// stergerea contului - meniu dinamic
 var sterge = document.getElementById("stergere");
 var parinte = document.getElementById("div_stergere");
 
@@ -39,10 +40,9 @@ sterge.onclick = function (e) {
     buton.value = "Nu";
     buton.className = "submit";
     parinte.appendChild(buton);
-
 }
 
-
+// afisarea formularului de imprumut
 var imprumut = document.getElementById("btn_imprumut");
 
 if (imprumut) {
@@ -56,7 +56,7 @@ if (imprumut) {
     }
 }
 
-
+// formular de imprumut - validare campuri goale
 var carte = document.getElementById("select_carte");
 var data = document.getElementById("data_impr");
 var formborr = document.getElementById("form_imprumut");
@@ -77,11 +77,25 @@ if (formborr) {
         else {
             formborr.submit();
         }
-
     }
 }
 
+// formular de imprumut - validare data
+var calendar = document.getElementById('data_impr');
 
+if (calendar) {
+    calendar.addEventListener('input', function(e){
+        var day = new Date(this.value).getUTCDay();
+
+        if([0].includes(day)){
+            e.preventDefault();
+            this.value = '';
+            alert('Duminica nu este valabila!');
+        }
+    });
+}
+
+// captcha - generare cod nou
 var refreshButton = document.querySelector(".refresh-captcha");
 
 if (refreshButton) {
@@ -89,20 +103,3 @@ if (refreshButton) {
         document.querySelector(".captcha-image").src = 'requirements/captcha.php?' + Date.now();
     }
 }
-
-
-var calendar = document.getElementById('data_impr');
-
-if (calendar) {
-    calendar.addEventListener('input', function(e){
-    var day = new Date(this.value).getUTCDay();
-
-    if([0].includes(day)){
-        e.preventDefault();
-        this.value = '';
-        alert('Duminica nu este valabila!');
-    }
-
-    });
-}
-

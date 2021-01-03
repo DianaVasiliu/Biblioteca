@@ -3,6 +3,7 @@
     session_start();
 
     $link = connectdb();
+    mysqli_set_charset($link , "utf8");
 
     if (isset($_POST['upemail'])) {
         $email = mysqli_real_escape_string($link, $_POST['email']);

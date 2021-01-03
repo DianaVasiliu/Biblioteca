@@ -12,7 +12,6 @@ for (let i = 0; i < stars.length; i++) {
       if(stars[j].classList.contains("colored-star"))
          stars[j].classList.remove("colored-star");
     }
-    
   }
 }
 

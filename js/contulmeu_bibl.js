@@ -9,3 +9,19 @@ for (let i = 0; i < cerere_imprumut.length; i++) {
       hidden.value = text.substring(text.length - 10);
   }
 }
+
+var before = document.getElementById("before");
+var motiv = document.getElementById("select_motiv");
+var nr_zile = document.getElementById("nr_zile");
+nr_zile.disabled = true;
+
+motiv.onchange = function() {
+  let value = motiv.selectedIndex;
+
+  if (value == 2 || value == 3) {
+    nr_zile.disabled = false;
+  }
+  else {
+    nr_zile.disabled = true;
+  }
+}

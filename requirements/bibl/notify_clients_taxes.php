@@ -43,7 +43,6 @@
         $_SESSION['notificat_taxa'] = "Notificat";
         $_SESSION['send_notif_taxa_flag'] = 0;
       }
-
     }
 
     header("location: ../../contulmeu.php");

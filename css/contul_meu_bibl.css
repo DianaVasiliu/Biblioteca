@@ -55,35 +55,15 @@ td {
   margin-top: 5pc;
 }
 
-.form_bibl {
-  display: inline-flex;
-  justify-content: space-between;
-  width: 95%;
-}
-
-.div_confirm_buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.cerere_imprumut {
-  margin-right: 1pc;
-}
-
-.form_bibl {
-  margin-bottom: 1pc;
+.text_cerere {
+  width: 60%;
 }
 
 .div_cerere {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 2pc;
-}
-
-.acc_ref_form {
-  width: 20%;
-  display: flex;
-  justify-content: space-between;
 }
 
 .span_elem {
@@ -103,4 +83,8 @@ td {
   padding: .5pc;
   text-align: center;
   border: none;
+}
+
+.nr_zile {
+  width: 3%;
 }

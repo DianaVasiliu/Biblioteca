@@ -1,7 +1,5 @@
 .client_submit {
   margin: 0;
-  /* padding-left: 1pc;
-  padding-right: 1pc; */
   background-color: white;
   border-left: solid black 5px;
   font-size: large;
@@ -38,4 +36,83 @@
 
 .notif_div {
   width: 35%;
+}
+
+.cartiimprumutate {
+  width: 10pc;
+}
+
+td {
+  text-align: center;
+  padding-left: 1pc;
+  padding-right: 1pc;
+  padding-bottom: 1pc;
+  width: 25%;
+  vertical-align: top;
+}
+
+table {
+  width: 100%;
+}
+
+.accountfavs {
+  border: inset;
+  margin: auto;
+  margin-top: 1pc;
+}
+
+
+#btn_imprumut {
+  background-color: whitesmoke;
+  height: 50%;
+}
+
+#form_imprumut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#select_carte {
+  padding: .5pc;
+  border: none;
+  text-align: center;
+}
+
+#data_impr {
+  text-align: center;
+  margin: 0;
+}
+
+.submitborrow {
+  margin-top: 2pc;
+  margin-left: 0;
+}
+
+.refresh-captcha:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.elem-group {
+  text-align: center;
+  padding: 0;
+  margin-top: 2pc;
+}
+
+.centrat {
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#captcha {
+  margin: 0;
+}
+
+#div_form_imprumut {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

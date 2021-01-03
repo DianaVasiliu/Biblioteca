@@ -108,7 +108,7 @@
                         </div>
                         <div class="answer">
                         <p>
-                            Citeste <a href="https://drive.google.com/file/d/1gOaVO5SeKFcUAfEHEnsCzyms07fqozEv/view?usp=sharing" target="_blank">regulamentul</a> si scrie-ne la <a href="mailto:diana-elena.vasiliu@my.fmi.unibuc.ro">diana-elena.vasiliu@my.fmi.unibuc.ro</a>. Iti vom raspunde in cel mai scurt timp.
+                            Citeste <a href="https://drive.google.com/file/d/1gOaVO5SeKFcUAfEHEnsCzyms07fqozEv/view?usp=sharing" target="_blank">regulamentul</a> si scrie-ne la <a href="mailto:exemplu@gmail.com">exemplu@gmail.com</a>. Iti vom raspunde in cel mai scurt timp.
                         </p> 
                         </div>
                     </div>

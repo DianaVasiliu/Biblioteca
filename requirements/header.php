@@ -7,7 +7,7 @@
 
 <?php
     
-    $inactive = 3600;
+    $inactive = 3600; // 1h
 
     if (isset($_SESSION['testing']) && (time() - $_SESSION['testing'] > $inactive)) {
         session_unset();

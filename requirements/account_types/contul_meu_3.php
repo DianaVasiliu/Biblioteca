@@ -1,6 +1,6 @@
 <!-- introducere -->
 <div class="dreapta">
-    <div class="info formular_admin">  
+    <div class="info admin_form">  
 
       <form action="requirements/admin/admin_insert.php" method="post" id="insert_form" class="admin_form">
           <h3>Selecteaza tabelul in care vrei sa introduci date:</h3>
@@ -39,7 +39,7 @@
 
 <!-- actualizare -->
 <div class="dreapta">
-    <div class="info formular_admin">    
+    <div class="info admin_form">    
       <form action="requirements/admin/admin_update.php" method="post" id="update_form" class="admin_form">
           <h3>Selecteaza tabelul in care vrei sa modifici date:</h3>
           <select name="table_select_update" id="table_select_update" class="admin_select">
@@ -75,7 +75,7 @@
 
 <!-- stergere -->
 <div class="dreapta">    
-    <div class="info formular_admin">    
+    <div class="info admin_form">    
         <form action="requirements/admin/admin_delete.php" method="post" id="delete_form" class="admin_form">
             <h3>Selecteaza tabelul din care vrei sa stergi date:</h3>
             <select name="table_select_delete" id="table_select_delete" class="admin_select">

@@ -1,7 +1,7 @@
-
 var answer_link = document.getElementsByClassName("accordion-link");
 var answer = document.getElementsByClassName("answer");
 var oks = new Array(answer.length);
+
 for (let i = 0; i < oks.length; i++) {
     oks[i] = 0;
 }
@@ -23,6 +23,5 @@ for (let i = 0; i < answer_link.length; i++) {
             minus[i].style.display = "none";
             oks[i] = 0;
         }
-
     }
 }
