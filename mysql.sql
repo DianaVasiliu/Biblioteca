@@ -251,28 +251,28 @@ INSERT INTO categorie (categorie) VALUES
 ('Psihologie'),
 ('Stiinte');
 
-INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
-(1, 5, 1, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
-(1, 5, 2, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
-(1, 5, 3, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
-(1, 5, 4, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY));
+-- INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+-- (1, 5, 1, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+-- (1, 5, 2, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+-- (1, 5, 3, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+-- (1, 5, 4, NOW(), DATE(NOW()), DATE_ADD(NOW(), INTERVAL 15 DAY));
 
-INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
-(2, 5, 2, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY)),
-(2, 5, 1, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY));
+-- INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+-- (2, 5, 2, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY)),
+-- (2, 5, 1, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY));
 
-INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
-(3, 5, 1, NOW(), DATE_ADD(NOW(), INTERVAL 10 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY));
+-- INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+-- (3, 5, 1, NOW(), DATE_ADD(NOW(), INTERVAL 10 MINUTE), DATE_ADD(NOW(), INTERVAL 15 DAY));
 
-INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
-(4, 5, 1, DATE('2020-12-01'), DATE('2020-12-01'), DATE_ADD(DATE('2020-12-01'), INTERVAL 15 DAY)),
-(4, 5, 2, DATE('2020-12-01'), DATE('2020-12-01'), DATE_ADD(DATE('2020-12-01'), INTERVAL 15 DAY));
+-- INSERT INTO imprumut (id_imprumut, id_client, id_carte, data_cerere, data_ridicare, data_retur) VALUES
+-- (4, 5, 1, DATE('2020-12-01'), DATE('2020-12-01'), DATE_ADD(DATE('2020-12-01'), INTERVAL 15 DAY)),
+-- (4, 5, 2, DATE('2020-12-01'), DATE('2020-12-01'), DATE_ADD(DATE('2020-12-01'), INTERVAL 15 DAY));
 
-INSERT INTO carte_imprumut VALUES
-(1,1), (1,2), (1,3), (1,4),
-(2,1), (2,2),
-(3,1),
-(4,1), (4,2);
+-- INSERT INTO carte_imprumut VALUES
+-- (1,1), (1,2), (1,3), (1,4),
+-- (2,1), (2,2),
+-- (3,1),
+-- (4,1), (4,2);
 
 INSERT INTO autor (nume, prenume) VALUES
 ('Yalom','Irvin'),
@@ -377,10 +377,6 @@ INSERT INTO carte_autor VALUES
 (30,11);
 
 INSERT INTO coduri_utilizatori VALUES
-('12Abq\]p-09.~?', 2, 0),
-('0D;p~\\#%LqFr=', 2, 0),
+('12Abq]]p-09.~?', 2, 0),
+('0D;p~l#%LqFr=', 2, 0),
 ('kL-),16XX]cS!@', 3, 0);
-
-
-SELECT DATE_ADD(SYSDATE(), INTERVAL 7 HOUR)
-FROM DUAL;

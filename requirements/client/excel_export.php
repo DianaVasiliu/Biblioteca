@@ -325,7 +325,6 @@ $spreadsheet->getActiveSheet()->getPageSetup()
 
 
   $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
-  header('Content-Type: Application/vnd.ms-excel');
   header('Content-Disposition: attachment; filename="Istoric_taxare.xlsx"');
   $writer->save('php://output');
   
